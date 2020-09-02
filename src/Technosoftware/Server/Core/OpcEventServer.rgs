@@ -1,0 +1,32 @@
+HKCR
+{
+	%AE_SERVER_ID_V% = s '%AE_SERVER_NAME_V%'
+	{
+		CLSID = s '%AE_SERVER_CLSID%'
+	}
+	%AE_SERVER_ID% = s '%AE_SERVER_NAME%'
+	{
+		CurVer = s '%AE_SERVER_ID_V%'
+		CLSID = s '%AE_SERVER_CLSID%'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove %AE_SERVER_CLSID% = s '%AE_SERVER_NAME_V%'
+		{
+		   'Implemented Categories'
+			ProgID = s '%AE_SERVER_ID_V%'
+			VersionIndependentProgID = s '%AE_SERVER_ID%'
+			ForceRemove 'Programmable'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '%APPID%'
+		}
+	}
+	NoRemove AppID
+	{
+		%APPID% = s '%APPDESCR%'
+		'%EXENAME%'
+		{
+			val AppID = s '%APPID%'
+		}
+	}
+}

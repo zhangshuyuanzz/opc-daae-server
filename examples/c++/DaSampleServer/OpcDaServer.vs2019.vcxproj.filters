@@ -249,6 +249,9 @@
     <ClCompile Include="..\..\..\src\Technosoftware\Server\Customization\Logger.cpp">
       <Filter>Source Files\Customization</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\Technosoftware\Server\Da\DaItemProperty.cpp">
+      <Filter>Source Files\Generic\Data Access</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Technosoftware\Server\Core\OpcDefs.h">

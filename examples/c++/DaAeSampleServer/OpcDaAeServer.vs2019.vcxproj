@@ -303,6 +303,7 @@
     <ClCompile Include="..\..\..\src\Technosoftware\Server\Ae\AeCategory.cpp" />
     <ClCompile Include="..\..\..\src\Technosoftware\Server\Core\CoreMain.cpp" />
     <ClCompile Include="..\..\..\src\Technosoftware\Server\Customization\Logger.cpp" />
+    <ClCompile Include="..\..\..\src\Technosoftware\Server\Da\DaItemProperty.cpp" />
     <ClCompile Include="..\..\..\src\Technosoftware\Server\Plugin\IClassicBaseNodeManager.cpp" />
     <ClCompile Include="..\..\..\src\Technosoftware\Server\System\OpcSdk_i.c" />
     <ClCompile Include="..\..\..\src\Technosoftware\Server\Core\OpcString.cpp" />

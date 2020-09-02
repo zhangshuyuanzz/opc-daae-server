@@ -1,0 +1,40 @@
+HKCR
+{
+	%DA_SERVER_ID_V% = s '%DA_SERVER_NAME_V%'
+	{
+		CLSID = s '%DA_SERVER_CLSID%'
+		OPC
+		{
+			Vendor = s '%VENDOR%'
+		}
+	}
+	%DA_SERVER_ID% = s '%DA_SERVER_NAME%'
+	{
+		CurVer = s '%DA_SERVER_ID_V%'
+		CLSID = s '%DA_SERVER_CLSID%'
+		OPC
+		{
+			Vendor = s '%VENDOR%'
+		}
+	}
+	NoRemove CLSID
+	{
+		ForceRemove %DA_SERVER_CLSID% = s '%DA_SERVER_NAME_V%'
+		{
+		   'Implemented Categories'
+			ProgID = s '%DA_SERVER_ID_V%'
+			VersionIndependentProgID = s '%DA_SERVER_ID%'
+			ForceRemove 'Programmable'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '%APPID%'
+		}
+	}
+	NoRemove AppID
+	{
+		%APPID% = s '%APPDESCR%'
+		'%EXENAME%'
+		{
+			val AppID = s '%APPID%'
+		}
+	}
+}

@@ -1,21 +1,26 @@
-MIT License
+# SOFTWARE LICENSE AGREEMENT
 
-Copyright (c) 2011-2020 Technosoftware GmbH
+TECHNOSOFTWARE (THE "LICENSOR") IS WILLING TO LICENSE THE ACCOMPANYING SOFTWARE AND ASSOCIATED DOCUMENTATION INCLUDING AUTHORIZED COPIES OF EACH (THE "SOFTWARE") TO YOU ("LICENSEE") ONLY ON THE CONDITION THAT LICENSEE ACCEPTS ALL OF THE TERMS IN THIS AGREEMENT.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+The licensed Software is protected by copyright laws and international copyright treaties, as well as other intellectual property laws and treaties. The licensed Software is licensed, not sold. Technosoftware shall own all right, title and interest including the intellectual property rights in and to the information on bug fixes or error corrections relating to the licensed Software that are submitted by Licensee to Technosoftware as well as any intellectual property rights to the correction of any errors, if any.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+PLEASE READ THE TERMS CAREFULLY BEFORE INSTALLING THE SOFTWARE. BY INSTALLING THE SOFTWARE, LICENSEE ACKNOWLEDGES THAT LICENSEE HAS READ AND UNDERSTANDS THIS AGREEMENT AND AGREES TO BE BOUND BY ITS TERMS AND CONDITIONS. THE EFFECTIVE DATE OF THIS AGREEMENT SHALL BE THE DATE UPON THE SOFTWARE WAS FIRST DELIVERED TO YOU OR FIRST DOWNLOADED BY YOU.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+IF LICENSEE DOES NOT ACCEPT THESE LICENSE TERMS, THEN TECHNOSOFTWARE DOES NOT GRANT ANY LICENSE TO THE SOFTWARE, AND LICENSEE MUST NOT DOWNLOAD OR INSTALL THE SOFTWARE.
+
+TECHNOSOFTWARE provides different licenses depending on the component and on the ownership of a purchased license of the user of the sources. A single ZIP file or a single repository can contain multiple components where the sources have different license models. The valid license is in the header of each source file.
+
+Following are basic rules on how TECHNOSOFTWARE licenses the different components:
+
+1. OPC DA/AE/HDA and OPC UA core components follow a dual-license model:
+  - Owner of a purchased license: [RPL 1.5](license/RPLv15License.txt)
+
+    enables Owner of a purchased license to deploy their applications using the core component sources without being required to disclose the application code.
+	
+  - Users that are not Owner of a purchased license: [GPL 3.0](license/GPLv3License.txt)
+  
+    Based on the GPL 3.0 license terms these users must disclose their application code when using the core component sources.
+ 
+2. Samples and Utilities: 
+
+  - All samples and most of the utilities are provided under the [MIT](license/MITLicense.txt) license for everyone.

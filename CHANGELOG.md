@@ -1,5 +1,10 @@
 This is the changelog file for the OPC DA/AE Server SDK.
 
+## OPC DA/AE Server SDK - 1.0.902
+
+###	Enhancement
+- Included Source, changed license model
+
 ## OPC DA/AE Server SDK - 1.0.423
 
 # Fixed Issues

@@ -15,28 +15,7 @@ The “Server API” defines easy to use interface functions required for develo
 
 The OPC DA/AE Server SDK offers unique features for performance and functionality improvements of the developed OPC Server like Event Driven Mode for Device Access; Dynamic address space with items added when they are first accessed by a client and removed when they are no longer in use; Item browsing can be implemented to browse the cache or the device/database.
 
-### Licenses & Pricing
-The OPC DA/AE Server SDK follows a dual-license: 
+### Licenses
+TECHNOSOFTWARE provides different licenses depending on the component and on the ownership of a purchased license of the user of the sources. A single ZIP file or a single repository can contain multiple components where the sources have different license models. The valid license is in the header of each source file.
 
-#### Binaries
-The OPC DA/AE Server SDK is licensed under the MIT License. A very liberal license that encourages both commercial and non-commercial use. This version features:
-
-- Can be used for commercial purposes.
-- Full featured without limitations or restrictions.
-- There are no separate runtime fees or royalties needed.
-
-Not available for this version are:
-
-- Warranty of any kind. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-- Technical Support. See section Commercial Support for more information on how to get support.
-- Updates and fixes.
-
-#### Support for the SDK under MIT License
-Support for the SDK under the MIT License is only available via https://github.com/technosoftware-gmbh/opc-daae-server-sdk/issues. 
-
-### Source Code
-The OPC DA/AE Server SDK source code is available under a commercial source code license. There are no separate runtime fees or royalties.
-
-Our Source Code License Agreement (https://technosoftware.com/documents/Source_License_Agreement.pdf) allows the use of the OPC DA/AE Server SDK source code to develop software on and for all supported operating system and hardware platforms.
-
-The OPC DA/AE Server SDK Support Subscription including access to the full source code can be purchased via https://technosoftware.com/product/opc-daae-server-sdk-support-subscription/.
+See [LICENSE.md](LICENSE.md) for more details.
