@@ -1,16 +1,16 @@
-This is the changelog file for the OPC DA/AE Server SDK.
+This is the changelog file for the OPC DA/AE Server Base.
 
-## OPC DA/AE Server SDK - 1.0.902
+## OPC DA/AE Server Base - 1.0.902
 
 ###	Enhancement
 - Included Source, changed license model
 
-## OPC DA/AE Server SDK - 1.0.423
+## OPC DA/AE Server Base - 1.0.423
 
 # Fixed Issues
 - GetActiveItems does not return the correct list if no active items (#1)
 
-## OPC DA/AE Server SDK - 1.0.419
+## OPC DA/AE Server Base - 1.0.419
 
 ###	Enhancement
 - DLL and .NET samples available now in the same package
@@ -19,6 +19,3 @@ This is the changelog file for the OPC DA/AE Server SDK.
 
 ###	Redistributables
 - Redistributables are available via https://opcfoundation.org/developer-tools/samples-and-tools-classic/core-components/
-
-###	Source Code
-- The source code version is available at https://technosoftware.com/product/opc-daae-server-sdk/
