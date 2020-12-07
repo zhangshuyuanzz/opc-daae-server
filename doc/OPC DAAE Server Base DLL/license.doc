@@ -36,7 +36,7 @@ file.</p>
 <p>Following are basic rules on how TECHNOSOFTWARE licenses the different components:</p>
 
 <p>1. OPC DA/AE/HDA and OPC UA core components follow a dual-license model:<br />
-&nbsp; - Owner of a purchased license:&nbsp;<a href="https://technosoftware.com/license/RPLv15License.txt">RPL 1.5</a></p>
+&nbsp; - Owner of a purchased license:&nbsp;<a href="https://technosoftware.com/license/Source_Code_License_Agreement.pdf">SCLA 1.0</a></p>
 
 <p>&nbsp;&nbsp;&nbsp; enables Owner of a purchased license to deploy their applications using the core component sources without being required to disclose the
 application code.<br />

@@ -3,11 +3,11 @@
  * Web: https://technosoftware.com 
  * 
  * The source code in this file is covered under a dual-license scenario:
- *   - Owner of a purchased license: RPL 1.5
+ *   - Owner of a purchased license: SCLA 1.0
  *   - GPL V3: everybody else
  *
- * RPL license terms accompanied with this source code.
- * See https://technosoftware.com/license/RPLv15License.txt
+ * SCLA license terms accompanied with this source code.
+ * See https://technosoftware.com/license/Source_Code_License_Agreement.pdf
  *
  * GNU General Public License as published by the Free Software Foundation;
  * version 3 of the License are accompanied with this source code.
