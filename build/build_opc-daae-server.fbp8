@@ -182,7 +182,7 @@ begin
         end
         action.directory.create
         begin
-          fileordirectory = %daaeserver_sdk_dir%
+          fileordirectory = %daaeserver_src_dir%
           force = true
           id = {EE769BAE-D099-4789-A162-2B8B1018EDE2}
         end
@@ -202,14 +202,14 @@ begin
         deletetree = true
         enabledelay = false
         failifnodirectory = false
-        fileordirectory = %daaeserver_sdk_dir%
+        fileordirectory = %daaeserver_src_dir%
         force = false
         id = {A43246C0-FB6E-4C4A-A853-8160BC26C39F}
         logdeletedfiles = false
       end
       action.directory.create
       begin
-        fileordirectory = %daaeserver_sdk_dir%
+        fileordirectory = %daaeserver_src_dir%
         force = true
         id = {98A7179D-92F1-4EC5-B424-A33C30585BD2}
       end
@@ -227,14 +227,14 @@ begin
         impersonateuser = false
         logoutput = true
         logprocessparameters = true
-        params = "clone --verbose %technosoftware_git_repository_url% %daaeserver_sdk_dir%"
+        params = "clone --verbose %technosoftware_git_repository_url% %daaeserver_src_dir%"
         processoraffinity = 0
         processpriority = tpNormal
         programname = git
         redirectstderr = true
         returncodecomparator = rcEqualTo
         returncodetocheck = 0
-        startindir = %daaeserver_sdk_dir%
+        startindir = %daaeserver_src_dir%
         terminateontimeout = false
         timeoutlength = 1
         useerrordialogmonitor = false
@@ -254,7 +254,7 @@ begin
         timeoutlength = 2
         as.isdefaultrepository = False
         as.islocal = True
-        as.localrepos = %daaeserver_sdk_dir%
+        as.localrepos = %daaeserver_src_dir%
         as.isremote = False
         as.branchname = %git_tag%
         as.isquiet = 0
@@ -346,7 +346,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\net\\C#\\DaAeSampleServer\\ServerPlugin.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\net\\C#\\DaAeSampleServer\\ServerPlugin.vs2019.sln
             solutionconfiguration = Release|x86
             structuredoutput = true
             targetframework = fx20
@@ -437,7 +437,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\net\\C#\\DaSampleServer\\ServerPlugin.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\net\\C#\\DaSampleServer\\ServerPlugin.vs2019.sln
             solutionconfiguration = Release|x86
             structuredoutput = true
             targetframework = fx20
@@ -528,7 +528,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\net\\C#\\DaAeSampleServer\\ServerPlugin.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\net\\C#\\DaAeSampleServer\\ServerPlugin.vs2019.sln
             solutionconfiguration = Release|x64
             structuredoutput = true
             targetframework = fx20
@@ -619,7 +619,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcNetDaAeServer.vs2019.sln
+            solution = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcNetDaAeServer.vs2019.sln
             solutionconfiguration = Release|Win32
             structuredoutput = true
             targetframework = fx20
@@ -671,7 +671,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\Win32\\net
+            destination = %daaeserver_src_dir%\\Win32\\net
             enabletimeout = false
             expandimpersonationtoken = false
             id = {748EFEE3-C1CB-47CD-A407-BED78C3A9E5A}
@@ -684,7 +684,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\net\\win32\\Release\\OpcNetDaAeServer.exe
+            source = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\net\\win32\\Release\\OpcNetDaAeServer.exe
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -706,7 +706,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\Win32\\net
+            destination = %daaeserver_src_dir%\\Win32\\net
             enabletimeout = false
             expandimpersonationtoken = false
             id = {655C7320-767C-4623-89A4-F8B0CE0494DD}
@@ -719,7 +719,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\examples\\net\\C#\\DaAeSampleServer\\bin\\x86\\Release\\net\\ServerPlugin.dll
+            source = %daaeserver_src_dir%\\examples\\net\\C#\\DaAeSampleServer\\bin\\x86\\Release\\net\\ServerPlugin.dll
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -788,7 +788,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcNetDaAeServer.vs2019.sln
+            solution = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcNetDaAeServer.vs2019.sln
             solutionconfiguration = DAOnly|Win32
             structuredoutput = true
             targetframework = fx20
@@ -829,7 +829,7 @@ begin
           end
           action.xcopy
           begin
-            actionlogtitle = "XCopy [ Copy %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\win32\\DAOnly\\OpcNetDaAeServer.exe to %daaeserver_sdk_dir%\\Win32\\NET45\\DAOnly ]"
+            actionlogtitle = "XCopy [ Copy %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\win32\\DAOnly\\OpcNetDaAeServer.exe to %daaeserver_src_dir%\\Win32\\NET45\\DAOnly ]"
             changedafterdate = 39707
             copyattributes = false
             copyemptydirectories = false
@@ -841,7 +841,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\Win32\\net\\DAOnly
+            destination = %daaeserver_src_dir%\\Win32\\net\\DAOnly
             enabletimeout = false
             expandimpersonationtoken = false
             id = {9D533EBA-80B8-473B-98DA-7AF1E79F644C}
@@ -854,7 +854,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\net\\win32\\DAOnly\\OpcNetDaServer.exe
+            source = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\net\\win32\\DAOnly\\OpcNetDaServer.exe
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -876,7 +876,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\Win32\\net\\DAOnly
+            destination = %daaeserver_src_dir%\\Win32\\net\\DAOnly
             enabletimeout = false
             expandimpersonationtoken = false
             id = {50B62E36-41F8-4696-ABC5-2B59C2F4118E}
@@ -889,7 +889,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\examples\\net\\C#\\DaSampleServer\\bin\\x86\\Release\\net\\ServerPlugin.dll
+            source = %daaeserver_src_dir%\\examples\\net\\C#\\DaSampleServer\\bin\\x86\\Release\\net\\ServerPlugin.dll
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -972,7 +972,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\net\\C#\\DaAeSampleServer\\ServerPlugin.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\net\\C#\\DaAeSampleServer\\ServerPlugin.vs2019.sln
             solutionconfiguration = Release|x64
             structuredoutput = true
             targetframework = fx20
@@ -1063,7 +1063,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\net\\C#\\DaSampleServer\\ServerPlugin.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\net\\C#\\DaSampleServer\\ServerPlugin.vs2019.sln
             solutionconfiguration = Release|x64
             structuredoutput = true
             targetframework = fx20
@@ -1154,7 +1154,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcNetDaAeServer.vs2019.sln
+            solution = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcNetDaAeServer.vs2019.sln
             solutionconfiguration = Release|x64
             structuredoutput = true
             targetframework = fx20
@@ -1206,7 +1206,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\x64\\net
+            destination = %daaeserver_src_dir%\\x64\\net
             enabletimeout = false
             expandimpersonationtoken = false
             id = {D96D00C8-AA59-4932-A0E1-F2626881D5A3}
@@ -1219,7 +1219,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\net\\x64\\Release\\OpcNetDaAeServer.exe
+            source = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\net\\x64\\Release\\OpcNetDaAeServer.exe
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -1241,7 +1241,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\x64\\net
+            destination = %daaeserver_src_dir%\\x64\\net
             enabletimeout = false
             expandimpersonationtoken = false
             id = {DA7BF0B0-BFD1-48B8-BEF6-B2DEA52933BE}
@@ -1254,7 +1254,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\examples\\net\\C#\\DaAeSampleServer\\bin\\x64\\Release\\net\\ServerPlugin.dll
+            source = %daaeserver_src_dir%\\examples\\net\\C#\\DaAeSampleServer\\bin\\x64\\Release\\net\\ServerPlugin.dll
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -1323,7 +1323,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcNetDaAeServer.vs2019.sln
+            solution = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcNetDaAeServer.vs2019.sln
             solutionconfiguration = DAOnly|x64
             structuredoutput = true
             targetframework = fx20
@@ -1364,7 +1364,7 @@ begin
           end
           action.xcopy
           begin
-            actionlogtitle = "XCopy [ Copy %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\x64\\DAOnly\\OpcNetDaAeServer.exe to %daaeserver_sdk_dir%\\x64\\NET45\\DAOnly ]"
+            actionlogtitle = "XCopy [ Copy %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\x64\\DAOnly\\OpcNetDaAeServer.exe to %daaeserver_src_dir%\\x64\\NET45\\DAOnly ]"
             changedafterdate = 39707
             copyattributes = false
             copyemptydirectories = false
@@ -1376,7 +1376,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\x64\\net\\DAOnly
+            destination = %daaeserver_src_dir%\\x64\\net\\DAOnly
             enabletimeout = false
             expandimpersonationtoken = false
             id = {0A5A6D7B-7911-4EE4-84C4-D97B7FB9A0B2}
@@ -1389,7 +1389,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\net\\x64\\DAOnly\\OpcNetDaServer.exe
+            source = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\net\\x64\\DAOnly\\OpcNetDaServer.exe
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -1411,7 +1411,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\x64\\net\\DAOnly
+            destination = %daaeserver_src_dir%\\x64\\net\\DAOnly
             enabletimeout = false
             expandimpersonationtoken = false
             id = {93AA4368-2097-4669-94F4-18F2CE86754E}
@@ -1424,7 +1424,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\examples\\net\\C#\\DaSampleServer\\bin\\x64\\Release\\net\\ServerPlugin.dll
+            source = %daaeserver_src_dir%\\examples\\net\\C#\\DaSampleServer\\bin\\x64\\Release\\net\\ServerPlugin.dll
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -1520,7 +1520,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\dll\\DaAeSampleServer\\ServerPlugin.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\dll\\DaAeSampleServer\\ServerPlugin.vs2019.sln
             solutionconfiguration = Release|Win32
             structuredoutput = true
             targetframework = fx20
@@ -1572,7 +1572,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\Win32
+            destination = %daaeserver_src_dir%\\Win32
             enabletimeout = false
             expandimpersonationtoken = false
             id = {68361EFE-DD7E-4038-8F10-B54719329B08}
@@ -1585,7 +1585,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\examples\\dll\\DaAeSampleServer\\Win32\\Release\\ServerPlugin.dll
+            source = %daaeserver_src_dir%\\examples\\dll\\DaAeSampleServer\\Win32\\Release\\ServerPlugin.dll
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -1654,7 +1654,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\dll\\DaSampleServer\\ServerPlugin.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\dll\\DaSampleServer\\ServerPlugin.vs2019.sln
             solutionconfiguration = Release|Win32
             structuredoutput = true
             targetframework = fx20
@@ -1706,7 +1706,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\Win32\\DAOnly
+            destination = %daaeserver_src_dir%\\Win32\\DAOnly
             enabletimeout = false
             expandimpersonationtoken = false
             id = {438EE1BC-B7E7-4088-81C3-0E5026C7B685}
@@ -1719,7 +1719,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\examples\\dll\\DaSampleServer\\Win32\\Release\\ServerPlugin.dll
+            source = %daaeserver_src_dir%\\examples\\dll\\DaSampleServer\\Win32\\Release\\ServerPlugin.dll
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -1788,7 +1788,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcDllDaAeServer.vs2019.sln
+            solution = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcDllDaAeServer.vs2019.sln
             solutionconfiguration = DAOnly|Win32
             structuredoutput = true
             targetframework = fx20
@@ -1840,7 +1840,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\Win32\\DAOnly
+            destination = %daaeserver_src_dir%\\Win32\\DAOnly
             enabletimeout = false
             expandimpersonationtoken = false
             id = {CDAE821B-CF74-4886-8BE1-5D3FCEC143F1}
@@ -1853,7 +1853,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\win32\\DLL\\DAOnly\\OpcDllDaServer.exe
+            source = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\win32\\DLL\\DAOnly\\OpcDllDaServer.exe
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -1922,7 +1922,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcDllDaAeServer.vs2019.sln
+            solution = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcDllDaAeServer.vs2019.sln
             solutionconfiguration = Release|Win32
             structuredoutput = true
             targetframework = fx20
@@ -1974,7 +1974,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\Win32
+            destination = %daaeserver_src_dir%\\Win32
             enabletimeout = false
             expandimpersonationtoken = false
             id = {8C70AC76-0C58-4FB5-BC47-2275D0205FE1}
@@ -1987,7 +1987,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\Win32\\DLL\\Release\\OpcDllDaAeServer.exe
+            source = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\Win32\\DLL\\Release\\OpcDllDaAeServer.exe
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -2070,7 +2070,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\dll\\DaAeSampleServer\\ServerPlugin.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\dll\\DaAeSampleServer\\ServerPlugin.vs2019.sln
             solutionconfiguration = Release|x64
             structuredoutput = true
             targetframework = fx20
@@ -2122,7 +2122,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\x64
+            destination = %daaeserver_src_dir%\\x64
             enabletimeout = false
             expandimpersonationtoken = false
             id = {E9CEA8F2-6E09-412F-8EFF-680E54139A4F}
@@ -2135,7 +2135,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\examples\\dll\\DaAeSampleServer\\x64\\Release\\ServerPlugin.dll
+            source = %daaeserver_src_dir%\\examples\\dll\\DaAeSampleServer\\x64\\Release\\ServerPlugin.dll
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -2204,7 +2204,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\dll\\DaSampleServer\\ServerPlugin.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\dll\\DaSampleServer\\ServerPlugin.vs2019.sln
             solutionconfiguration = Release|x64
             structuredoutput = true
             targetframework = fx20
@@ -2256,7 +2256,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\x64\\DAOnly
+            destination = %daaeserver_src_dir%\\x64\\DAOnly
             enabletimeout = false
             expandimpersonationtoken = false
             id = {B0A3D26C-023E-47AD-897D-B3BE44146931}
@@ -2269,7 +2269,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\examples\\dll\\DaSampleServer\\x64\\Release\\ServerPlugin.dll
+            source = %daaeserver_src_dir%\\examples\\dll\\DaSampleServer\\x64\\Release\\ServerPlugin.dll
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -2338,7 +2338,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcDllDaAeServer.vs2019.sln
+            solution = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcDllDaAeServer.vs2019.sln
             solutionconfiguration = DAOnly|x64
             structuredoutput = true
             targetframework = fx20
@@ -2390,7 +2390,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\x64\\DAOnly
+            destination = %daaeserver_src_dir%\\x64\\DAOnly
             enabletimeout = false
             expandimpersonationtoken = false
             id = {6BE5C4EF-E466-43BC-A71A-A0FCE8217E34}
@@ -2403,7 +2403,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\x64\\DLL\\DAOnly\\OpcDllDaServer.exe
+            source = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\x64\\DLL\\DAOnly\\OpcDllDaServer.exe
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -2472,7 +2472,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcDllDaAeServer.vs2019.sln
+            solution = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\OpcDllDaAeServer.vs2019.sln
             solutionconfiguration = Release|x64
             structuredoutput = true
             targetframework = fx20
@@ -2524,7 +2524,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\x64
+            destination = %daaeserver_src_dir%\\x64
             enabletimeout = false
             expandimpersonationtoken = false
             id = {500A2117-BFB4-4578-B786-8B97AA4043C4}
@@ -2537,7 +2537,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\src\\Technosoftware\\Server\\ClassicServer\\x64\\DLL\\Release\\OpcDllDaAeServer.exe
+            source = %daaeserver_src_dir%\\src\\Technosoftware\\Server\\ClassicServer\\x64\\DLL\\Release\\OpcDllDaAeServer.exe
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -2633,7 +2633,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\c\+\+\\DaAeSampleServer\\OpcDaAeServer.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\c\+\+\\DaAeSampleServer\\OpcDaAeServer.vs2019.sln
             solutionconfiguration = Release|Win32
             structuredoutput = true
             targetframework = fx20
@@ -2685,7 +2685,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\Win32
+            destination = %daaeserver_src_dir%\\Win32
             enabletimeout = false
             expandimpersonationtoken = false
             id = {209882C7-465D-4300-BC60-B025CF69E78F}
@@ -2698,7 +2698,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\examples\\c\+\+\\DaAeSampleServer\\Win32\\Release\\OpcDaAeServer.exe
+            source = %daaeserver_src_dir%\\examples\\c\+\+\\DaAeSampleServer\\Win32\\Release\\OpcDaAeServer.exe
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -2781,7 +2781,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\c\+\+\\DaAeSampleServer\\OpcDaAeServer.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\c\+\+\\DaAeSampleServer\\OpcDaAeServer.vs2019.sln
             solutionconfiguration = Release|x64
             structuredoutput = true
             targetframework = fx20
@@ -2833,7 +2833,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\x64
+            destination = %daaeserver_src_dir%\\x64
             enabletimeout = false
             expandimpersonationtoken = false
             id = {C8948485-A2C4-4D90-AE9C-9A6D470F33EF}
@@ -2846,7 +2846,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\examples\\c\+\+\\DaAeSampleServer\\x64\\Release\\OpcDaAeServer.exe
+            source = %daaeserver_src_dir%\\examples\\c\+\+\\DaAeSampleServer\\x64\\Release\\OpcDaAeServer.exe
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -2934,7 +2934,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\c\+\+\\DaSampleServer\\OpcDaServer.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\c\+\+\\DaSampleServer\\OpcDaServer.vs2019.sln
             solutionconfiguration = Release|Win32
             structuredoutput = true
             targetframework = fx20
@@ -2986,7 +2986,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\Win32
+            destination = %daaeserver_src_dir%\\Win32
             enabletimeout = false
             expandimpersonationtoken = false
             id = {FAE36D92-E39D-43B5-9358-3E03B472A7E3}
@@ -2999,7 +2999,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\examples\\c\+\+\\DaSampleServer\\Win32\\Release\\OpcDaServer.exe
+            source = %daaeserver_src_dir%\\examples\\c\+\+\\DaSampleServer\\Win32\\Release\\OpcDaServer.exe
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -3082,7 +3082,7 @@ begin
             safemode = false
             selectedwarningsaserrors = false
             sharepath = wwwroot$
-            solution = %daaeserver_sdk_dir%\\examples\\c\+\+\\DaSampleServer\\OpcDaServer.vs2019.sln
+            solution = %daaeserver_src_dir%\\examples\\c\+\+\\DaSampleServer\\OpcDaServer.vs2019.sln
             solutionconfiguration = Release|x64
             structuredoutput = true
             targetframework = fx20
@@ -3134,7 +3134,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%\\x64
+            destination = %daaeserver_src_dir%\\x64
             enabletimeout = false
             expandimpersonationtoken = false
             id = {C274F46F-A2B7-491E-A5F2-C42E5C174900}
@@ -3147,7 +3147,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = %daaeserver_sdk_dir%\\examples\\c\+\+\\DaSampleServer\\x64\\Release\\OpcDaServer.exe
+            source = %daaeserver_src_dir%\\examples\\c\+\+\\DaSampleServer\\x64\\Release\\OpcDaServer.exe
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -3198,14 +3198,14 @@ begin
             impersonateuser = false
             logoutput = true
             logprocessparameters = true
-            params = "\"%daaeserver_sdk_dir%\\doc\\OPC DAAE Server Base .NET\\OPC DAAE Server Base .NET.hsp\" /buildconfiguration\=\"Default\""
+            params = "\"%daaeserver_src_dir%\\doc\\OPC DAAE Server Base .NET\\OPC DAAE Server Base .NET.hsp\" /buildconfiguration\=\"Default\""
             processoraffinity = 0
             processpriority = tpNormal
             programname = "C:\\Program Files (x86)\\Innovasys\\DocumentX2019\\bin\\DocumentXCommandLine.exe"
             redirectstderr = true
             returncodecomparator = rcEqualTo
             returncodetocheck = 0
-            startindir = "%daaeserver_sdk_dir%\\doc\\OPC DAAE Server Base .NET"
+            startindir = "%daaeserver_src_dir%\\doc\\OPC DAAE Server Base .NET"
             terminateontimeout = false
             timeoutlength = 1
             useerrordialogmonitor = false
@@ -3224,8 +3224,8 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            description = "XCopy [ Copy %daaeserver_sdk_dir%\\doc\\OPC DAAE Server Base .NET Edition\\OPC DAAE Server Base .NET.chm to %daaeserver_sdk_dir% ]"
-            destination = %daaeserver_sdk_dir%
+            description = "XCopy [ Copy %daaeserver_src_dir%\\doc\\OPC DAAE Server Base .NET Edition\\OPC DAAE Server Base .NET.chm to %daaeserver_src_dir% ]"
+            destination = %daaeserver_src_dir%
             enabletimeout = false
             expandimpersonationtoken = false
             id = {0B3C4DCC-652D-4E60-A68B-15A05881D5CD}
@@ -3238,7 +3238,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = "%daaeserver_sdk_dir%\\doc\\OPC DAAE Server Base .NET\\OPC DAAE Server Base .NET.chm"
+            source = "%daaeserver_src_dir%\\doc\\OPC DAAE Server Base .NET\\OPC DAAE Server Base .NET.chm"
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -3278,7 +3278,7 @@ begin
           begin
             archive = asNone
             failiffilenotfound = true
-            filespec = "%daaeserver_sdk_dir%\\doc\\OPC DAAE Server Base DLL\\*.*"
+            filespec = "%daaeserver_src_dir%\\doc\\OPC DAAE Server Base DLL\\*.*"
             hidden = asNone
             id = {32330D3F-0ED9-4DA4-AA08-FF0406499159}
             logallfiles = false
@@ -3308,7 +3308,7 @@ begin
             redirectstderr = true
             returncodecomparator = rcEqualTo
             returncodetocheck = 0
-            startindir = "%daaeserver_sdk_dir%\\doc\\OPC DAAE Server Base DLL"
+            startindir = "%daaeserver_src_dir%\\doc\\OPC DAAE Server Base DLL"
             terminateontimeout = false
             timeoutlength = 1
             useerrordialogmonitor = false
@@ -3327,7 +3327,7 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            destination = %daaeserver_sdk_dir%
+            destination = %daaeserver_src_dir%
             enabletimeout = false
             expandimpersonationtoken = false
             id = {87459B53-D97B-4451-9BD2-A8D460DCE418}
@@ -3340,7 +3340,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = "%daaeserver_sdk_dir%\\doc\\OPC DAAE Server Base DLL\\OPC DAAE Server Base DLL.chm"
+            source = "%daaeserver_src_dir%\\doc\\OPC DAAE Server Base DLL\\OPC DAAE Server Base DLL.chm"
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -3380,7 +3380,7 @@ begin
           begin
             archive = asNone
             failiffilenotfound = true
-            filespec = "%daaeserver_sdk_dir%\\doc\\OPC DAAE Server Base C\+\+\\*.*"
+            filespec = "%daaeserver_src_dir%\\doc\\OPC DAAE Server Base C\+\+\\*.*"
             hidden = asNone
             id = {CAE912CA-9A27-48ED-BBDB-855CBD1BFC74}
             logallfiles = false
@@ -3410,7 +3410,7 @@ begin
             redirectstderr = true
             returncodecomparator = rcEqualTo
             returncodetocheck = 0
-            startindir = "%daaeserver_sdk_dir%\\doc\\OPC DAAE Server Base C\+\+"
+            startindir = "%daaeserver_src_dir%\\doc\\OPC DAAE Server Base C\+\+"
             terminateontimeout = false
             timeoutlength = 1
             useerrordialogmonitor = false
@@ -3429,8 +3429,8 @@ begin
             copynewerfiles = false
             copyownershipandacl = false
             copyusingshortnames = false
-            description = "XCopy [ Copy %daaeserver_sdk_dir%\\doc\\OPC DAAE Server Base C\+\+\\output\\OPC Server DAAE Base C\+\+.chm to %daaeserver_sdk_dir% ]"
-            destination = %daaeserver_sdk_dir%
+            description = "XCopy [ Copy %daaeserver_src_dir%\\doc\\OPC DAAE Server Base C\+\+\\output\\OPC Server DAAE Base C\+\+.chm to %daaeserver_src_dir% ]"
+            destination = %daaeserver_src_dir%
             enabletimeout = false
             expandimpersonationtoken = false
             id = {083DAB3C-8D75-40AF-8799-176FC9E20127}
@@ -3443,7 +3443,7 @@ begin
             overwritereadonly = false
             processoraffinity = 0
             processpriority = tpNormal
-            source = "%daaeserver_sdk_dir%\\doc\\OPC DAAE Server Base C\+\+\\OPC DAAE Server Base C\+\+.chm"
+            source = "%daaeserver_src_dir%\\doc\\OPC DAAE Server Base C\+\+\\OPC DAAE Server Base C\+\+.chm"
             terminateontimeout = false
             timeoutlength = 2
             turnoffarchivebit = false
@@ -3458,7 +3458,7 @@ begin
   end
   variable
   begin
-    defaultvalue = c:\\opc-daae-server-build
+    defaultvalue = c:\\opc-daae-server
     groupname = paths
     name = building-ground-main-dir
     variablescope = vtProject
@@ -3467,7 +3467,7 @@ begin
   begin
     defaultvalue = %building-ground-main-dir%\\src
     groupname = paths
-    name = daaeserver_sdk_dir
+    name = daaeserver_src_dir
     variablescope = vtProject
   end
   variable
