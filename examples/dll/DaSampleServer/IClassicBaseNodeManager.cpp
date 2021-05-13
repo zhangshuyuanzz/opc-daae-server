@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
+ * Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
  * Web: https://technosoftware.com
  *
  * Purpose:

@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
- * Web: https://technosoftware.com
- *
- * Purpose:
+ * Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
+ * Web: http://www.technosoftware.com 
+ * 
+ * License:
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
