@@ -28,7 +28,6 @@
 // Application specific definitions
 #include "DaAddressSpace.h"
 
-
 //-------------------------------------------------------------------------
 // STATIC MEMBERS
 //-------------------------------------------------------------------------
@@ -74,9 +73,6 @@ HRESULT DaLeaf::Create( LPCWSTR szName, DaDeviceItem* pDItem )
 //=========================================================================
 DaLeaf::~DaLeaf()
 {
-	// USES_CONVERSION;
-	// TsOpcTrace( LOGLEVEL_DEBUG, "Leaf Destructor: %s", W2A( name_ ) );
-
 	if (m_pDItemRef && m_fKillDeviceItemOnDestroy) {
 		m_pDItemRef->Kill( TRUE );
 	}
@@ -186,14 +182,6 @@ HRESULT DaBranch::CreateAsRoot()
 //=========================================================================
 DaBranch::~DaBranch()
 {
-	// USES_CONVERSION;
-	// if (wcscmp( m_wsName, L"" ) == 0) {
-   //    OPCTRACE( "Branch Destructor: <Root>" );
-	// }
-	// else {
-   //    OPCTRACE1( "Branch Destructor: %s", W2A( m_wsName ) );
-	// }
-
 	// Remove all branches and leafs at this level
 	RemoveAll();
 }

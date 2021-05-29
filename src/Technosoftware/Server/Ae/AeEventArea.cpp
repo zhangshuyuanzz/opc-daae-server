@@ -30,10 +30,6 @@
 #include "AeEvent.h"
 #include "AeEventArea.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 //-------------------------------------------------------------------------
 // STATIC MEMBERS
 //-------------------------------------------------------------------------
@@ -160,31 +156,31 @@ HRESULT EventArea::PositionTo( LPCWSTR areaName, EventArea** area )
 {
    HRESULT		hres;
    LPCWSTR		name;
+   WideString	nameCopy;
    EventArea*	eventArea = root_;
    WCHAR*		ptr;
 
    *area = NULL;
 
-   LPWSTR dup = _wcsdup(areaName);
+   hres = nameCopy.SetString(areaName);			// make a copy because wcstok()
+   if (FAILED( hres ))                          // modifies the string
+      return hres;
 
                                                 // get top area name
-   name = wcstok_s(dup, delimiter_, &ptr);
+   name = wcstok_s( nameCopy, delimiter_, &ptr);
    if (!name) {									// move to the root if the string is empty
       *area = root_;
-	  free(dup);
       return S_OK;
    }
 
    while (name) {								// move to next sub-area
       hres = eventArea->PositionDown( name, &eventArea );
       if (FAILED( hres )) {                     // invalid area name
-		 free(dup);
          return OPC_E_INVALIDBRANCHNAME;
       }                                         // get next sub-area name
       name = wcstok_s(NULL, reinterpret_cast<LPCWSTR>(&delimiter_), &ptr);
    }
    *area = eventArea;
-   free(dup);
    return S_OK;
 }
 

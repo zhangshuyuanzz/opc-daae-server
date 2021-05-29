@@ -23,7 +23,6 @@
 #include "stdafx.h"
 #include "MatchPattern.h"
 
-
 inline int ConvertCase( int c, BOOL bCaseSensitive )
 {
 	return bCaseSensitive ? c : toupper(c);

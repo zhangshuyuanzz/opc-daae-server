@@ -2,11 +2,20 @@
  * Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
  * Web: https://technosoftware.com 
  * 
- * Purpose: 
+ * The source code in this file is covered under a dual-license scenario:
+ *   - Owner of a purchased license: SCLA 1.0
+ *   - GPL V3: everybody else
  *
- * The Software is subject to the Technosoftware GmbH Source Code License Agreement, 
- * which can be found here:
- * https://technosoftware.com/documents/Source_License_Agreement.pdf
+ * SCLA license terms accompanied with this source code.
+ * See https://technosoftware.com/license/Source_Code_License_Agreement.pdf
+ *
+ * GNU General Public License as published by the Free Software Foundation;
+ * version 3 of the License are accompanied with this source code.
+ * See https://technosoftware.com/license/GPLv3License.txt
+ *
+ * This source code is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
 //-----------------------------------------------------------------------------
@@ -286,8 +295,8 @@ ServerRegDefs1* DLLCALL OnGetAEServerRegistryDefinition( void )
 
 
 /// <summary>
-/// Custom mode browse handling. Provides a way to move ‘up’ or
-/// ‘down’ or 'to' in a hierarchical space.
+/// Custom mode browse handling. Provides a way to move ï¿½upï¿½ or
+/// ï¿½downï¿½ or 'to' in a hierarchical space.
 /// 
 /// Called only from the generic server when <see cref="TsDaBrowseMode::Custom" text="TsDaBrowseMode.Custom" />
 /// is configured.
@@ -305,9 +314,9 @@ ServerRegDefs1* DLLCALL OnGetAEServerRegistryDefinition( void )
 /// </returns>
 /// <remarks>
 /// An error is returned if the passed string does not represent
-/// a ‘branch’.
+/// a ï¿½branchï¿½.
 /// 
-/// Moving Up from the ‘root’ will return E_FAIL.
+/// Moving Up from the ï¿½rootï¿½ will return E_FAIL.
 /// 
 /// \Note TsDaBrowseDirection.To is new for DA version 2.0.
 /// Clients should be prepared to handle E_INVALIDARG if they
@@ -375,22 +384,22 @@ HRESULT DLLCALL OnBrowseChangePos(
 /// ItemIDs satisfied the filter constraints. The strings
 /// returned by the enumerator represent the BRANCHs and LEAFS
 /// contained in the current level. They do NOT include any
-/// delimiters or ‘parent’ names.
+/// delimiters or ï¿½parentï¿½ names.
 /// 
 /// Whenever possible the server should return strings which can
 /// be passed directly to AddItems. However, it is allowed for
-/// the Server to return a ‘hint’ string rather than an actual
+/// the Server to return a ï¿½hintï¿½ string rather than an actual
 /// legal Item ID. For example a PLC with 32000 registers could
-/// return a single string of “0 to 31999” rather than return
+/// return a single string of ï¿½0 to 31999ï¿½ rather than return
 /// 32,000 individual strings from the enumerator. For this
 /// reason (as well as the fact that browser support is optional)
 /// clients should always be prepared to allow manual entry of
-/// ITEM ID strings. In the case of ‘hint’ strings, there is no
+/// ITEM ID strings. In the case of ï¿½hintï¿½ strings, there is no
 /// indication given as to whether the returned string will be
 /// acceptable by AddItem or ValidateItem.
 /// 
 /// Clients are allowed to get and hold Enumerators for more than
-/// one ‘browse position’ at a time.
+/// one ï¿½browse positionï¿½ at a time.
 /// 
 /// Changing the browse position will not affect any String
 /// Enumerator the client already has.
@@ -467,13 +476,13 @@ HRESULT DLLCALL OnBrowseChangePos(
 /// A HRESULT code with the result of the operation.
 /// </returns>
 /// <remarks>
-/// Provides a way to assemble a ‘fully qualified’ ITEM ID in a
+/// Provides a way to assemble a ï¿½fully qualifiedï¿½ ITEM ID in a
 /// hierarchical space. This is required since the browsing
 /// functions return only the components or tokens which make up
 /// an ITEMID and do NOT return the delimiters used to separate
 /// those tokens. Also, at each point one is browsing just the
-/// names ‘below’ the current node (e.g. the ‘units’ in a
-/// ‘cell’).
+/// names ï¿½belowï¿½ the current node (e.g. the ï¿½unitsï¿½ in a
+/// ï¿½cellï¿½).
 /// 
 /// A client would browse down from AREA1 to REACTOR10 to TIC1001
 /// to CURRENT_VALUE. As noted earlier the client sees only the
@@ -502,8 +511,8 @@ HRESULT DLLCALL OnBrowseChangePos(
 /// 
 /// The client must free the returned string.
 /// 
-/// ItemID is the unique ‘key’ to the data, it is considered the
-/// ‘what’ or ‘where’ that allows the server to connect to the
+/// ItemID is the unique ï¿½keyï¿½ to the data, it is considered the
+/// ï¿½whatï¿½ or ï¿½whereï¿½ that allows the server to connect to the
 /// data source.
 /// 
 /// 

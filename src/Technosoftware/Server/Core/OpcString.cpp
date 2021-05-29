@@ -19,7 +19,6 @@
  */
 
 #include "StdAfx.h"
-#include "UtilityDefs.h"
 #include "OpcString.h"
 
 //==============================================================================
@@ -107,26 +106,6 @@ COpcString::operator LPCWSTR() const
     #endif
 
     return pBuf->wszStr;
-}
-
-// Cast
-COpcString::operator LPWSTR()
-{
-	TStrBuf* pBuf = (TStrBuf*)this->m_pBuf;
-
-	if (pBuf == NULL)
-	{
-		return NULL;
-	}
-
-#ifndef _UNICODE
-	if (pBuf->wszStr == NULL)
-	{
-		((LPWSTR)pBuf->wszStr) = ToUnicode(pBuf->szStr);
-	}
-#endif
-
-	return pBuf->wszStr;
 }
 
 // Assignment
@@ -905,52 +884,3 @@ bool OpcMatch(const COpcString& cString, const COpcString& cPattern)
     return true;
 }
 */
-
-LPWSTR COpcString::Copy()
-{
-	LPWSTR copy = NULL;
-
-	if (m_pBuf == NULL) {
-		copy = new WCHAR[wcslen(OPC_EMPTY_STRING) + 1];
-		if (copy) {
-			wcscpy(copy, OPC_EMPTY_STRING);
-		}
-	}
-	else {
-		copy = new WCHAR[wcslen(m_pBuf->wszStr) + 1];
-
-		if (copy) {
-			wcscpy(copy, m_pBuf->wszStr);
-		}
-	}
-	return copy;
-}
-
-LPWSTR COpcString::CopyCOM()
-{
-	LPWSTR copy = NULL;
-
-	if (m_pBuf == NULL) {
-		copy = ComAlloc<WCHAR>((DWORD)wcslen(OPC_EMPTY_STRING) + 1);
-		if (copy) {
-			wcscpy(copy, OPC_EMPTY_STRING);
-		}
-	}
-	else {
-		copy = ComAlloc<WCHAR>((DWORD)wcslen(m_pBuf->wszStr) + 1);
-		if (copy) {
-			wcscpy(copy, m_pBuf->wszStr);
-		}
-	}
-	return copy;
-}
-
-
-BSTR COpcString::CopyBSTR()
-{
-	if (m_pBuf == NULL) {
-		return ::SysAllocString(OPC_EMPTY_STRING);
-	}
-
-	return ::SysAllocString(m_pBuf->wszStr);
-}

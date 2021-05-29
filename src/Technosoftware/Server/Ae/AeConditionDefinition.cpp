@@ -59,11 +59,14 @@ HRESULT AeSubConditionDefiniton::Create( LPCWSTR szName, LPCWSTR szDef,
       m_dwSeverity = dwSeverity;
       m_fAckRequired = fAckRequired;
 
-      m_wsName = COpcString( szName );
+      hres = m_wsName.SetString( szName );
+      if (FAILED( hres ))  throw hres;
 
-      m_wsDescr = COpcString( szDescr );
+      hres = m_wsDescr.SetString( szDescr );
+      if (FAILED( hres ))  throw hres;
 
-      m_wsDef = COpcString( szDef );
+      hres = m_wsDef.SetString( szDef );
+      if (FAILED( hres ))  throw hres;
    }
    catch(HRESULT hresEx) {
       hres = hresEx;
@@ -127,14 +130,16 @@ HRESULT AeConditionDefiniton::Create( AeCategory* pCategory, DWORD dwCondDefID,
 //=========================================================================
 HRESULT AeConditionDefiniton::Create( AeCategory* pCategory, DWORD dwCondDefID, LPCWSTR szName )
 {
-   HRESULT hres = S_OK;
+   HRESULT hres;
 
    m_csMem.Lock();
 
    m_pCategory = pCategory;
    m_dwCondDefID = dwCondDefID;
 
-   m_wsName = COpcString( szName );
+   hres = m_wsName.SetString( szName );
+   if (FAILED( hres ))
+      return hres;
 
    m_csMem.Unlock();
    return hres;

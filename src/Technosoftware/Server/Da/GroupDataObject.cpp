@@ -172,7 +172,7 @@ HRESULT  DaGenericGroup::SendDataStream(
 
             IAdviseSink* pSink;
 
-            res = _Module.m_pGIT->GetInterfaceFromGlobal((DWORD)m_DataTimeCallback, IID_IAdviseSink, (LPVOID*)&pSink);
+            res = core_generic_main.m_pGIT->GetInterfaceFromGlobal((DWORD)m_DataTimeCallback, IID_IAdviseSink, (LPVOID*)&pSink);
             if (SUCCEEDED(res)) {
                 pSink->OnDataChange(&fmt, &stm);
                 pSink->Release();
@@ -191,7 +191,7 @@ HRESULT  DaGenericGroup::SendDataStream(
 
             IAdviseSink* pSink;
 
-            res = _Module.m_pGIT->GetInterfaceFromGlobal(m_DataCallback, IID_IAdviseSink, (LPVOID*)&pSink);
+            res = core_generic_main.m_pGIT->GetInterfaceFromGlobal(m_DataCallback, IID_IAdviseSink, (LPVOID*)&pSink);
             if (SUCCEEDED(res)) {
                 pSink->OnDataChange(&fmt, &stm);
                 pSink->Release();
@@ -281,7 +281,7 @@ HRESULT   DaGenericGroup::SendWriteStream(
 
         IAdviseSink* pSink;
 
-        res = _Module.m_pGIT->GetInterfaceFromGlobal(m_WriteCallback, IID_IAdviseSink, (LPVOID*)&pSink);
+        res = core_generic_main.m_pGIT->GetInterfaceFromGlobal(m_WriteCallback, IID_IAdviseSink, (LPVOID*)&pSink);
         if (SUCCEEDED(res)) {
             pSink->OnDataChange(&fe, &stm);
             pSink->Release();
@@ -452,7 +452,7 @@ HRESULT DaGenericGroup::SendDataStreamDisp(
 
         IDispatch* pDisp;
 
-        res = _Module.m_pGIT->GetInterfaceFromGlobal(m_DataTimeCallbackDisp, IID_IDispatch, (LPVOID*)&pDisp);
+        res = core_generic_main.m_pGIT->GetInterfaceFromGlobal(m_DataTimeCallbackDisp, IID_IDispatch, (LPVOID*)&pDisp);
         if (SUCCEEDED(res)) {
             res = pDisp->Invoke(m_DataTimeCallbackMethodID,
                 IID_NULL,
@@ -621,7 +621,7 @@ HRESULT   DaGenericGroup::SendWriteStreamDisp(
 
         IDispatch* pDisp;
 
-        res = _Module.m_pGIT->GetInterfaceFromGlobal((DWORD)m_WriteCallbackDisp, IID_IDispatch, (LPVOID*)&pDisp);
+        res = core_generic_main.m_pGIT->GetInterfaceFromGlobal((DWORD)m_WriteCallbackDisp, IID_IDispatch, (LPVOID*)&pDisp);
         if (SUCCEEDED(res)) {
             res = pDisp->Invoke(m_WriteCallbackMethodID,
                 IID_NULL,

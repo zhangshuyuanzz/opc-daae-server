@@ -21,20 +21,19 @@
 #ifndef __EVENTSUBSCRIPTIONMGT_H
 #define __EVENTSUBSCRIPTIONMGT_H
 
- //DOM-IGNORE-BEGIN
+//DOM-IGNORE-BEGIN
 
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000
 
-#include "UtilityDefs.h"
-#include "OpcString.h"
+#include "UtilityDefs.h"                        // for CSimplePtrArray<>
 
 class AeBaseServer;
 class AeComBaseServer;
 class AeSource;
 class AeEvent;
-//class COpcString;
+class WideString;
 
 
 //-----------------------------------------------------------------------
@@ -51,148 +50,148 @@ class AeEvent;
 //-----------------------------------------------------------------------
 class AeComSubscriptionManager : public IOPCEventSubscriptionMgt
 {
-	// Construction
+// Construction
 public:
-	AeComSubscriptionManager();
-	HRESULT  Create(
-		/* [in] */                    AeComBaseServer*  pServer,
-		/* [in] */                    BOOL           bActive,
-		/* [in] */                    DWORD          dwBufferTime,
-		/* [in] */                    DWORD          dwMaxSize,
-		/* [in] */                    OPCHANDLE      hClientSubscription,
-		/* [out] */                   DWORD       *  pdwRevisedBufferTime,
-		/* [out] */                   DWORD       *  pdwRevisedMaxSize);
+   AeComSubscriptionManager();
+   HRESULT  Create(
+                  /* [in] */                    AeComBaseServer*  pServer,
+                  /* [in] */                    BOOL           bActive,
+                  /* [in] */                    DWORD          dwBufferTime,
+                  /* [in] */                    DWORD          dwMaxSize,
+                  /* [in] */                    OPCHANDLE      hClientSubscription,
+                  /* [out] */                   DWORD       *  pdwRevisedBufferTime,
+                  /* [out] */                   DWORD       *  pdwRevisedMaxSize );
 
-	// Destruction
+// Destruction
 public:
-	~AeComSubscriptionManager();
-	void CleanupSubscription();
+   ~AeComSubscriptionManager();
+   void CleanupSubscription();
 
-	// Attributes
+// Attributes
 public:
-	inline BOOL IsCancelRefreshActive() { return m_fCancelRefresh; }
-	static DWORD DEFAULT_SIZE_EVENT_BUFFER;
+   inline BOOL IsCancelRefreshActive() { return m_fCancelRefresh; }
+   static DWORD DEFAULT_SIZE_EVENT_BUFFER;
 
-	// Operations
+// Operations
 public:
-	///////////////////////////////////////////////////////////////////////////
-	////////////////////////// IOPCEventSubscriptionMgt ///////////////////////
-	///////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////////
+   ////////////////////////// IOPCEventSubscriptionMgt ///////////////////////
+   ///////////////////////////////////////////////////////////////////////////
 
-	STDMETHODIMP SetFilter(
-		/* [in] */                    DWORD          dwEventType,
-		/* [in] */                    DWORD          dwNumCategories,
-		/* [size_is][in] */           DWORD       *  pdwEventCategories,
-		/* [in] */                    DWORD          dwLowSeverity,
-		/* [in] */                    DWORD          dwHighSeverity,
-		/* [in] */                    DWORD          dwNumAreas,
-		/* [size_is][in] */           LPWSTR      *  pszAreaList,
-		/* [in] */                    DWORD          dwNumSources,
-		/* [size_is][in] */           LPWSTR      *  pszSourceList
-	);
+   STDMETHODIMP SetFilter(
+                  /* [in] */                    DWORD          dwEventType,
+                  /* [in] */                    DWORD          dwNumCategories,
+                  /* [size_is][in] */           DWORD       *  pdwEventCategories,
+                  /* [in] */                    DWORD          dwLowSeverity,
+                  /* [in] */                    DWORD          dwHighSeverity,
+                  /* [in] */                    DWORD          dwNumAreas,
+                  /* [size_is][in] */           LPWSTR      *  pszAreaList,
+                  /* [in] */                    DWORD          dwNumSources,
+                  /* [size_is][in] */           LPWSTR      *  pszSourceList
+                  );
+        
+   STDMETHODIMP GetFilter(
+                  /* [out] */                   DWORD       *  pdwEventType,
+                  /* [out] */                   DWORD       *  pdwNumCategories,
+                  /* [size_is][size_is][out] */ DWORD       ** ppdwEventCategories,
+                  /* [out] */                   DWORD       *  pdwLowSeverity,
+                  /* [out] */                   DWORD       *  pdwHighSeverity,
+                  /* [out] */                   DWORD       *  pdwNumAreas,
+                  /* [size_is][size_is][out] */ LPWSTR      ** ppszAreaList,
+                  /* [out] */                   DWORD       *  pdwNumSources,
+                  /* [size_is][size_is][out] */ LPWSTR      ** ppszSourceList
+                  );
+        
+   STDMETHODIMP SelectReturnedAttributes(
+                  /* [in] */                    DWORD          dwEventCategory,
+                  /* [in] */                    DWORD          dwCount,
+                  /* [size_is][in] */           DWORD       *  dwAttributeIDs
+                  );
+        
+   STDMETHODIMP GetReturnedAttributes(
+                  /* [in] */                    DWORD          dwEventCategory,
+                  /* [out] */                   DWORD       *  pdwCount,
+                  /* [size_is][size_is][out] */ DWORD       ** ppdwAttributeIDs
+                  );
+        
+   STDMETHODIMP Refresh(
+                  /* [in] */                    DWORD          dwConnection
+                  );
+        
+   STDMETHODIMP CancelRefresh(
+                  /* [in] */                    DWORD          dwConnection
+                  );
+        
+   STDMETHODIMP GetState(
+                  /* [out] */                   BOOL        *  pbActive,
+                  /* [out] */                   DWORD       *  pdwBufferTime,
+                  /* [out] */                   DWORD       *  pdwMaxSize,
+                  /* [out] */                   OPCHANDLE   *  phClientSubscription
+                  );
+        
+   STDMETHODIMP SetState(
+                  /* [in][unique] */            BOOL        *  pbActive,
+                  /* [in][unique] */            DWORD       *  pdwBufferTime,
+                  /* [in][unique] */            DWORD       *  pdwMaxSize,
+                  /* [in] */                    OPCHANDLE      hClientSubscription,
+                  /* [out] */                   DWORD       *  pdwRevisedBufferTime,
+                  /* [out] */                   DWORD       *  pdwRevisedMaxSize
+                  );
 
-	STDMETHODIMP GetFilter(
-		/* [out] */                   DWORD       *  pdwEventType,
-		/* [out] */                   DWORD       *  pdwNumCategories,
-		/* [size_is][size_is][out] */ DWORD       ** ppdwEventCategories,
-		/* [out] */                   DWORD       *  pdwLowSeverity,
-		/* [out] */                   DWORD       *  pdwHighSeverity,
-		/* [out] */                   DWORD       *  pdwNumAreas,
-		/* [size_is][size_is][out] */ LPWSTR      ** ppszAreaList,
-		/* [out] */                   DWORD       *  pdwNumSources,
-		/* [size_is][size_is][out] */ LPWSTR      ** ppszSourceList
-	);
+   ///////////////////////////////////////////////////////////////////////////
 
-	STDMETHODIMP SelectReturnedAttributes(
-		/* [in] */                    DWORD          dwEventCategory,
-		/* [in] */                    DWORD          dwCount,
-		/* [size_is][in] */           DWORD       *  dwAttributeIDs
-	);
+      // Handles new events for this subscription
+   HRESULT ProcessEvents( DWORD dwNumOfEvents, AeEvent** ppEvents );
 
-	STDMETHODIMP GetReturnedAttributes(
-		/* [in] */                    DWORD          dwEventCategory,
-		/* [out] */                   DWORD       *  pdwCount,
-		/* [size_is][size_is][out] */ DWORD       ** ppdwAttributeIDs
-	);
-
-	STDMETHODIMP Refresh(
-		/* [in] */                    DWORD          dwConnection
-	);
-
-	STDMETHODIMP CancelRefresh(
-		/* [in] */                    DWORD          dwConnection
-	);
-
-	STDMETHODIMP GetState(
-		/* [out] */                   BOOL        *  pbActive,
-		/* [out] */                   DWORD       *  pdwBufferTime,
-		/* [out] */                   DWORD       *  pdwMaxSize,
-		/* [out] */                   OPCHANDLE   *  phClientSubscription
-	);
-
-	STDMETHODIMP SetState(
-		/* [in][unique] */            BOOL        *  pbActive,
-		/* [in][unique] */            DWORD       *  pdwBufferTime,
-		/* [in][unique] */            DWORD       *  pdwMaxSize,
-		/* [in] */                    OPCHANDLE      hClientSubscription,
-		/* [out] */                   DWORD       *  pdwRevisedBufferTime,
-		/* [out] */                   DWORD       *  pdwRevisedMaxSize
-	);
-
-	///////////////////////////////////////////////////////////////////////////
-
-	   // Handles new events for this subscription
-	HRESULT ProcessEvents(DWORD dwNumOfEvents, AeEvent** ppEvents);
-
-	// Impmementation
+// Impmementation
 protected:
-	// States
-	BOOL							m_fActive;
-	DWORD							m_dwBufferTime;
-	DWORD							m_dwMaxSize;
-	OPCHANDLE						m_hClientSubscription;
-	// Use the critical section m_csStatesAndEventBuffer
-	// to lock/unlock access to the 'States' data members.
-// Filters
-	DWORD							m_dwEventType;
-	DWORD							m_dwLowSeverity;
-	DWORD							m_dwHighSeverity;
-	CSimpleArray<DWORD>				m_arCatIDs;
-	CSimplePtrArray<COpcString*>	m_arAreas;
-	CSimplePtrArray<COpcString*>	m_arSources;
-	CComAutoCriticalSection			m_csFilters;   // lock/unlock all filters
+   // States
+   BOOL                          m_fActive;
+   DWORD                         m_dwBufferTime;
+   DWORD                         m_dwMaxSize;
+   OPCHANDLE                     m_hClientSubscription;
+                                                // Use the critical section m_csStatesAndEventBuffer
+                                                // to lock/unlock access to the 'States' data members.
+   // Filters
+   DWORD                         m_dwEventType;
+   DWORD                         m_dwLowSeverity;
+   DWORD                         m_dwHighSeverity;
+   CSimpleArray<DWORD>           m_arCatIDs;
+   CSimplePtrArray<WideString*> m_arAreas;
+   CSimplePtrArray<WideString*> m_arSources;
+   CComAutoCriticalSection       m_csFilters;   // lock/unlock all filters
 
-	// Event Bufer
-	CSimpleValQueue<AeEvent*>		m_EventBuffer;
-	CComAutoCriticalSection			m_csStatesAndEventBuffer;
-	// lock/unlock the event buffer
-	// and all states
-// Selected Attributes
-	typedef CSimpleArray<DWORD> AttrIDArray, *LPATTRIDARRAY;
-	CSimpleMap<DWORD, LPATTRIDARRAY> m_mapSelectedAttrIDs;
+   // Event Bufer
+   CSimpleValQueue<AeEvent*>    m_EventBuffer;
+   CComAutoCriticalSection       m_csStatesAndEventBuffer;
+                                                // lock/unlock the event buffer
+                                                // and all states
+   // Selected Attributes
+   typedef CSimpleArray<DWORD> AttrIDArray, *LPATTRIDARRAY;
+   CSimpleMap<DWORD, LPATTRIDARRAY> m_mapSelectedAttrIDs;
 
-	// Threads
-	friend unsigned __stdcall EventRefreshThreadHandler(void* pCreator);
-	HANDLE      m_hRefreshThread;                // Refresh Thread handle
-	BOOL        m_fCancelRefresh;
+   // Threads
+   friend unsigned __stdcall EventRefreshThreadHandler( void* pCreator );
+   HANDLE      m_hRefreshThread;                // Refresh Thread handle
+   BOOL        m_fCancelRefresh;
 
-	friend unsigned __stdcall EventNotificationThreadHandler(void* pCreator);
-	HANDLE      m_hNotificationThread;           // Event Notification Thread
-	HANDLE      m_hTerminateNotificationThread;
-	HANDLE      m_hSendBufferedEvents;
-	HRESULT     SendBufferedEvents();
+   friend unsigned __stdcall EventNotificationThreadHandler( void* pCreator );
+   HANDLE      m_hNotificationThread;           // Event Notification Thread
+   HANDLE      m_hTerminateNotificationThread;
+   HANDLE      m_hSendBufferedEvents;
+   HRESULT     SendBufferedEvents();
 
 
-	// Pure virtual function, must be implemented by derived classes
-	virtual  HRESULT FireOnEvent(DWORD dwNumOfEvents, ONEVENTSTRUCT* pEvent,
-		BOOL fRefresh = FALSE, BOOL fLastRefresh = FALSE) = 0;
+   // Pure virtual function, must be implemented by derived classes
+   virtual  HRESULT FireOnEvent( DWORD dwNumOfEvents, ONEVENTSTRUCT* pEvent,
+                                 BOOL fRefresh = FALSE, BOOL fLastRefresh = FALSE ) = 0;
 
-	BOOL     IsEventPassingFilters(AeEvent* pOnEvent);
-	inline   HRESULT RefreshLastUpdateTime();
+   BOOL     IsEventPassingFilters( AeEvent* pOnEvent );
+   inline   HRESULT RefreshLastUpdateTime();
 
 private:
-	AeComBaseServer*              m_pServer;
-	AeBaseServer*  m_pServerHandler;
+   AeComBaseServer*              m_pServer;
+   AeBaseServer*  m_pServerHandler;
 };
 //DOM-IGNORE-END
 

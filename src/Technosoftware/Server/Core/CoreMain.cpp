@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
- * Web: https://technosoftware.com 
- * 
+ * Web: https://technosoftware.com
+ *
  * The source code in this file is covered under a dual-license scenario:
  *   - Owner of a purchased license: SCLA 1.0
  *   - GPL V3: everybody else
@@ -21,10 +21,10 @@
  //DOM-IGNORE-BEGIN
 
  //-----------------------------------------------------------------------
- // INCLUDEs
+ // INCLUDE
  //-----------------------------------------------------------------------
 #include "stdafx.h"
-#include <stdio.h>
+#include <cstdio>
 #include <comcat.h>
 
 #include "resource.h"
@@ -40,29 +40,23 @@
 #include <iostream>
 #include <string>
 
-//#ifdef _DEBUG
-//#define _CTRDBG_MAP_ALLOC
-//#include <stdlib.h>
-//#include <crtdbg.h>
-//#endif
-
 using std::string;
 
 //-----------------------------------------------------------------------
-// GLOBALs
+// GLOBAL
 //-----------------------------------------------------------------------
 // Global memory management object pointer must be created and
 // must be released. Defined in CoreGenericMain.h.
-IMalloc*    pIMalloc = NULL;
-BOOL        fCOMInitialized = FALSE;
-CoreGenericMain  _Module;
-BOOL		fUseAEServer = FALSE;
+IMalloc*            pIMalloc = nullptr;
+BOOL                is_com_initialized = FALSE;
+CoreGenericMain     core_generic_main;
+BOOL		        use_ae_server = FALSE;
 
 // Placeholder for the Server CLSIDs.
 CLSID CLSID_OPCServer = { 0x0, 0x0, 0x0, { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 } };
 CLSID CLSID_OPCEventServer = { 0x0, 0x0, 0x0, { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 } };
 
-extern LPWSTR    gVendorName;
+extern LPWSTR       vendor_name;
 
 #ifdef _NT_SERVICE
 #if (_ATL_VER < 0x0700)                         // SetStringValue/QueryStringValue exists since ATL version 7.0
@@ -76,29 +70,29 @@ extern LPWSTR    gVendorName;
 
 
 //-----------------------------------------------------------------------
-// INTERNALs
+// INTERNAL
 //-----------------------------------------------------------------------
 // Define substitution string replacement for
 // the Server Registry definitions.
 
 static struct _ATL_REGMAP_ENTRY  pCustSubstDef[] = {
-    { L"EXENAME",           NULL },     // Module name without path
-    { L"APPID",             NULL },     // Application ID
-    { L"APPDESCR",          NULL },     // Application description 
+    { L"EXENAME", nullptr },     // Module name without path
+    { L"APPID", nullptr },     // Application ID
+    { L"APPDESCR", nullptr },     // Application description 
 
-    { L"DA_SERVER_CLSID",   NULL },     // Class ID of Data Access server
-    { L"DA_SERVER_ID",      NULL },     // Version independent ProgID
-    { L"DA_SERVER_ID_V",    NULL },     // ProgID of current server
-    { L"DA_SERVER_NAME",    NULL },     // Friendly name of version independent server
-    { L"DA_SERVER_NAME_V",  NULL },     // Friendly name of current server version
+    { L"DA_SERVER_CLSID", nullptr },     // Class ID of Data Access server
+    { L"DA_SERVER_ID", nullptr },     // Version independent ProgID
+    { L"DA_SERVER_ID_V", nullptr },     // ProgID of current server
+    { L"DA_SERVER_NAME", nullptr },     // Friendly name of version independent server
+    { L"DA_SERVER_NAME_V", nullptr },     // Friendly name of current server version
 
-    { L"AE_SERVER_CLSID",   NULL },     // Class ID of Alarms & Events server
-    { L"AE_SERVER_ID",      NULL },     // Version independent ProgID
-    { L"AE_SERVER_ID_V",    NULL },     // ProgID of current server
-    { L"AE_SERVER_NAME",    NULL },     // Friendly name of version independent server
-    { L"AE_SERVER_NAME_V",  NULL },     // Friendly name of current server version
-    { L"VENDOR",            NULL },     // Vendor name
-    { NULL,						NULL }
+    { L"AE_SERVER_CLSID", nullptr },     // Class ID of Alarms & Events server
+    { L"AE_SERVER_ID", nullptr },     // Version independent ProgID
+    { L"AE_SERVER_ID_V", nullptr },     // ProgID of current server
+    { L"AE_SERVER_NAME", nullptr },     // Friendly name of version independent server
+    { L"AE_SERVER_NAME_V", nullptr },     // Friendly name of current server version
+    { L"VENDOR", nullptr },     // Vendor name
+    {nullptr, nullptr }
 };  // End of table
 
 
@@ -130,7 +124,7 @@ static void SetupReplacementMapForRegistryUpdate(_ATL_REGMAP_ENTRY aMapEntries[]
 static BOOL IsInstalledAsService(LPCTSTR lpszServiceName);
 static HRESULT UninstallService(LPCTSTR lpszServiceName);
 static HRESULT InstallAsService(LPCTSTR lpszServiceName, LPCTSTR lpszServiceDescription);
-static HRESULT IsRegisteredAsService(LPCTSTR lpszAppID, BOOL & fAsService);
+static HRESULT IsRegisteredAsService(LPCTSTR lpszAppID, BOOL& fAsService);
 static HRESULT AdjustRegistryForServerType(BOOL fRegisterAsService,
     LPCTSTR lpszAppID, LPCTSTR lpszServiceName);
 static LPTSTR CreateSafeServiceName(LPCTSTR szNameBase);
@@ -186,12 +180,6 @@ extern "C" int WINAPI _tWinMain(HINSTANCE hInstance,
     LPTSTR lpCmdLine,
     int /*nShowCmd*/)
 {
-//#ifdef _DEBUG
-//	int flag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
-//	flag |= _CRTDBG_LEAK_CHECK_DF;
-//	_CrtSetDbgFlag(flag);
-//#endif
-
     HRESULT hres = S_OK;
     LPCTSTR szSrvName = _T("OPC DA/AE Server");
 
@@ -200,7 +188,7 @@ extern "C" int WINAPI _tWinMain(HINSTANCE hInstance,
 #endif
 
     TCHAR szPath[_MAX_PATH];                 // Get the executable file path
-    if (!::GetModuleFileName(NULL, szPath, _MAX_PATH))
+    if (!::GetModuleFileName(nullptr, szPath, _MAX_PATH))
         return HRESULT_FROM_WIN32(GetLastError());
 
 #ifdef _OPC_NET
@@ -208,7 +196,7 @@ extern "C" int WINAPI _tWinMain(HINSTANCE hInstance,
     string pathandfile = W2A(szPath);
 #else
     // Retrieve the full path for the current module.
-    if (GetModuleFileName(NULL, szPath, sizeof szPath) == 0)
+    if (GetModuleFileName(nullptr, szPath, sizeof szPath) == 0)
         return -1;
     string pathandfile = szPath;
 #endif
@@ -220,23 +208,23 @@ extern "C" int WINAPI _tWinMain(HINSTANCE hInstance,
 
 #if _OPC_NET
     const LPWSTR command = GetCommandLine();
-    const string commandLine = CW2A(command);
+    const string command_line = CW2A(command);
 #else
-    const string commandLine = GetCommandLine();
+    const string command_line = GetCommandLine();
 #endif
 
-    int position = commandLine.find(file);
+    size_t position = command_line.find(file);
     position += file.length();
-    string arguments = commandLine.substr(position);
+    string arguments = command_line.substr(position);
 
     LogEnable(path, arguments);
 
     // Get server name from resource
-    szSrvName = _Module.m_VersionInfo.GetValue(_T("FileDescription"));
+    szSrvName = core_generic_main.m_VersionInfo.GetValue(_T("FileDescription"));
     _ASSERTE(szSrvName);
 
     // Display a start message
-    LOGFMTI("Starting '%s'", T2CA(szSrvName));
+    LOGFMT_INFO(LOGGER_MAIN_LOGGER_ID, "Starting '%s'",T2CA(szSrvName));
 
     // Get the Server specific Registry Definitions from the generic part.
     LPSERVERREGDEFS pRegDefs;
@@ -265,26 +253,26 @@ extern "C" int WINAPI _tWinMain(HINSTANCE hInstance,
     hres = CLSIDFromString(pRegDefs->m_szAE_CLSID, &CLSID_OPCEventServer);
     if (SUCCEEDED(hres))
     {
-        fUseAEServer = true;
+        use_ae_server = true;
     }
     else
     {
-        fUseAEServer = false;
+        use_ae_server = false;
         hres = S_OK;
     }
 #endif
 
     // Initialize Global Members
-    hres = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+    hres = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
     _ASSERTE(SUCCEEDED(hres));
     if (SUCCEEDED(hres)) {
-        fCOMInitialized = TRUE;
+        is_com_initialized = TRUE;
     }
 
     hres = CoGetMalloc(MEMCTX_TASK, &pIMalloc);// COM Memory Manager
     _ASSERTE(SUCCEEDED(hres));
 
-    _Module.Init(ObjectMap, hInstance);
+    core_generic_main.Init(ObjectMap, hInstance);
 
     // Create the Component Categories
     hres = CreateComCatOPC();
@@ -338,13 +326,6 @@ extern "C" int WINAPI _tWinMain(HINSTANCE hInstance,
             }
         }
     }
-
-//#ifdef DEBUG
-//	if (_CrtDumpMemoryLeaks()) {
-//		int breaks = 1;
-//	}
-//#endif
-
     // Start the Server
     if (fRun) {
 #ifdef _NT_SERVICE
@@ -355,12 +336,12 @@ extern "C" int WINAPI _tWinMain(HINSTANCE hInstance,
 #endif
 
         if (SUCCEEDED(hres)) {
-            hres = _Module.InitializeServer();
+            hres = core_generic_main.InitializeServer();
         }
         if (SUCCEEDED(hres)) {
             LOGFMTI("Start the server.");
 #ifdef _NT_SERVICE
-            _Module.Start(fRegisteredAsService, szSafeServiceName);
+            core_generic_main.Start(fRegisteredAsService, szSafeServiceName);
 #else
             _Module.Start(FALSE, NULL);
 #endif
@@ -383,8 +364,8 @@ extern "C" int WINAPI _tWinMain(HINSTANCE hInstance,
 
     //stop logger
     LogManager::getRef().stop();
-	
-	_Module.m_VersionInfo.Clear();
+
+    core_generic_main.m_VersionInfo.Clear();
 
 #ifdef DEBUG
 	if (_CrtDumpMemoryLeaks()) {
@@ -407,14 +388,14 @@ extern "C" int WINAPI _tWinMain(HINSTANCE hInstance,
 //=======================================================================
 CoreGenericMain::CoreGenericMain(void)
 {
-    m_pGIT = NULL;
+    m_pGIT = nullptr;
 
     m_fInitialized = FALSE;                // Set server EXE as not initialized
     m_dwThreadID = NULL;
-    m_lpszServiceName = NULL;
+    m_lpszServiceName = nullptr;
     m_fStartedAsService = FALSE;
     // Set up the initial service status
-    m_hServiceStatus = NULL;
+    m_hServiceStatus = nullptr;
     m_ServiceStatus.dwServiceType = SERVICE_WIN32_OWN_PROCESS | SERVICE_INTERACTIVE_PROCESS;
     m_ServiceStatus.dwCurrentState = SERVICE_STOPPED;
     m_ServiceStatus.dwControlsAccepted = SERVICE_ACCEPT_STOP;
@@ -446,7 +427,7 @@ CoreGenericMain::~CoreGenericMain(void)
     if (pIMalloc) {
         pIMalloc->Release();                      // Release the COM Memory Manager
     }
-    if (fCOMInitialized) {
+    if (is_com_initialized) {
         CoUninitialize();                         // Close the COM library
     }
 }
@@ -480,8 +461,8 @@ HRESULT CoreGenericMain::InitializeServer(void)
         if (IsWindowsXpOrGreater())
         {
             // Create Global Interface Table (GIT) for marshaling
-            hres = CoCreateInstance(CLSID_StdGlobalInterfaceTable, NULL, CLSCTX_INPROC_SERVER,
-                IID_IGlobalInterfaceTable, (LPVOID *)&m_pGIT);
+            hres = CoCreateInstance(CLSID_StdGlobalInterfaceTable, nullptr, CLSCTX_INPROC_SERVER,
+                IID_IGlobalInterfaceTable, (LPVOID*)&m_pGIT);
         }
         else
         {
@@ -509,7 +490,7 @@ void CoreGenericMain::Start(BOOL fAsService, LPTSTR lpszServiceName)
     m_fStartedAsService = fAsService;
 
     SERVICE_TABLE_ENTRY st[] = { { lpszServiceName, _ServiceMain },
-    { NULL, NULL }
+    {nullptr, nullptr }
     };
 
     if (fAsService && !::StartServiceCtrlDispatcher(st)) {
@@ -527,7 +508,7 @@ void CoreGenericMain::Run(void)
 {
     m_dwThreadID = GetCurrentThreadId();
 
-    HRESULT hres = _Module.RegisterClassObjects(CLSCTX_LOCAL_SERVER, REGCLS_MULTIPLEUSE);
+    HRESULT hres = core_generic_main.RegisterClassObjects(CLSCTX_LOCAL_SERVER, REGCLS_MULTIPLEUSE);
     _ASSERTE(SUCCEEDED(hres));
 
     if (m_fStartedAsService) {
@@ -536,11 +517,11 @@ void CoreGenericMain::Run(void)
     }
 
     MSG msg;
-    while (GetMessage(&msg, 0, 0, 0)) {
+    while (GetMessage(&msg, nullptr, 0, 0)) {
         DispatchMessage(&msg);
     }
 
-    _Module.RevokeClassObjects();
+    core_generic_main.RevokeClassObjects();
 }
 
 
@@ -548,7 +529,7 @@ void CoreGenericMain::Run(void)
 // Static entry point
 void WINAPI CoreGenericMain::_ServiceMain(DWORD dwArgc, LPTSTR* lpszArgv)
 {
-    _Module.ServiceMain(dwArgc, lpszArgv);
+    core_generic_main.ServiceMain(dwArgc, lpszArgv);
 }
 
 inline void CoreGenericMain::ServiceMain(DWORD dwArgc, LPTSTR* lpszArgv)
@@ -556,7 +537,7 @@ inline void CoreGenericMain::ServiceMain(DWORD dwArgc, LPTSTR* lpszArgv)
     // Register the control request handler
     m_ServiceStatus.dwCurrentState = SERVICE_START_PENDING;
     m_hServiceStatus = RegisterServiceCtrlHandler(m_lpszServiceName, _ServiceHandler);
-    if (m_hServiceStatus == NULL) {
+    if (m_hServiceStatus == nullptr) {
         LogEvent(_T("Handler not installed"));
         return;
     }
@@ -578,7 +559,7 @@ inline void CoreGenericMain::ServiceMain(DWORD dwArgc, LPTSTR* lpszArgv)
 // Static entry point
 void WINAPI CoreGenericMain::_ServiceHandler(DWORD dwOpcode)
 {
-    _Module.ServiceHandler(dwOpcode);
+    core_generic_main.ServiceHandler(dwOpcode);
 }
 
 inline void CoreGenericMain::ServiceHandler(DWORD dwOpcode)
@@ -629,10 +610,10 @@ void CoreGenericMain::LogEvent(LPCTSTR pszFormat, ...)
 
     if (m_fStartedAsService) {
         // Get a handle to use with ReportEvent().
-        hEventSource = RegisterEventSource(NULL, m_lpszServiceName);
-        if (hEventSource != NULL) {
+        hEventSource = RegisterEventSource(nullptr, m_lpszServiceName);
+        if (hEventSource != nullptr) {
             // Write to event log.
-            ReportEvent(hEventSource, EVENTLOG_INFORMATION_TYPE, 0, 0, NULL, 1, 0, (LPCTSTR *)&lpszStrings[0], NULL);
+            ReportEvent(hEventSource, EVENTLOG_INFORMATION_TYPE, 0, 0, nullptr, 1, 0, (LPCTSTR*)&lpszStrings[0], nullptr);
             DeregisterEventSource(hEventSource);
         }
     }
@@ -653,12 +634,13 @@ void CoreGenericMain::LogEvent(LPCTSTR pszFormat, ...)
 //=======================================================================
 VersionInformation::VersionInformation(void)
 {
-    m_pInfo = NULL;
+    m_pInfo = nullptr;
     m_wMajor = 0;
     m_wMinor = 0;
     m_wBuild = 0;
+
     // Set default Language ID and Code Page
-    _tcsncpy(m_szTranslation, _T("000004E4\\"), sizeof(m_szTranslation) / sizeof(TCHAR));
+    _tcsncpy_s(m_szTranslation, _T("000004E4\\"), sizeof(m_szTranslation) / sizeof(TCHAR));
 }
 
 
@@ -666,8 +648,7 @@ VersionInformation::VersionInformation(void)
 //=======================================================================
 VersionInformation::~VersionInformation()
 {
-    if (m_pInfo)
-        delete[] m_pInfo;
+    Clear();
 }
 
 
@@ -694,8 +675,8 @@ HRESULT VersionInformation::Create(HMODULE hModule /* = NULL */)
     if (!dwLen)
         return HRESULT_FROM_WIN32(GetLastError());
 
-    if (m_pInfo)                        // It's not the firts Create() call
-        delete[] m_pInfo;               // Release existing information buffer
+    if (m_pInfo)                        // It's not the first Create() call
+        Clear();						// Release existing information buffer
 
     m_pInfo = new BYTE[dwLen];          // Allocate buffer for version info.
     if (!m_pInfo)
@@ -704,14 +685,14 @@ HRESULT VersionInformation::Create(HMODULE hModule /* = NULL */)
     if (!GetFileVersionInfo(szModuleName, 0, dwLen, m_pInfo))
         return HRESULT_FROM_WIN32(GetLastError());
 
-    WORD* pwVal = NULL;                 // Get translation info
+    WORD* pwVal = nullptr;                 // Get translation info
     UINT  uLenVal = 0;
-    if (VerQueryValue(m_pInfo, _T("\\VarFileInfo\\Translation"), (LPVOID *)&pwVal, &uLenVal) && (uLenVal >= sizeof(DWORD))) {
+    if (VerQueryValue(m_pInfo, _T("\\VarFileInfo\\Translation"), (LPVOID*)&pwVal, &uLenVal) && (uLenVal >= sizeof(DWORD))) {
         _stprintf(m_szTranslation, _T("%04x%04x\\"), pwVal[0], pwVal[1]);
     }
     // Initialize class attributes
     VS_FIXEDFILEINFO* pFI;
-    if (!VerQueryValue(m_pInfo, _T("\\"), (LPVOID *)&pFI, &uLenVal))
+    if (!VerQueryValue(m_pInfo, _T("\\"), (LPVOID*)&pFI, &uLenVal))
         return HRESULT_FROM_WIN32(GetLastError());
 
     m_wMajor = HIWORD(pFI->dwFileVersionMS);
@@ -723,8 +704,11 @@ HRESULT VersionInformation::Create(HMODULE hModule /* = NULL */)
 
 void VersionInformation::Clear()
 {
-	if (m_pInfo)                        // It's not the firts Create() call
-		delete[] m_pInfo;               // Release existing information buffer
+    if (m_pInfo)						// It's not the first Create() call
+    {
+        delete[] m_pInfo;				// Release existing information buffer
+        m_pInfo = nullptr;
+    }
 }
 
 
@@ -746,11 +730,11 @@ LPCTSTR VersionInformation::GetValue(LPCTSTR szKeyName)
         _tcscat(szQuery, m_szTranslation);
         _tcscat(szQuery, szKeyName);
 
-        if (VerQueryValue(m_pInfo, szQuery, (LPVOID *)&pVal, &uLenVal)) {
+        if (VerQueryValue(m_pInfo, szQuery, (LPVOID*)&pVal, &uLenVal)) {
             return pVal;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 
@@ -774,8 +758,8 @@ inline static HRESULT CreateComCatOPC(void)
 
     // Get the Component Category Manager
     hres = CoCreateInstance(
-        CLSID_StdComponentCategoriesMgr, NULL,
-        CLSCTX_INPROC_SERVER, IID_ICatRegister, (LPVOID *)&pICat);
+        CLSID_StdComponentCategoriesMgr, nullptr,
+        CLSCTX_INPROC_SERVER, IID_ICatRegister, (LPVOID*)&pICat);
 
     if (SUCCEEDED(hres)) {
         CATEGORYINFO   CatInfo[4];
@@ -844,13 +828,13 @@ static HRESULT RegisterServer(const LPSERVERREGDEFS pRegDefs, BOOL fAsService)
         SetupReplacementMapForRegistryUpdate(pCustSubstDef, pRegDefs);
         // Register the server as defined in the resource
 #ifdef _OPC_SRV_DA
-        hres = _Module.UpdateRegistryFromResource(IDR_DATA_ACCESS, TRUE, pCustSubstDef);
+        hres = core_generic_main.UpdateRegistryFromResource(IDR_DATA_ACCESS, TRUE, pCustSubstDef);
         if (SUCCEEDED(hres)) {
 #endif
 #ifdef _OPC_SRV_AE
-            if (fUseAEServer)
+            if (use_ae_server)
             {
-                hres = _Module.UpdateRegistryFromResource(IDR_ALARMS_EVENTS, TRUE, pCustSubstDef);
+                hres = core_generic_main.UpdateRegistryFromResource(IDR_ALARMS_EVENTS, TRUE, pCustSubstDef);
             }
 #endif
 #ifdef _OPC_SRV_DA
@@ -874,7 +858,7 @@ static HRESULT RegisterServer(const LPSERVERREGDEFS pRegDefs, BOOL fAsService)
 #endif // _NT_SERVICE
 
     if (SUCCEEDED(hres)) {                     // Registers all objects in the ObjectMap and
-        hres = _Module.RegisterServer(            // also the TypeLib as defined by the module.
+        hres = core_generic_main.RegisterServer(            // also the TypeLib as defined by the module.
 #ifdef _OPC_SRV_DA
             TRUE        // Only Data Access Server has a TypeLib
 #endif
@@ -889,8 +873,8 @@ static HRESULT RegisterServer(const LPSERVERREGDEFS pRegDefs, BOOL fAsService)
 
         // Get the Component Category Manager
         HRESULT hres = CoCreateInstance(
-            CLSID_StdComponentCategoriesMgr, NULL,
-            CLSCTX_INPROC_SERVER, IID_ICatRegister, (LPVOID *)&pICat);
+            CLSID_StdComponentCategoriesMgr, nullptr,
+            CLSCTX_INPROC_SERVER, IID_ICatRegister, (LPVOID*)&pICat);
         if (SUCCEEDED(hres)) {
             CATID catid[3];
 
@@ -924,7 +908,7 @@ static HRESULT RegisterServer(const LPSERVERREGDEFS pRegDefs, BOOL fAsService)
         sprintf_s(szMsg, 80, "Error 0x%lX. Server Registration failed.", hres);
         LOGFMTI(szMsg);
         USES_CONVERSION;
-        MessageBox(NULL, A2T(szMsg), _T("OPC DA/AE Server SDK"), MB_OK);
+        MessageBox(nullptr, A2T(szMsg), _T("OPC DA/AE Server SDK"), MB_OK);
     }
 
 #ifdef _NT_SERVICE
@@ -950,7 +934,7 @@ inline static HRESULT UnRegisterServer(const LPSERVERREGDEFS pRegDefs)
 
     HRESULT  hres = S_OK;
 #ifdef _NT_SERVICE
-    LPTSTR   lpszServiceName = NULL;
+    LPTSTR   lpszServiceName = nullptr;
 #endif // _NT_SERVICE
 
     // UnRegister the implemented Categories
@@ -959,8 +943,8 @@ inline static HRESULT UnRegisterServer(const LPSERVERREGDEFS pRegDefs)
 
     // Get the Component Category Manager
     hres = CoCreateInstance(
-        CLSID_StdComponentCategoriesMgr, NULL,
-        CLSCTX_INPROC_SERVER, IID_ICatRegister, (LPVOID *)&pICat);
+        CLSID_StdComponentCategoriesMgr, nullptr,
+        CLSCTX_INPROC_SERVER, IID_ICatRegister, (LPVOID*)&pICat);
     if (SUCCEEDED(hres)) {
         CATID catid[3];
 
@@ -1014,11 +998,11 @@ inline static HRESULT UnRegisterServer(const LPSERVERREGDEFS pRegDefs)
         SetupReplacementMapForRegistryUpdate(pCustSubstDef, pRegDefs);
         // Unregister the server as defined in the resource
 #ifdef _OPC_SRV_DA
-        hres = _Module.UpdateRegistryFromResource(IDR_DATA_ACCESS, FALSE, pCustSubstDef);
+        hres = core_generic_main.UpdateRegistryFromResource(IDR_DATA_ACCESS, FALSE, pCustSubstDef);
         if (SUCCEEDED(hres)) {
 #endif
 #ifdef _OPC_SRV_AE
-            hres = _Module.UpdateRegistryFromResource(IDR_ALARMS_EVENTS, FALSE, pCustSubstDef);
+            hres = core_generic_main.UpdateRegistryFromResource(IDR_ALARMS_EVENTS, FALSE, pCustSubstDef);
 #endif
 #ifdef _OPC_SRV_DA
         }
@@ -1028,7 +1012,7 @@ inline static HRESULT UnRegisterServer(const LPSERVERREGDEFS pRegDefs)
     }
 
     if (SUCCEEDED(hres)) {
-        hres = _Module.UnregisterServer();        // Unregisters all objects defined in the ObjectMap.
+        hres = core_generic_main.UnregisterServer();        // Unregisters all objects defined in the ObjectMap.
     }
 
     if (FAILED(hres)) {
@@ -1036,7 +1020,7 @@ inline static HRESULT UnRegisterServer(const LPSERVERREGDEFS pRegDefs)
         sprintf_s(szMsg, 80, "Error 0x%lX. Server Un-Registration failed.", hres);
         LOGFMTI(szMsg);
         USES_CONVERSION;
-        MessageBox(NULL, A2T(szMsg), _T("OPC Server SDK Classic"), MB_OK);
+        MessageBox(nullptr, A2T(szMsg), _T("OPC Server SDK Classic"), MB_OK);
     }
 
 #ifdef _NT_SERVICE
@@ -1061,8 +1045,8 @@ static void SetupReplacementMapForRegistryUpdate(_ATL_REGMAP_ENTRY aMapEntries[]
     int         i;
     TCHAR       szPath[_MAX_PATH];
 
-    GetModuleFileName(_Module.m_hInst, szPath, _MAX_PATH);          // Get module name and truncate path
-    for (i = (int)_tcslen(szPath); (TCHAR)(szPath[i - 1]) != (TCHAR)'\\'; --i);
+    GetModuleFileName(core_generic_main.m_hInst, szPath, _MAX_PATH);          // Get module name and truncate path
+    for (i = (int)_tcslen(szPath); szPath[i - 1] != '\\'; --i);
 
     aMapEntries[0].szData = _wcsdup(T2W(&szPath[i]));             // Module name without path
     aMapEntries[1].szData = _wcsdup(pRegDefs->m_szAppID);         // Application ID
@@ -1081,7 +1065,7 @@ static void SetupReplacementMapForRegistryUpdate(_ATL_REGMAP_ENTRY aMapEntries[]
     aMapEntries[12].szData = _wcsdup(pRegDefs->m_szAE_CurrDescr);  // Friendly name of current server version
 
     // Get the vendor name from the resource
-    aMapEntries[13].szData = _wcsdup(gVendorName);
+    aMapEntries[13].szData = _wcsdup(vendor_name);
 
 }
 
@@ -1097,7 +1081,7 @@ static void CleanupReplacementMapForRegistryUpdate(_ATL_REGMAP_ENTRY aMapEntries
     while (pEntry->szKey) {
         if (pEntry->szData) {
             free((LPVOID)pEntry->szData);
-            pEntry->szData = NULL;
+            pEntry->szData = nullptr;
         }
         pEntry++;
     }
@@ -1118,7 +1102,7 @@ static LPCTSTR FindOneOf(LPCTSTR p1, LPCTSTR p2)
         }
         p1++;
     }
-    return NULL;
+    return nullptr;
 }
 
 
@@ -1165,7 +1149,7 @@ static HRESULT AdjustRegistryForServerType(BOOL fRegisterAsService,
 
 
 
-inline static HRESULT IsRegisteredAsService(LPCTSTR lpszAppID, BOOL & fAsService)
+inline static HRESULT IsRegisteredAsService(LPCTSTR lpszAppID, BOOL& fAsService)
 {
     _ASSERT(lpszAppID);
     CRegKey  keyAppID, key;
@@ -1201,10 +1185,10 @@ static BOOL IsInstalledAsService(LPCTSTR lpszServiceName)
 {
     BOOL fResult = FALSE;
 
-    SC_HANDLE hSCM = ::OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
-    if (hSCM != NULL) {
+    SC_HANDLE hSCM = ::OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS);
+    if (hSCM != nullptr) {
         SC_HANDLE hService = ::OpenService(hSCM, lpszServiceName, SERVICE_QUERY_CONFIG);
-        if (hService != NULL) {
+        if (hService != nullptr) {
             fResult = TRUE;
             ::CloseServiceHandle(hService);
         }
@@ -1221,16 +1205,16 @@ inline static HRESULT UninstallService(LPCTSTR lpszServiceName)
         return S_OK;                              // Not installed
     }
 
-    SC_HANDLE hSCM = ::OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
-    if (hSCM == NULL) {
-        MessageBox(NULL, _T("Couldn't open service manager"), lpszServiceName, MB_OK);
+    SC_HANDLE hSCM = ::OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS);
+    if (hSCM == nullptr) {
+        MessageBox(nullptr, _T("Couldn't open service manager"), lpszServiceName, MB_OK);
         return HRESULT_FROM_WIN32(GetLastError());
     }
 
     SC_HANDLE hService = ::OpenService(hSCM, lpszServiceName, SERVICE_STOP | DELETE);
-    if (hService == NULL) {
+    if (hService == nullptr) {
         ::CloseServiceHandle(hSCM);
-        MessageBox(NULL, _T("Couldn't open service"), lpszServiceName, MB_OK);
+        MessageBox(nullptr, _T("Couldn't open service"), lpszServiceName, MB_OK);
         return HRESULT_FROM_WIN32(GetLastError());
     }
 
@@ -1245,7 +1229,7 @@ inline static HRESULT UninstallService(LPCTSTR lpszServiceName)
     if (bDelete)
         return S_OK;
 
-    MessageBox(NULL, _T("Service could not be deleted"), lpszServiceName, MB_OK);
+    MessageBox(nullptr, _T("Service could not be deleted"), lpszServiceName, MB_OK);
     return HRESULT_FROM_WIN32(GetLastError());
 }
 
@@ -1258,12 +1242,12 @@ inline static HRESULT InstallAsService(LPCTSTR lpszServiceName, LPCTSTR lpszServ
     }
 
     TCHAR szFilePath[_MAX_PATH];                 // Get the executable file path
-    if (!::GetModuleFileName(NULL, szFilePath, _MAX_PATH))
+    if (!::GetModuleFileName(nullptr, szFilePath, _MAX_PATH))
         return HRESULT_FROM_WIN32(GetLastError());
 
-    SC_HANDLE hSCM = ::OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
-    if (hSCM == NULL) {
-        MessageBox(NULL, _T("Couldn't open service manager"), lpszServiceName, MB_OK);
+    SC_HANDLE hSCM = ::OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS);
+    if (hSCM == nullptr) {
+        MessageBox(nullptr, _T("Couldn't open service manager"), lpszServiceName, MB_OK);
         return HRESULT_FROM_WIN32(GetLastError());
     }
 
@@ -1271,18 +1255,18 @@ inline static HRESULT InstallAsService(LPCTSTR lpszServiceName, LPCTSTR lpszServ
         hSCM, lpszServiceName, lpszServiceDescription,
         SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS | SERVICE_INTERACTIVE_PROCESS,
         SERVICE_DEMAND_START, SERVICE_ERROR_NORMAL,
-        szFilePath, NULL, NULL, _T("RPCSS\0"), NULL, NULL);
+        szFilePath, nullptr, nullptr, _T("RPCSS\0"), nullptr, nullptr);
 
-    if (hService == NULL) {
+    if (hService == nullptr) {
         ::CloseServiceHandle(hSCM);
-        MessageBox(NULL, _T("Couldn't create service"), lpszServiceName, MB_OK);
+        MessageBox(nullptr, _T("Couldn't create service"), lpszServiceName, MB_OK);
         return HRESULT_FROM_WIN32(GetLastError());
     }
 
     SERVICE_DESCRIPTION ServiceDescr;
     ServiceDescr.lpDescription = (LPTSTR)lpszServiceDescription;
     if (!ChangeServiceConfig2(hService, SERVICE_CONFIG_DESCRIPTION, &ServiceDescr)) {
-        MessageBox(NULL, _T("Cannot set the description of the service"), lpszServiceName, MB_OK);
+        MessageBox(nullptr, _T("Cannot set the description of the service"), lpszServiceName, MB_OK);
     }
 
     ::CloseServiceHandle(hService);
@@ -1301,15 +1285,15 @@ inline static HRESULT InstallAsService(LPCTSTR lpszServiceName, LPCTSTR lpszServ
 //=======================================================================
 static LPTSTR CreateSafeServiceName(LPCTSTR szNameBase)
 {
-    LPTSTR   lpszDest, p;
+    LPTSTR p;
 
-    lpszDest = p = new TCHAR[_tcslen(szNameBase) + 1];
-    if (!p) return NULL;
+    LPTSTR lpszDest = p = new TCHAR[_tcslen(szNameBase) + 1];
+    if (!p) return nullptr;
 
     while (*szNameBase) {
         if ((_istspace(*szNameBase) ||
-            ((*szNameBase) == TCHAR('\\')) ||
-            ((*szNameBase) == TCHAR('/'))) == 0) {
+            ((*szNameBase) == static_cast<TCHAR>('\\')) ||
+            ((*szNameBase) == static_cast<TCHAR>('/'))) == 0) {
 
             *p = *szNameBase;
             p = _tcsinc(p);

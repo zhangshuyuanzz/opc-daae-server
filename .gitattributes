@@ -28,7 +28,3 @@
 
 # OPC UA
 *.uanodes binary
-
-scripts/* linguist-vendored
-examples/net/C#/* linguist-vendored=false
-doc/* linguist-documentation

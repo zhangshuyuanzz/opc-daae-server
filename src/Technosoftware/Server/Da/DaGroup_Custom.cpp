@@ -84,7 +84,7 @@ HRESULT STDMETHODCALLTYPE DaGroup::AddCallbackReference(
       }
 
      // register the callback interface in the global interface table
-     res = _Module.m_pGIT->RegisterInterfaceInGlobal( pCallback, IID_IDispatch, (LPDWORD)&group->m_DataTimeCallbackDisp );
+     res = core_generic_main.m_pGIT->RegisterInterfaceInGlobal( pCallback, IID_IDispatch, (LPDWORD)&group->m_DataTimeCallbackDisp );
      if (FAILED( res )) {
         pCallback->Release();               // note :   register increments the refcount
         goto AddCallbackExit1;              //          even if the function failed     
@@ -112,7 +112,7 @@ HRESULT STDMETHODCALLTYPE DaGroup::AddCallbackReference(
       }
 
      // register the callback interface in the global interface table
-     res = _Module.m_pGIT->RegisterInterfaceInGlobal( pCallback, IID_IDispatch, (LPDWORD)&group->m_WriteCallbackDisp );
+     res = core_generic_main.m_pGIT->RegisterInterfaceInGlobal( pCallback, IID_IDispatch, (LPDWORD)&group->m_WriteCallbackDisp );
      if (FAILED( res )) {
         pCallback->Release();               // note :   register increments the refcount
         goto AddCallbackExit1;              //          even if the function failed     
@@ -186,7 +186,7 @@ HRESULT STDMETHODCALLTYPE DaGroup::DropCallbackReference(
          goto DropCallbackExit1;
       }
 
-      res = _Module.m_pGIT->RevokeInterfaceFromGlobal( (DWORD)group->m_DataTimeCallbackDisp );
+      res = core_generic_main.m_pGIT->RevokeInterfaceFromGlobal( (DWORD)group->m_DataTimeCallbackDisp );
       group->m_DataTimeCallbackDisp = NULL;
       if (FAILED( res )) {
          goto DropCallbackExit1;
@@ -199,7 +199,7 @@ HRESULT STDMETHODCALLTYPE DaGroup::DropCallbackReference(
          goto DropCallbackExit1;
       }
 
-      res = _Module.m_pGIT->RevokeInterfaceFromGlobal( (DWORD)group->m_WriteCallbackDisp );
+      res = core_generic_main.m_pGIT->RevokeInterfaceFromGlobal( (DWORD)group->m_WriteCallbackDisp );
       group->m_WriteCallbackDisp = NULL;
       if (FAILED( res )) {
          goto DropCallbackExit1;
@@ -308,7 +308,7 @@ HRESULT STDMETHODCALLTYPE DaGroup::DAdvise(
       }
 
      // register the callback interface in the global interface table
-     res = _Module.m_pGIT->RegisterInterfaceInGlobal( pAdvSink, IID_IAdviseSink, (LPDWORD)&group->m_DataCallback );
+     res = core_generic_main.m_pGIT->RegisterInterfaceInGlobal( pAdvSink, IID_IAdviseSink, (LPDWORD)&group->m_DataCallback );
      if (FAILED( res )) {
         pAdvSink->Release();                // note :   register increments the refcount
         goto DadviseExit1;                  //          even if the function failed
@@ -326,7 +326,7 @@ HRESULT STDMETHODCALLTYPE DaGroup::DAdvise(
       }
 
      // register the callback interface in the global interface table
-     res = _Module.m_pGIT->RegisterInterfaceInGlobal( pAdvSink, IID_IAdviseSink, (LPDWORD)&group->m_DataTimeCallback );
+     res = core_generic_main.m_pGIT->RegisterInterfaceInGlobal( pAdvSink, IID_IAdviseSink, (LPDWORD)&group->m_DataTimeCallback );
      if (FAILED( res )) {
         pAdvSink->Release();                // note :   register increments the refcount
         goto DadviseExit1;                  //          even if the function failed
@@ -342,7 +342,7 @@ HRESULT STDMETHODCALLTYPE DaGroup::DAdvise(
       }
 
      // register the callback interface in the global interface table
-     res = _Module.m_pGIT->RegisterInterfaceInGlobal( pAdvSink, IID_IAdviseSink, (LPDWORD)&group->m_WriteCallback );
+     res = core_generic_main.m_pGIT->RegisterInterfaceInGlobal( pAdvSink, IID_IAdviseSink, (LPDWORD)&group->m_WriteCallback );
      if (FAILED( res )) {
         pAdvSink->Release();                // note :   register increments the refcount
         goto DadviseExit1;                  //          even if the function failed
@@ -404,7 +404,7 @@ HRESULT STDMETHODCALLTYPE DaGroup::DUnadvise(
          goto DUnadviseExit1;
       }
 
-      res = _Module.m_pGIT->RevokeInterfaceFromGlobal( (DWORD)group->m_DataCallback );
+      res = core_generic_main.m_pGIT->RevokeInterfaceFromGlobal( (DWORD)group->m_DataCallback );
       group->m_DataCallback = NULL;
       if (FAILED( res )) {
          goto DUnadviseExit1;
@@ -417,7 +417,7 @@ HRESULT STDMETHODCALLTYPE DaGroup::DUnadvise(
          goto DUnadviseExit1;
       }
 
-      res = _Module.m_pGIT->RevokeInterfaceFromGlobal( (DWORD)group->m_DataTimeCallback );
+      res = core_generic_main.m_pGIT->RevokeInterfaceFromGlobal( (DWORD)group->m_DataTimeCallback );
       group->m_DataTimeCallback = NULL;
       if (FAILED( res )) {
          goto DUnadviseExit1;
@@ -430,7 +430,7 @@ HRESULT STDMETHODCALLTYPE DaGroup::DUnadvise(
          goto DUnadviseExit1;
       }
 
-      res = _Module.m_pGIT->RevokeInterfaceFromGlobal( (DWORD)group->m_WriteCallback );
+      res = core_generic_main.m_pGIT->RevokeInterfaceFromGlobal( (DWORD)group->m_WriteCallback );
       group->m_WriteCallback = NULL;
       if (FAILED( res )) {
          goto DUnadviseExit1;

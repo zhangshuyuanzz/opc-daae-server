@@ -2,7 +2,7 @@
  * Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
  * Web: https://technosoftware.com
  *
- * Purpose:
+ * License:
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,14 +29,16 @@
  //-----------------------------------------------------------------------------
  // INCLUDES
  //-----------------------------------------------------------------------------
-#include "stdafx.h"
-#include <windows.h>
+#include "StdAfx.h"
+#include "ClassicNodeManager.h"
+
 #include <comdef.h>										// For _variant_t and _bstr_t
 #include <crtdbg.h>										// For _ASSERTE
+#include <cmath>                               // only for calculation of data simulation values
 #include <process.h>
-#include <math.h>                               // only for calculation of data simulation values
+#include <Windows.h>
+
 #include "IClassicBaseNodeManager.h"
-#include "ClassicNodeManager.h"
 
 using namespace IClassicBaseNodeManager;
 
@@ -164,10 +166,10 @@ using namespace IClassicBaseNodeManager;
 //-----------------------------------------------------------------------------
 // FORWARD DECLARATIONS
 //-----------------------------------------------------------------------------
-unsigned __stdcall RefreshThread( LPVOID pAttr );
+unsigned __stdcall RefreshThread(LPVOID pAttr);
 unsigned __stdcall ConfigThread(LPVOID pAttr);
 HRESULT KillThreads(void);
-void __stdcall ToggleTank1Cond(  );
+void __stdcall ToggleTank1Cond();
 
 //-----------------------------------------------------------------------------
 // DATA                                                                  SAMPLE
@@ -199,43 +201,43 @@ DWORD gNumberItems = 0;
 class DataSimulation
 {
 public:
-	DataSimulation()
-	{
-		m_lCount          = 0;
-		m_lIntervalCount  = 0;
-		m_lRamp           = 0;
-		m_dblSine         = 0.0;
-		m_lRandom         = 0;
-	}
+    DataSimulation()
+    {
+        m_lCount = 0;
+        m_lIntervalCount = 0;
+        m_lRamp = 0;
+        m_dblSine = 0.0;
+        m_lRandom = 0;
+    }
 
-	~DataSimulation() {}
+    ~DataSimulation() {}
 
-	// Attributes
-	long     RampValue() { return m_lRamp; }
-	double   SineValue() { return m_dblSine; }
-	long     RandomValue() { return m_lRandom; }
+    // Attributes
+    long     RampValue() { return m_lRamp; }
+    double   SineValue() { return m_dblSine; }
+    long     RandomValue() { return m_lRandom; }
 
-	// Operations
-	void CalculateNewData()
-	{
-		if (++m_lIntervalCount >= 1000/UPDATE_PERIOD) {
-			m_lIntervalCount = 0;
-			m_lCount++;
+    // Operations
+    void CalculateNewData()
+    {
+        if (++m_lIntervalCount >= 1000 / UPDATE_PERIOD) {
+            m_lIntervalCount = 0;
+            m_lCount++;
 
-			m_lRamp     = (++m_lRamp > 100) ? 0 : m_lRamp;
-			m_dblSine   = sin( (m_lCount%40) * 0.1570796327 );
-			m_lRandom   = rand();
-		}
-	}
+            m_lRamp = (++m_lRamp > 100) ? 0 : m_lRamp;
+            m_dblSine = sin((m_lCount % 40) * 0.1570796327);
+            m_lRandom = rand();
+        }
+    }
 
-	// Implementation
+    // Implementation
 protected:
-	long     m_lCount;
-	long     m_lIntervalCount;
+    long     m_lCount;
+    long     m_lIntervalCount;
 
-	long     m_lRamp;
-	double   m_dblSine;
-	long     m_lRandom;
+    long     m_lRamp;
+    double   m_dblSine;
+    long     m_lRandom;
 };
 
 
@@ -251,31 +253,31 @@ DataSimulation gDataSimulation;
 //-----------------------------------------------------------------------------
 void __stdcall ToggleTank1Cond()
 {
-	static      BOOL fActive = FALSE;
-	_variant_t  devfailattrs[1];
+    static      BOOL fActive = FALSE;
+    _variant_t  devfailattrs[1];
 
-	AeConditionState cs; 
+    AeConditionState cs;
 
-	cs.CondID() = CONDID_TANK_1_OVERFLOW;
-	cs.SubCondID() = 0;
-	cs.ActiveState() = false;
-	cs.Quality() = OPC_QUALITY_GOOD;
-	cs.AttrCount() = 1;
-	cs.AttrValuesPtr() = devfailattrs;
+    cs.CondID() = CONDID_TANK_1_OVERFLOW;
+    cs.SubCondID() = 0;
+    cs.ActiveState() = false;
+    cs.Quality() = OPC_QUALITY_GOOD;
+    cs.AttrCount() = 1;
+    cs.AttrValuesPtr() = devfailattrs;
 
-	if (fActive) {
-		fActive = FALSE;
-		cs.Message() = L"Normal State";           // Own message
-		devfailattrs[0] = (long)80;               // Current Value
-	}
-	else {
-		fActive = TRUE;
-		cs.Message() = L"Overflow";               // Own message
-		devfailattrs[0] = (long)123;              // Current Value
-	}
-	cs.ActiveState() = fActive;                  // Set current active state
-	// Process the new state
-    ProcessConditionStateChanges( 1, &cs );
+    if (fActive) {
+        fActive = FALSE;
+        cs.Message() = L"Normal State";           // Own message
+        devfailattrs[0] = (long)80;               // Current Value
+    }
+    else {
+        fActive = TRUE;
+        cs.Message() = L"Overflow";               // Own message
+        devfailattrs[0] = (long)123;              // Current Value
+    }
+    cs.ActiveState() = fActive;                  // Set current active state
+    // Process the new state
+    ProcessConditionStateChanges(1, &cs);
 }
 
 
@@ -291,34 +293,34 @@ void __stdcall ToggleTank1Cond()
 //-----------------------------------------------------------------------------
 static void ToggleRampCond()
 {
-	static long lVal = 50;
-	_variant_t  devfailattrs[1];
+    static long lVal = 50;
+    _variant_t  devfailattrs[1];
 
-	AeConditionState cs; 
+    AeConditionState cs;
 
-	cs.CondID() = CONDID_WATER_LEVEL;
-	cs.SubCondID() = 0;
-	cs.ActiveState() = true;
-	cs.Quality() = OPC_QUALITY_GOOD;
-	cs.AttrCount() = 1;
-	cs.AttrValuesPtr() = devfailattrs;
+    cs.CondID() = CONDID_WATER_LEVEL;
+    cs.SubCondID() = 0;
+    cs.ActiveState() = true;
+    cs.Quality() = OPC_QUALITY_GOOD;
+    cs.AttrCount() = 1;
+    cs.AttrValuesPtr() = devfailattrs;
 
-	switch (lVal) {
-		case 10: lVal = 20;  cs.SubCondID() = SUBCONDDEFID_LO_RAMP;       
-			break;
-		case 20: lVal = 50;  cs.ActiveState() = FALSE;                    
-			break;
-		case 50: lVal = 80;  cs.SubCondID() = SUBCONDDEFID_HI_RAMP;
-			{ BOOL f = TRUE; cs.AckRequiredPtr() = &f; } 
-			break;
-		case 80: lVal = 90;  cs.SubCondID() = SUBCONDDEFID_HI_HI_RAMP;    
-			break;
-		case 90: lVal = 10;  cs.SubCondID() = SUBCONDDEFID_LO_LO_RAMP;    
-			break;
-	}
-	devfailattrs[0] = (long)lVal;                // Set required attribute
+    switch (lVal) {
+    case 10: lVal = 20;  cs.SubCondID() = SUBCONDDEFID_LO_RAMP;
+        break;
+    case 20: lVal = 50;  cs.ActiveState() = FALSE;
+        break;
+    case 50: lVal = 80;  cs.SubCondID() = SUBCONDDEFID_HI_RAMP;
+    { BOOL f = TRUE; cs.AckRequiredPtr() = &f; }
+    break;
+    case 80: lVal = 90;  cs.SubCondID() = SUBCONDDEFID_HI_HI_RAMP;
+        break;
+    case 90: lVal = 10;  cs.SubCondID() = SUBCONDDEFID_LO_LO_RAMP;
+        break;
+    }
+    devfailattrs[0] = (long)lVal;                // Set required attribute
 
-    ProcessConditionStateChanges( 1, &cs );
+    ProcessConditionStateChanges(1, &cs);
 }
 
 
@@ -335,38 +337,38 @@ static void ToggleRampCond()
 class Heating1Condition
 {
 public:
-	Heating1Condition()
-	{
-		cs.CondID()          = CONDID_HEATING_1_EXTEMP;
-		cs.Quality()         = OPC_QUALITY_GOOD;
-		cs.ActiveState()     = FALSE;
-		cs.AttrCount()       = 1;
-		cs.AttrValuesPtr()   = devfailattrs;
-	};
+    Heating1Condition()
+    {
+        cs.CondID() = CONDID_HEATING_1_EXTEMP;
+        cs.Quality() = OPC_QUALITY_GOOD;
+        cs.ActiveState() = FALSE;
+        cs.AttrCount() = 1;
+        cs.AttrValuesPtr() = devfailattrs;
+    };
 
-	~Heating1Condition() {};
+    ~Heating1Condition() {};
 
-	void ToggleCondition()
-	{
-		if (cs.ActiveState()) {
-			cs.ActiveState()  = FALSE;
-			// Own message
-			cs.Message()      = L"Normal Temperature";
-			devfailattrs[0]   = (long)35;          // Current Value
-		}
-		else {
-			cs.ActiveState()  = TRUE;
-			// Own message
-			cs.Message()      = L"Excess Temperature";
-			devfailattrs[0]   = (long)55;          // Current Value
-		}
+    void ToggleCondition()
+    {
+        if (cs.ActiveState()) {
+            cs.ActiveState() = FALSE;
+            // Own message
+            cs.Message() = L"Normal Temperature";
+            devfailattrs[0] = (long)35;          // Current Value
+        }
+        else {
+            cs.ActiveState() = TRUE;
+            // Own message
+            cs.Message() = L"Excess Temperature";
+            devfailattrs[0] = (long)55;          // Current Value
+        }
 
-        ProcessConditionStateChanges( 1, &cs );
-	}
+        ProcessConditionStateChanges(1, &cs);
+    }
 
 protected:
-	AeConditionState	cs;
-	_variant_t			devfailattrs[1];
+    AeConditionState	cs;
+    _variant_t			devfailattrs[1];
 };
 
 
@@ -383,28 +385,28 @@ protected:
 //    The client update is so synchronized with the cache refresh.
 // 
 //-----------------------------------------------------------------------------
-unsigned __stdcall RefreshThread( LPVOID pAttr )
+unsigned __stdcall RefreshThread(LPVOID pAttr)
 {
 
-	FILETIME	TimeStamp;
-	VARIANT     Value;
+    FILETIME    time_stamp;
+    VARIANT     value;
 
-	DWORD          dwCount = 0;                  // Counter for simulation
-	_variant_t     devfailattrs[2];
-	Heating1Condition  condHeating1;
+    DWORD          dwCount = 0;                  // Counter for simulation
+    _variant_t     devfailattrs[2];
+    Heating1Condition  condHeating1;
 
-	// Keep this thread running until the Terminate Event is received
+    // Keep this thread running until the Terminate Event is received
 
-	for (;;) {                                   // Thread Loop
+    for (;;) {                                   // Thread Loop
 
-		if (gDeviceItem_NumberItems != NULL) {
-			V_I4(&Value) = gNumberItems;
-			V_VT(&Value) = VT_I4;
+        if (gDeviceItem_NumberItems != NULL) {
+            V_I4(&value) = gNumberItems;
+            V_VT(&value) = VT_I4;
 
-			SetItemValue(gDeviceItem_NumberItems, &Value, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
-		}
+            SetItemValue(gDeviceItem_NumberItems, &value, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), time_stamp);
+        }
 
-		if (gServerState == ServerState::Running) {
+        if (gServerState == ServerState::Running) {
 
             /// TODO: Remove sample code later
             //GetActiveClients(&numClientHandles, &clientHandles);
@@ -431,50 +433,50 @@ unsigned __stdcall RefreshThread( LPVOID pAttr )
             //    } // handle all clients
             //    delete clientHandles;
             //}
-			
-		gDataSimulation.CalculateNewData();
 
-		CoFileTimeNow( &TimeStamp );
+            gDataSimulation.CalculateNewData();
 
-		++dwCount;
+            CoFileTimeNow(&time_stamp);
 
-		if ((dwCount % 2) == 0) ToggleTank1Cond();// every 2s
-		if ((dwCount % 3) == 0) ToggleRampCond(); // every 3s
-		if ((dwCount % 5) == 0) {                 // every 5s
-			condHeating1.ToggleCondition();  
-		}
-		if ((dwCount % 120) == 0) {               // every 2 min.
-			devfailattrs[0] = (long)WSAENETDOWN;                        // Error Code
-			devfailattrs[1] = L"3Com EtherLink XL NIC (3C900B-COMBO)";  // Device Name
-			ProcessSimpleEvent( CATID_DEVFAILURE, SRCID_NETADAPT, L"No response", 800, 2, devfailattrs, &TimeStamp );
-		}
+            ++dwCount;
 
-		// update server cache for this item
-		V_I4( &Value ) = gDataSimulation.RampValue();
-		V_VT( &Value ) = VT_I4;                 
+            if ((dwCount % 2) == 0) ToggleTank1Cond();// every 2s
+            if ((dwCount % 3) == 0) ToggleRampCond(); // every 3s
+            if ((dwCount % 5) == 0) {                 // every 5s
+                condHeating1.ToggleCondition();
+            }
+            if ((dwCount % 120) == 0) {               // every 2 min.
+                devfailattrs[0] = (long)WSAENETDOWN;                        // Error Code
+                devfailattrs[1] = L"3Com EtherLink XL NIC (3C900B-COMBO)";  // Device Name
+                ProcessSimpleEvent(CATID_DEVFAILURE, SRCID_NETADAPT, L"No response", 800, 2, devfailattrs, &time_stamp);
+            }
 
-			SetItemValue(gDeviceItem_SimRamp, &Value, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
+            // update server cache for this item
+            V_I4(&value) = gDataSimulation.RampValue();
+            V_VT(&value) = VT_I4;
 
-		V_R8( &Value ) = gDataSimulation.SineValue();
-		V_VT( &Value ) = VT_R8;                 
+            SetItemValue(gDeviceItem_SimRamp, &value, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), time_stamp);
 
-			SetItemValue(gDeviceItem_SimSine, &Value, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
+            V_R8(&value) = gDataSimulation.SineValue();
+            V_VT(&value) = VT_R8;
 
-		V_I4( &Value ) = gDataSimulation.RandomValue();
-		V_VT( &Value ) = VT_I4;                 
+            SetItemValue(gDeviceItem_SimSine, &value, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), time_stamp);
 
-			SetItemValue(gDeviceItem_SimRandom, &Value, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
+            V_I4(&value) = gDataSimulation.RandomValue();
+            V_VT(&value) = VT_I4;
 
-		}
+            SetItemValue(gDeviceItem_SimRandom, &value, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), time_stamp);
 
-		if (WaitForSingleObject( m_hTerminateThreadsEvent,
-			1000 ) != WAIT_TIMEOUT) {
-				break;									// Terminate Thread
-		}
-	}                                            // Thread Loop
+        }
 
-	_endthreadex( 0 );                           // The thread terminates.
-	return 0;
+        if (WaitForSingleObject(m_hTerminateThreadsEvent,
+            1000) != WAIT_TIMEOUT) {
+            break;									// Terminate Thread
+        }
+    }                                            // Thread Loop
+
+    _endthreadex(0);                           // The thread terminates.
+    return 0;
 
 } // RefreshThread
 
@@ -486,33 +488,33 @@ unsigned __stdcall RefreshThread( LPVOID pAttr )
 //=============================================================================
 HRESULT KillThreads(void)
 {
-	if (m_hTerminateThreadsEvent == NULL) {
-		return S_OK;
-	}
+    if (m_hTerminateThreadsEvent == NULL) {
+        return S_OK;
+    }
 
-	SetEvent(m_hTerminateThreadsEvent);        // Set the signal to shutdown the threads.
+    SetEvent(m_hTerminateThreadsEvent);        // Set the signal to shutdown the threads.
 
-	if (m_hConfigThread) {
-		// Wait max 10 secs until the config thread has terminated.
-		if (WaitForSingleObject(m_hConfigThread, 10000) == WAIT_TIMEOUT) {
-			TerminateThread(m_hConfigThread, 1);
-		}
-		CloseHandle(m_hConfigThread);
-		m_hConfigThread = NULL;
-	}
-	if (m_hUpdateThread) {
-		// Wait max 30 secs until the update thread has terminated.
-		if (WaitForSingleObject(m_hUpdateThread, 30000) == WAIT_TIMEOUT) {
-			TerminateThread(m_hUpdateThread, 1);
-		}
-		CloseHandle(m_hUpdateThread);
-		m_hUpdateThread = NULL;
-	}
+    if (m_hConfigThread) {
+        // Wait max 10 secs until the config thread has terminated.
+        if (WaitForSingleObject(m_hConfigThread, 10000) == WAIT_TIMEOUT) {
+            TerminateThread(m_hConfigThread, 1);
+        }
+        CloseHandle(m_hConfigThread);
+        m_hConfigThread = NULL;
+    }
+    if (m_hUpdateThread) {
+        // Wait max 30 secs until the update thread has terminated.
+        if (WaitForSingleObject(m_hUpdateThread, 30000) == WAIT_TIMEOUT) {
+            TerminateThread(m_hUpdateThread, 1);
+        }
+        CloseHandle(m_hUpdateThread);
+        m_hUpdateThread = NULL;
+    }
 
-	CloseHandle(m_hTerminateThreadsEvent);
-	m_hTerminateThreadsEvent = NULL;
+    CloseHandle(m_hTerminateThreadsEvent);
+    m_hTerminateThreadsEvent = NULL;
 
-	return S_OK;
+    return S_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -522,127 +524,127 @@ HRESULT KillThreads(void)
 //-----------------------------------------------------------------------------
 #pragma warning( disable:4290 )
 static void CreateSampleVariant(
-								/* [in]  */ VARTYPE     vt,
-								/* [out] */ LPVARIANT   pvVal ) throw (HRESULT)
+    /* [in]  */ VARTYPE     vt,
+    /* [out] */ LPVARIANT   pvVal) throw (HRESULT)
 {
-	try {
-		if (vt & VT_ARRAY) {
-			//
-			// Array Type
-			//
-			vt = vt & VT_TYPEMASK;                    // Remove array flag
-			BSTR bstr = NULL;
-			if (vt == VT_BSTR) {
-				CHECK_PTR( bstr = SysAllocString( L"This is string #n" ) )
-			}
+    try {
+        if (vt & VT_ARRAY) {
+            //
+            // Array Type
+            //
+            vt = vt & VT_TYPEMASK;                    // Remove array flag
+            BSTR bstr = NULL;
+            if (vt == VT_BSTR) {
+                CHECK_PTR(bstr = SysAllocString(L"This is string #n"))
+            }
 
 
-			SAFEARRAYBOUND rgs;
-			rgs.cElements = 4;
-			rgs.lLbound   = 0;
+            SAFEARRAYBOUND rgs;
+            rgs.cElements = 4;
+            rgs.lLbound = 0;
 
-			V_VT( pvVal ) = VT_ARRAY | vt;
-			CHECK_PTR( V_ARRAY( pvVal ) = SafeArrayCreate( vt, 1, &rgs ) )
+            V_VT(pvVal) = VT_ARRAY | vt;
+            CHECK_PTR(V_ARRAY(pvVal) = SafeArrayCreate(vt, 1, &rgs))
 
-			for (long i=0; i<(long)rgs.cElements; i++ ) {
-				switch (vt) {
-					case VT_BOOL:
-						{
-							int b = (i & 1) ? VARIANT_TRUE : VARIANT_FALSE;
-							CHECK_RESULT( SafeArrayPutElement( V_ARRAY( pvVal ), &i, &b ) )
-						}
-						break;
+                for (long i = 0; i < (long)rgs.cElements; i++) {
+                    switch (vt) {
+                    case VT_BOOL:
+                    {
+                        int b = (i & 1) ? VARIANT_TRUE : VARIANT_FALSE;
+                        CHECK_RESULT(SafeArrayPutElement(V_ARRAY(pvVal), &i, &b))
+                    }
+                    break;
 
-					case VT_I1:
-					case VT_I2:
-					case VT_I4:
-					case VT_UI1:
-					case VT_UI2:
-					case VT_UI4:
-					case VT_CY:
-					case VT_R4:
-					case VT_R8:
-						{
-							LONGLONG ll = rand();
-							CHECK_RESULT( SafeArrayPutElement( V_ARRAY( pvVal ), &i, &ll ) )
-						}
-						break;
+                    case VT_I1:
+                    case VT_I2:
+                    case VT_I4:
+                    case VT_UI1:
+                    case VT_UI2:
+                    case VT_UI4:
+                    case VT_CY:
+                    case VT_R4:
+                    case VT_R8:
+                    {
+                        LONGLONG ll = rand();
+                        CHECK_RESULT(SafeArrayPutElement(V_ARRAY(pvVal), &i, &ll))
+                    }
+                    break;
 
-					case VT_DATE:
-						{
-							// Note: Valid date range must be between MIN_DAT and MAX_DATE.
-							// For the sample implementation we use a limited range
-							// between 30/12/1899 and 12/31/2099.
-							DATE date = rand() & MAX_DATE_SAMPLEAPP;
-							CHECK_RESULT( SafeArrayPutElement( V_ARRAY( pvVal ), &i, &date ) )
-						}
-						break;
-
-
-					case VT_BSTR:
-						{
-							bstr[    16 ] = (WCHAR)( '0' + i + 1 );        
-							HRESULT hr = SafeArrayPutElement(  V_ARRAY( pvVal ), &i, bstr );
-							if (FAILED( hr )) {
-								SysFreeString( bstr );
-								throw hr;
-							}
-						}
-						break;
+                    case VT_DATE:
+                    {
+                        // Note: Valid date range must be between MIN_DAT and MAX_DATE.
+                        // For the sample implementation we use a limited range
+                        // between 30/12/1899 and 12/31/2099.
+                        DATE date = rand() & MAX_DATE_SAMPLEAPP;
+                        CHECK_RESULT(SafeArrayPutElement(V_ARRAY(pvVal), &i, &date))
+                    }
+                    break;
 
 
-					default: _ASSERTE( 0 );    // not supported type                                      
-										}
-									}
+                    case VT_BSTR:
+                    {
+                        bstr[16] = (WCHAR)('0' + i + 1);
+                        HRESULT hr = SafeArrayPutElement(V_ARRAY(pvVal), &i, bstr);
+                        if (FAILED(hr)) {
+                            SysFreeString(bstr);
+                            throw hr;
+                        }
+                    }
+                    break;
 
-									if (bstr) {
-										SysFreeString( bstr );
-									}
-							}
-							else {
-								//
-								// Simple Type
-								//
-								V_VT( pvVal ) = vt;
 
-								switch (vt) {
-					case VT_I1:    V_I1( pvVal )        = 76;                
-						break;
-					case VT_UI1:   V_UI1( pvVal )       = 23;                
-						break;
-					case VT_I2:    V_I2( pvVal )        = 345;               
-						break;
-					case VT_UI2:   V_UI2( pvVal )       = 39874;             
-						break;
-					case VT_I4:    V_I4( pvVal )        = 20196;             
-						break;
-					case VT_UI4:   V_UI4( pvVal )       = 4230498;           
-						break;
-					case VT_R4:    V_R4( pvVal )        = (float)8.123242;   
-						break;
-					case VT_R8:    V_R8( pvVal )        = 83289.48243;       
-						break;
-					case VT_CY:    V_CY( pvVal ).int64  = 198000;            
-						break;
-					case VT_DATE:  V_DATE( pvVal )      = 2.5;               // Noon, January 1, 1900.
-						break;   
-					case VT_BOOL:  V_BOOL( pvVal )      = VARIANT_FALSE;     
-						break;
-					case VT_BSTR:  V_BSTR( pvVal )      = SysAllocString( L"-- It's a nice day --" );
-						CHECK_PTR( V_BSTR( pvVal ) )              
-						break;
-					default:       _ASSERTE( 0 );       // not supported type
-			}
-		}
-	}
-	catch (HRESULT hrEx) {
-		VariantClear( pvVal );
-		throw hrEx;
-	}
-	catch (...) {
-		VariantClear( pvVal );
-		throw E_FAIL;
-	}
+                    default: _ASSERTE(0);    // not supported type                                      
+                    }
+                }
+
+            if (bstr) {
+                SysFreeString(bstr);
+            }
+        }
+        else {
+            //
+            // Simple Type
+            //
+            V_VT(pvVal) = vt;
+
+            switch (vt) {
+            case VT_I1:    V_I1(pvVal) = 76;
+                break;
+            case VT_UI1:   V_UI1(pvVal) = 23;
+                break;
+            case VT_I2:    V_I2(pvVal) = 345;
+                break;
+            case VT_UI2:   V_UI2(pvVal) = 39874;
+                break;
+            case VT_I4:    V_I4(pvVal) = 20196;
+                break;
+            case VT_UI4:   V_UI4(pvVal) = 4230498;
+                break;
+            case VT_R4:    V_R4(pvVal) = (float)8.123242;
+                break;
+            case VT_R8:    V_R8(pvVal) = 83289.48243;
+                break;
+            case VT_CY:    V_CY(pvVal).int64 = 198000;
+                break;
+            case VT_DATE:  V_DATE(pvVal) = 2.5;               // Noon, January 1, 1900.
+                break;
+            case VT_BOOL:  V_BOOL(pvVal) = VARIANT_FALSE;
+                break;
+            case VT_BSTR:  V_BSTR(pvVal) = SysAllocString(L"-- It's a nice day --");
+                CHECK_PTR(V_BSTR(pvVal))
+                    break;
+            default:       _ASSERTE(0);       // not supported type
+            }
+        }
+    }
+    catch (HRESULT hrEx) {
+        VariantClear(pvVal);
+        throw hrEx;
+    }
+    catch (...) {
+        VariantClear(pvVal);
+        throw E_FAIL;
+    }
 }
 
 
@@ -653,484 +655,484 @@ static void CreateSampleVariant(
 //-----------------------------------------------------------------------------
 unsigned __stdcall ConfigThread(LPVOID pAttr)
 {
-	HRESULT     hr = S_OK;
-	VARIANT     varVal;
-	DWORD       dwCount = 0;
-	FILETIME	TimeStamp;
-	void*		deviceItem;
+    HRESULT     hr = S_OK;
+    VARIANT     varVal;
+    DWORD       dwCount = 0;
+    FILETIME	TimeStamp;
+    void* deviceItem;
 
-	gServerState = ServerState::NoConfig;
-	SetServerState(gServerState);
+    gServerState = ServerState::NoConfig;
+    SetServerState(gServerState);
 
-	try {
-		// Order of required steps for Alarms&Events Sample
-		// ------------------------------------------------
+    try {
+        // Order of required steps for Alarms&Events Sample
+        // ------------------------------------------------
 
-		// 1) Define the Event Categories
-		// 2) Add the Attributes to the Event Categories if desired
-		// 3) Specify the Condition Definitions
-		// 4) Specify the Sub-Condition Definitions
-		// 5) Define the Process Areas (is optional)
-		// 6) Define the Event Sources
-		// 7) Define the Event Conditions
+        // 1) Define the Event Categories
+        // 2) Add the Attributes to the Event Categories if desired
+        // 3) Specify the Condition Definitions
+        // 4) Specify the Sub-Condition Definitions
+        // 5) Define the Process Areas (is optional)
+        // 6) Define the Event Sources
+        // 7) Define the Event Conditions
 
-		// 1) Define the Event Categories
-		/////////////////////////////////
-		CHECK_RESULT( AddSimpleEventCategory(   CATID_DEVFAILURE, L"Device Failure" ) )
-		CHECK_RESULT( AddSimpleEventCategory(   CATID_SYSMESSAGE, L"System Message" ) )
+        // 1) Define the Event Categories
+        /////////////////////////////////
+        CHECK_RESULT(AddSimpleEventCategory(CATID_DEVFAILURE, L"Device Failure"))
+            CHECK_RESULT(AddSimpleEventCategory(CATID_SYSMESSAGE, L"System Message"))
 
-		CHECK_RESULT( AddTrackingEventCategory( CATID_SYSCONFIG,  L"System Configuration" ) )
-		CHECK_RESULT( AddTrackingEventCategory( CATID_ADVCONTROL, L"Advanced Control" ) )
+            CHECK_RESULT(AddTrackingEventCategory(CATID_SYSCONFIG, L"System Configuration"))
+            CHECK_RESULT(AddTrackingEventCategory(CATID_ADVCONTROL, L"Advanced Control"))
 
-		CHECK_RESULT( AddConditionEventCategory(CATID_LEVEL,      L"Level" ) )
-		CHECK_RESULT( AddConditionEventCategory(CATID_SYSFAIL,    L"System Failure" ) )
+            CHECK_RESULT(AddConditionEventCategory(CATID_LEVEL, L"Level"))
+            CHECK_RESULT(AddConditionEventCategory(CATID_SYSFAIL, L"System Failure"))
 
-		// 2) Add the Attributes to the Event Categories
-		////////////////////////////////////////////////
-		CHECK_RESULT( AddEventAttribute( CATID_LEVEL,      ATTRID_LEVEL_CV,               L"Current Value",   VT_I4 ) )
-		CHECK_RESULT( AddEventAttribute( CATID_DEVFAILURE, ATTRID_DEVFAILURE_ERRORCODE,   L"Error Code",      VT_I4 ) )
-		CHECK_RESULT( AddEventAttribute( CATID_DEVFAILURE, ATTRID_DEVFAILURE_DEVICENAME,  L"Device Name",     VT_BSTR ) )
-		CHECK_RESULT( AddEventAttribute( CATID_SYSCONFIG,  ATTRID_SYSCONFIG_PREVVALUE,    L"Prev Value",      VT_I4 ) )
-		CHECK_RESULT( AddEventAttribute( CATID_SYSCONFIG,  ATTRID_SYSCONFIG_NEWVALUE,     L"New Value",       VT_I4 ) )
-		CHECK_RESULT( AddEventAttribute( CATID_ADVCONTROL, ATTRID_ADVCONTROL_PREVVALUE,   L"Prev Value",      VT_I4 ) )
-		CHECK_RESULT( AddEventAttribute( CATID_ADVCONTROL, ATTRID_ADVCONTROL_NEWVALUE,    L"New Value",       VT_I4 ) )
+            // 2) Add the Attributes to the Event Categories
+            ////////////////////////////////////////////////
+            CHECK_RESULT(AddEventAttribute(CATID_LEVEL, ATTRID_LEVEL_CV, L"Current Value", VT_I4))
+            CHECK_RESULT(AddEventAttribute(CATID_DEVFAILURE, ATTRID_DEVFAILURE_ERRORCODE, L"Error Code", VT_I4))
+            CHECK_RESULT(AddEventAttribute(CATID_DEVFAILURE, ATTRID_DEVFAILURE_DEVICENAME, L"Device Name", VT_BSTR))
+            CHECK_RESULT(AddEventAttribute(CATID_SYSCONFIG, ATTRID_SYSCONFIG_PREVVALUE, L"Prev Value", VT_I4))
+            CHECK_RESULT(AddEventAttribute(CATID_SYSCONFIG, ATTRID_SYSCONFIG_NEWVALUE, L"New Value", VT_I4))
+            CHECK_RESULT(AddEventAttribute(CATID_ADVCONTROL, ATTRID_ADVCONTROL_PREVVALUE, L"Prev Value", VT_I4))
+            CHECK_RESULT(AddEventAttribute(CATID_ADVCONTROL, ATTRID_ADVCONTROL_NEWVALUE, L"New Value", VT_I4))
 
-		// 3) Specify the Condition Definitions
-		///////////////////////////////////////
-		CHECK_RESULT( AddSingleStateConditionDefinition( CATID_SYSFAIL, CONDDEFID_SYSFAIL_TEMP,
-					  L"SYSTEM_FAILURE Temperature", L"temp > 100°C", 100, L"Excess Temperature", FALSE ) )
-		CHECK_RESULT( AddSingleStateConditionDefinition( CATID_SYSFAIL, CONDDEFID_SYSFAIL_HUMI,
-					  L"SYSTEM_FAILURE Humidity", L"humidity > 80%", 100, L"Humidity too high", FALSE ) )
-		CHECK_RESULT( AddSingleStateConditionDefinition( CATID_LEVEL, CONDDEFID_HILEVEL_TANK,
-					  L"HI Tank", L"level > 80", 100, L"Overflow", TRUE ) )
-		CHECK_RESULT( AddSingleStateConditionDefinition( CATID_LEVEL, CONDDEFID_HILEVEL_HEATING,
-					  L"HI Heating Temperature", L"temp > 35", 100, L"Excess Temperature", FALSE ) )
-		CHECK_RESULT( AddMultiStateConditionDefinition( CATID_LEVEL, CONDDEFID_PVLEVEL_RAMP, L"PVLEVEL Ramp" ) )
-		CHECK_RESULT( AddMultiStateConditionDefinition( CATID_LEVEL, CONDDEFID_PVLEVEL_FURNACE, L"PVLEVEL Furnace" ) )
+            // 3) Specify the Condition Definitions
+            ///////////////////////////////////////
+            CHECK_RESULT(AddSingleStateConditionDefinition(CATID_SYSFAIL, CONDDEFID_SYSFAIL_TEMP,
+                L"SYSTEM_FAILURE Temperature", L"temp > 100ï¿½C", 100, L"Excess Temperature", FALSE))
+            CHECK_RESULT(AddSingleStateConditionDefinition(CATID_SYSFAIL, CONDDEFID_SYSFAIL_HUMI,
+                L"SYSTEM_FAILURE Humidity", L"humidity > 80%", 100, L"Humidity too high", FALSE))
+            CHECK_RESULT(AddSingleStateConditionDefinition(CATID_LEVEL, CONDDEFID_HILEVEL_TANK,
+                L"HI Tank", L"level > 80", 100, L"Overflow", TRUE))
+            CHECK_RESULT(AddSingleStateConditionDefinition(CATID_LEVEL, CONDDEFID_HILEVEL_HEATING,
+                L"HI Heating Temperature", L"temp > 35", 100, L"Excess Temperature", FALSE))
+            CHECK_RESULT(AddMultiStateConditionDefinition(CATID_LEVEL, CONDDEFID_PVLEVEL_RAMP, L"PVLEVEL Ramp"))
+            CHECK_RESULT(AddMultiStateConditionDefinition(CATID_LEVEL, CONDDEFID_PVLEVEL_FURNACE, L"PVLEVEL Furnace"))
 
-		// 4) Specify the Sub-Condition Definitions
-		///////////////////////////////////////////
-		CHECK_RESULT( AddSubConditionDefinition( CONDDEFID_PVLEVEL_RAMP, SUBCONDDEFID_LO_LO_RAMP,
-					  L"LO_LO", L"Ramp < 15", 400, L"Low Low Alarm", FALSE ) )
-		CHECK_RESULT( AddSubConditionDefinition( CONDDEFID_PVLEVEL_RAMP, SUBCONDDEFID_LO_RAMP,
-				  	  L"LO", L"Ramp < 25", 100, L"Low Alarm", FALSE ) )
-		CHECK_RESULT( AddSubConditionDefinition( CONDDEFID_PVLEVEL_RAMP, SUBCONDDEFID_HI_RAMP,
-					  L"HI", L"Ramp > 75", 100, L"High Alarm", FALSE ) )
-		CHECK_RESULT( AddSubConditionDefinition( CONDDEFID_PVLEVEL_RAMP, SUBCONDDEFID_HI_HI_RAMP,
-			   	      L"HI_HI", L"Ramp > 85", 400, L"High High Alarm", FALSE ) )
-		CHECK_RESULT( AddSubConditionDefinition( CONDDEFID_PVLEVEL_FURNACE, SUBCONDDEFID_LO_FURNACE,
-				  	  L"LO", L"Temp < 500", 100, L"Low Alarm", FALSE ) )
-		CHECK_RESULT( AddSubConditionDefinition( CONDDEFID_PVLEVEL_FURNACE, SUBCONDDEFID_HI_FURNACE,
-					  L"HI", L"Temp > 800", 100, L"High Alarm", FALSE ) )
+            // 4) Specify the Sub-Condition Definitions
+            ///////////////////////////////////////////
+            CHECK_RESULT(AddSubConditionDefinition(CONDDEFID_PVLEVEL_RAMP, SUBCONDDEFID_LO_LO_RAMP,
+                L"LO_LO", L"Ramp < 15", 400, L"Low Low Alarm", FALSE))
+            CHECK_RESULT(AddSubConditionDefinition(CONDDEFID_PVLEVEL_RAMP, SUBCONDDEFID_LO_RAMP,
+                L"LO", L"Ramp < 25", 100, L"Low Alarm", FALSE))
+            CHECK_RESULT(AddSubConditionDefinition(CONDDEFID_PVLEVEL_RAMP, SUBCONDDEFID_HI_RAMP,
+                L"HI", L"Ramp > 75", 100, L"High Alarm", FALSE))
+            CHECK_RESULT(AddSubConditionDefinition(CONDDEFID_PVLEVEL_RAMP, SUBCONDDEFID_HI_HI_RAMP,
+                L"HI_HI", L"Ramp > 85", 400, L"High High Alarm", FALSE))
+            CHECK_RESULT(AddSubConditionDefinition(CONDDEFID_PVLEVEL_FURNACE, SUBCONDDEFID_LO_FURNACE,
+                L"LO", L"Temp < 500", 100, L"Low Alarm", FALSE))
+            CHECK_RESULT(AddSubConditionDefinition(CONDDEFID_PVLEVEL_FURNACE, SUBCONDDEFID_HI_FURNACE,
+                L"HI", L"Temp > 800", 100, L"High Alarm", FALSE))
 
-		// 5) Define the Process Areas
-		//////////////////////////////
-		CHECK_RESULT( AddArea( AREAID_ROOT,  AREAID_NORTH, L"PlantNorth" ) )
-		CHECK_RESULT( AddArea( AREAID_NORTH, AREAID_NORTH_DEV1, L"Device1" ) )
-		CHECK_RESULT( AddArea( AREAID_ROOT,  AREAID_SOUTH, L"PlantSouth" ) )
-		CHECK_RESULT( AddArea( AREAID_SOUTH, AREAID_SOUTH_DEV1, L"Device1" ) )
+            // 5) Define the Process Areas
+            //////////////////////////////
+            CHECK_RESULT(AddArea(AREAID_ROOT, AREAID_NORTH, L"PlantNorth"))
+            CHECK_RESULT(AddArea(AREAID_NORTH, AREAID_NORTH_DEV1, L"Device1"))
+            CHECK_RESULT(AddArea(AREAID_ROOT, AREAID_SOUTH, L"PlantSouth"))
+            CHECK_RESULT(AddArea(AREAID_SOUTH, AREAID_SOUTH_DEV1, L"Device1"))
 
-		// 6) Define the Event Sources
-		//////////////////////////////
-		CHECK_RESULT( AddSource( AREAID_ROOT, SRCID_NETADAPT, L"Network Adapter", false ) )
-		CHECK_RESULT( AddSource( AREAID_ROOT, SRCID_SERPORT, L"Serial Port", false ) )
-		CHECK_RESULT( AddSource( AREAID_ROOT, SRCID_SYSTEM, L"System", false ) )
-		CHECK_RESULT( AddSource( AREAID_NORTH_DEV1, SRCID_VALVE, L"Valve", false ) )
-		CHECK_RESULT( AddSource( AREAID_SOUTH_DEV1, SRCID_MOTOR, L"Motor", false ) )
-		CHECK_RESULT( AddSource( AREAID_ROOT, SRCID_TANK_1, L"Level Sensor Tank 1", false ) )
-		CHECK_RESULT( AddSource( AREAID_ROOT, SRCID_TANK_2, L"Level Sensor Tank 2", false ) )
-		CHECK_RESULT( AddSource( AREAID_ROOT, SRCID_HEATING_1, L"Heating 1", false ) )
-		CHECK_RESULT( AddSource( AREAID_ROOT, SRCID_HEATING_2, L"Heating 2", false ) )
-		CHECK_RESULT( AddSource( AREAID_ROOT, SRCID_MULTISRC, L"Multiple Used Source", true ) )
-		CHECK_RESULT( AddExistingSource( AREAID_NORTH_DEV1, SRCID_MULTISRC ) )
-		CHECK_RESULT( AddExistingSource( AREAID_SOUTH_DEV1, SRCID_MULTISRC ) )
+            // 6) Define the Event Sources
+            //////////////////////////////
+            CHECK_RESULT(AddSource(AREAID_ROOT, SRCID_NETADAPT, L"Network Adapter", false))
+            CHECK_RESULT(AddSource(AREAID_ROOT, SRCID_SERPORT, L"Serial Port", false))
+            CHECK_RESULT(AddSource(AREAID_ROOT, SRCID_SYSTEM, L"System", false))
+            CHECK_RESULT(AddSource(AREAID_NORTH_DEV1, SRCID_VALVE, L"Valve", false))
+            CHECK_RESULT(AddSource(AREAID_SOUTH_DEV1, SRCID_MOTOR, L"Motor", false))
+            CHECK_RESULT(AddSource(AREAID_ROOT, SRCID_TANK_1, L"Level Sensor Tank 1", false))
+            CHECK_RESULT(AddSource(AREAID_ROOT, SRCID_TANK_2, L"Level Sensor Tank 2", false))
+            CHECK_RESULT(AddSource(AREAID_ROOT, SRCID_HEATING_1, L"Heating 1", false))
+            CHECK_RESULT(AddSource(AREAID_ROOT, SRCID_HEATING_2, L"Heating 2", false))
+            CHECK_RESULT(AddSource(AREAID_ROOT, SRCID_MULTISRC, L"Multiple Used Source", true))
+            CHECK_RESULT(AddExistingSource(AREAID_NORTH_DEV1, SRCID_MULTISRC))
+            CHECK_RESULT(AddExistingSource(AREAID_SOUTH_DEV1, SRCID_MULTISRC))
 
-		// 7) Define the Event Conditions
-		/////////////////////////////////
-		CHECK_RESULT( AddCondition( SRCID_MULTISRC,  CONDDEFID_HILEVEL_TANK,    CONDID_TANK_1_OVERFLOW ) )
-		CHECK_RESULT( AddCondition( SRCID_TANK_2,    CONDDEFID_HILEVEL_TANK,    CONDID_TANK_2_OVERFLOW ) )
-		CHECK_RESULT( AddCondition( SRCID_HEATING_1, CONDDEFID_HILEVEL_HEATING, CONDID_HEATING_1_EXTEMP ) )
-		CHECK_RESULT( AddCondition( SRCID_HEATING_2, CONDDEFID_HILEVEL_HEATING, CONDID_HEATING_2_EXTEMP ) )
-		CHECK_RESULT( AddCondition( SRCID_TANK_1,    CONDDEFID_PVLEVEL_RAMP,    CONDID_WATER_LEVEL ) )
-	}
-	catch( HRESULT hresEx ) {
-		hr = hresEx;
-	}
+            // 7) Define the Event Conditions
+            /////////////////////////////////
+            CHECK_RESULT(AddCondition(SRCID_MULTISRC, CONDDEFID_HILEVEL_TANK, CONDID_TANK_1_OVERFLOW))
+            CHECK_RESULT(AddCondition(SRCID_TANK_2, CONDDEFID_HILEVEL_TANK, CONDID_TANK_2_OVERFLOW))
+            CHECK_RESULT(AddCondition(SRCID_HEATING_1, CONDDEFID_HILEVEL_HEATING, CONDID_HEATING_1_EXTEMP))
+            CHECK_RESULT(AddCondition(SRCID_HEATING_2, CONDDEFID_HILEVEL_HEATING, CONDID_HEATING_2_EXTEMP))
+            CHECK_RESULT(AddCondition(SRCID_TANK_1, CONDDEFID_PVLEVEL_RAMP, CONDID_WATER_LEVEL))
+    }
+    catch (HRESULT hresEx) {
+        hr = hresEx;
+    }
 
-	// Data Access Sample
-	// ------------------
+    // Data Access Sample
+    // ------------------
 
-	struct
-	{
-		PWCHAR   pwszItemID;
-		VARTYPE  vt;
+    struct
+    {
+        PWCHAR   pwszItemID;
+        VARTYPE  vt;
 
-	} arItemTypes[] = {
-		{ L"Boolean",     VT_BOOL   },
-		{ L"Short",       VT_I2     },
-		{ L"Integer",     VT_I4     },
-		{ L"SingleFloat", VT_R4     },
-		{ L"DoubleFloat", VT_R8     },
-		{ L"Date",        VT_DATE   },
-		{ L"String",      VT_BSTR   },
-		{ L"Byte",        VT_UI1    },
-		{ L"Character",   VT_I1     },
-		{ L"Word",        VT_UI2    },
-		{ L"DoubleWord",  VT_UI4    },
-		{ L"Currency",    VT_CY     },
-		{ NULL,           VT_EMPTY  }
-	};
+    } arItemTypes[] = {
+        { L"Boolean",     VT_BOOL   },
+        { L"Short",       VT_I2     },
+        { L"Integer",     VT_I4     },
+        { L"SingleFloat", VT_R4     },
+        { L"DoubleFloat", VT_R8     },
+        { L"Date",        VT_DATE   },
+        { L"String",      VT_BSTR   },
+        { L"Byte",        VT_UI1    },
+        { L"Character",   VT_I1     },
+        { L"Word",        VT_UI2    },
+        { L"DoubleWord",  VT_UI4    },
+        { L"Currency",    VT_CY     },
+        { NULL,           VT_EMPTY  }
+    };
 
-	struct
-	{
-		PWCHAR			pwszBranch;
-		DaAccessRights  dwAccessRights;
-		DWORD				dwSignalTypeMask;
+    struct
+    {
+        PWCHAR			pwszBranch;
+        DaAccessRights  dwAccessRights;
+        DWORD				dwSignalTypeMask;
 
-	} arIOTypes[] =   {
-		{ L"In.",      Readable,     SIGMASK_INTERN_IN    },
-		{ L"Out.",     Writable,     SIGMASK_INTERN_OUT   },
-		{ L"InOut.",   ReadWritable, SIGMASK_INTERN_INOUT },
-		{ NULL,        NotKnown                            }
-	};
+    } arIOTypes[] = {
+        { L"In.", DaAccessRights::Readable,     SIGMASK_INTERN_IN    },
+        { L"Out.", DaAccessRights::Writable,     SIGMASK_INTERN_OUT   },
+        { L"InOut.", DaAccessRights::ReadWritable, SIGMASK_INTERN_INOUT },
+        { NULL, DaAccessRights::NotKnown                            }
+    };
 
-	VariantInit( &varVal );
-	try {
+    VariantInit(&varVal);
+    try {
 
-		DWORD i = 0, z = 0;
+        DWORD i = 0, z = 0;
 
-		// ---------------------------------------------------------------------
-		// SimpleTypes In/Out/InOut
-		// ---------------------------------------------------------------------
+        // ---------------------------------------------------------------------
+        // SimpleTypes In/Out/InOut
+        // ---------------------------------------------------------------------
 
-		char szMsg[80];
-
-
-		// ---------------------------------------------------------------------
-		// Simulated Data
-		// ---------------------------------------------------------------------
-
-		// SimulatedData.NumberItems
-		// ---------------------------------------------------------------------
-		V_VT(&varVal) = VT_I4;                // Canonical data type
-		V_I4(&varVal) = 0;
-		// Create a new item and add it to the Server Address Space
-
-		CHECK_RESULT(AddItem(
-			L"SimulatedData.NumberItems",       // ItemID
-			Readable,							// DaAccessRights
-			&varVal,									// Data Type and Initial Value
-			&gDeviceItem_NumberItems))					// It's an item with simulated data               
-		gNumberItems++;
-
-		// SimulatedData.Ramp
-		// ---------------------------------------------------------------------
-		V_VT(&varVal) = VT_I4;							// Canonical data type
-		V_I4(&varVal) = 0;
-		// Create a new item and add it to the Server Address Space
-
-		CHECK_RESULT(AddItem(
-			L"SimulatedData.Ramp",						// ItemID
-			Readable,									// DaAccessRights
-			&varVal,									// Data Type and Initial Value
-			&gDeviceItem_SimRamp))						// It's an item with simulated data               
-		gNumberItems++;
-
-		// SimulatedData.Sine
-		// ---------------------------------------------------------------------
-		V_VT(&varVal) = VT_R8;							// canonical data type
-		V_R8(&varVal) = 0.0;
-		// Create a new item and add it to the Server Address Space
-
-		CHECK_RESULT(AddItem(
-			L"SimulatedData.Sine",						// ItemID
-			Readable,									// DaAccessRights
-			&varVal,									// Data Type and Initial Value
-			&gDeviceItem_SimSine))						// It's an item with simulated data               
-		gNumberItems++;
-
-		// SimulatedData.Random
-		// ---------------------------------------------------------------------
-		V_VT(&varVal) = VT_I4;							// canonical data type
-		V_I4(&varVal) = 0;
-		// Create a new item and add it to the Server Address Space
-
-		CHECK_RESULT(AddItem(
-			L"SimulatedData.Random",					// ItemID
-			Readable,									// DaAccessRights
-			&varVal,			  						// Data Type and Initial Value
-			&gDeviceItem_SimRandom))					// It's an item with simulated data               
-		gNumberItems++;
-
-		// Commands.RequestShutdown
-		// ---------------------------------------------------------------------
-		V_VT(&varVal) = VT_BSTR;						// canonical data type
-		V_BSTR(&varVal) = SysAllocString(L"");
-		// Create a new item and add it to the Server Address Space
-
-		CHECK_RESULT(AddItem(
-			L"Commands.RequestShutdown",				// ItemID
-			ReadWritable,								// DaAccessRights
-			&varVal,									// Data Type and Initial Value
-			&gDeviceItem_RequestShutdownCommand))		// It's an item with simulated data               
-		gNumberItems++;
+        char szMsg[80];
 
 
+        // ---------------------------------------------------------------------
+        // Simulated Data
+        // ---------------------------------------------------------------------
 
-		// ---------------------------------------------------------------------
-		// CTT Data
-		// ---------------------------------------------------------------------
+        // SimulatedData.NumberItems
+        // ---------------------------------------------------------------------
+        V_VT(&varVal) = VT_I4;                // Canonical data type
+        V_I4(&varVal) = 0;
+        // Create a new item and add it to the Server Address Space
 
-			i=0;
-			while (arIOTypes[i].pwszBranch) {
-				z = 0;
-				while (arItemTypes[z].pwszItemID) {
+        CHECK_RESULT(AddItem(
+            L"SimulatedData.NumberItems",       // ItemID
+            DaAccessRights::Readable,							// DaAccessRights
+            &varVal,									// Data Type and Initial Value
+            &gDeviceItem_NumberItems))					// It's an item with simulated data               
+            gNumberItems++;
 
-					CreateSampleVariant( arItemTypes[z].vt, &varVal );
+        // SimulatedData.Ramp
+        // ---------------------------------------------------------------------
+        V_VT(&varVal) = VT_I4;							// Canonical data type
+        V_I4(&varVal) = 0;
+        // Create a new item and add it to the Server Address Space
 
-					sprintf(szMsg, "CTT.SimpleTypes.");
+        CHECK_RESULT(AddItem(
+            L"SimulatedData.Ramp",						// ItemID
+            DaAccessRights::Readable,									// DaAccessRights
+            &varVal,									// Data Type and Initial Value
+            &gDeviceItem_SimRamp))						// It's an item with simulated data               
+            gNumberItems++;
 
-					_bstr_t bstrItemID( szMsg );
-					bstrItemID  += arIOTypes[i].pwszBranch;        
-					bstrItemID  += arItemTypes[z].pwszItemID;
-					// Create a new item and add it to the Server Address Space
+        // SimulatedData.Sine
+        // ---------------------------------------------------------------------
+        V_VT(&varVal) = VT_R8;							// canonical data type
+        V_R8(&varVal) = 0.0;
+        // Create a new item and add it to the Server Address Space
 
-					CHECK_RESULT(AddItem(
-						bstrItemID,                   // ItemID
-						arIOTypes[i].dwAccessRights,  // DaAccessRights
-						&varVal,                      // Data Type and Initial Value
-						&deviceItem));
-					CreateSampleVariant( arItemTypes[z].vt, &varVal );
-					CoFileTimeNow( &TimeStamp );
-					SetItemValue(deviceItem, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
-					VariantClear( &varVal);
-					z++;
+        CHECK_RESULT(AddItem(
+            L"SimulatedData.Sine",						// ItemID
+            DaAccessRights::Readable,									// DaAccessRights
+            &varVal,									// Data Type and Initial Value
+            &gDeviceItem_SimSine))						// It's an item with simulated data               
+            gNumberItems++;
 
-				}
-				gNumberItems++;
-				i++;
-			}
+        // SimulatedData.Random
+        // ---------------------------------------------------------------------
+        V_VT(&varVal) = VT_I4;							// canonical data type
+        V_I4(&varVal) = 0;
+        // Create a new item and add it to the Server Address Space
 
-		// ---------------------------------------------------------------------
-		// Arrays In/Out/InOut
-		// ---------------------------------------------------------------------
+        CHECK_RESULT(AddItem(
+            L"SimulatedData.Random",					// ItemID
+            DaAccessRights::Readable,									// DaAccessRights
+            &varVal,			  						// Data Type and Initial Value
+            &gDeviceItem_SimRandom))					// It's an item with simulated data               
+            gNumberItems++;
 
-			i=0;
-			while (arIOTypes[i].pwszBranch) {
-				z = 0;
-				while (arItemTypes[z].pwszItemID) {
+        // Commands.RequestShutdown
+        // ---------------------------------------------------------------------
+        V_VT(&varVal) = VT_BSTR;						// canonical data type
+        V_BSTR(&varVal) = SysAllocString(L"");
+        // Create a new item and add it to the Server Address Space
 
-					CreateSampleVariant( arItemTypes[z].vt | VT_ARRAY, &varVal );
+        CHECK_RESULT(AddItem(
+            L"Commands.RequestShutdown",				// ItemID
+            DaAccessRights::ReadWritable,								// DaAccessRights
+            &varVal,									// Data Type and Initial Value
+            &gDeviceItem_RequestShutdownCommand))		// It's an item with simulated data               
+            gNumberItems++;
 
-				sprintf(szMsg, "CTT.Arrays.");
 
-					_bstr_t bstrItemID( szMsg );
-					bstrItemID  += arIOTypes[i].pwszBranch;           
-					bstrItemID  += arItemTypes[z].pwszItemID;
-					bstrItemID  += L"[]";
-					// Create a new item and add it to the Server Address Space
 
-					CHECK_RESULT( AddItem(
-						bstrItemID,                   // ItemID
-						arIOTypes[i].dwAccessRights,  // DaAccessRights
-						&varVal,                      // Data Type and Initial Value
-						&deviceItem));
-						CreateSampleVariant( arItemTypes[z].vt | VT_ARRAY, &varVal );
-					CoFileTimeNow( &TimeStamp );
-					SetItemValue(deviceItem, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
-					VariantClear( &varVal);
-					z++;
-				}
-				gNumberItems++;
-				i++;
-			}
+        // ---------------------------------------------------------------------
+        // CTT Data
+        // ---------------------------------------------------------------------
 
-		// ---------------------------------------------------------------------
-		// Special Items
-		// ---------------------------------------------------------------------
+        i = 0;
+        while (arIOTypes[i].pwszBranch) {
+            z = 0;
+            while (arItemTypes[z].pwszItemID) {
 
-		// SpecialItems.WithAnalogEUInfo
-		// ---------------------------------------------------------------------
-		V_VT( &varVal )   = VT_UI1;               // canonical data type
-		V_UI1( &varVal )  = 89;
-		// Create a new item and add it to the Server Address Space
+                CreateSampleVariant(arItemTypes[z].vt, &varVal);
 
-		CHECK_RESULT( AddAnalogItem(
-			ITEMID_SPECIAL_EU,            // ItemID
-			ReadWritable,				   // DaAccessRights
-			&varVal,                      // Data Type and Initial Value
-			40.86,                        // Low Limit
-			92.67,                     // High Limit
-			&gItemHandle_SpecialEU));
+                sprintf_s(szMsg, "CTT.SimpleTypes.");
 
-			CreateSampleVariant( VT_UI1, &varVal );
-		CoFileTimeNow( &TimeStamp );
-		SetItemValue(gItemHandle_SpecialEU, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
-		VariantClear( &varVal);
-		gNumberItems++;
+                _bstr_t bstrItemID(szMsg);
+                bstrItemID += arIOTypes[i].pwszBranch;
+                bstrItemID += arItemTypes[z].pwszItemID;
+                // Create a new item and add it to the Server Address Space
 
-		// SpecialItems.WithAnalogEUInfo2
-		// ---------------------------------------------------------------------
-		V_VT( &varVal )   = VT_UI1;               // canonical data type
-		V_UI1( &varVal )  = 21;
-		// Create a new item and add it to the Server Address Space
+                CHECK_RESULT(AddItem(
+                    bstrItemID,                   // ItemID
+                    arIOTypes[i].dwAccessRights,  // DaAccessRights
+                    &varVal,                      // Data Type and Initial Value
+                    &deviceItem));
+                CreateSampleVariant(arItemTypes[z].vt, &varVal);
+                CoFileTimeNow(&TimeStamp);
+                SetItemValue(deviceItem, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
+                VariantClear(&varVal);
+                z++;
 
-		CHECK_RESULT( AddAnalogItem(
-			ITEMID_SPECIAL_EU2,            // ItemID
-			ReadWritable,					// DaAccessRights
-			&varVal,						// Data Type and Initial Value
-			12.50,							// Low Limit
-			27.90,   						// High Limit
-			&gItemHandle_SpecialEU2));
-		CreateSampleVariant(VT_UI1, &varVal);
-		CoFileTimeNow( &TimeStamp );
-		SetItemValue(gItemHandle_SpecialEU2, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
-		VariantClear( &varVal);
+            }
+            gNumberItems++;
+            i++;
+        }
 
-		// Add Custom Property Definitions to the generic server
-		V_VT( &varVal )   = VT_R8;               // canonical data type
-		V_R8(&varVal) = 25.34;
+        // ---------------------------------------------------------------------
+        // Arrays In/Out/InOut
+        // ---------------------------------------------------------------------
+
+        i = 0;
+        while (arIOTypes[i].pwszBranch) {
+            z = 0;
+            while (arItemTypes[z].pwszItemID) {
+
+                CreateSampleVariant(arItemTypes[z].vt | VT_ARRAY, &varVal);
+
+                sprintf_s(szMsg, "CTT.Arrays.");
+
+                _bstr_t bstrItemID(szMsg);
+                bstrItemID += arIOTypes[i].pwszBranch;
+                bstrItemID += arItemTypes[z].pwszItemID;
+                bstrItemID += L"[]";
+                // Create a new item and add it to the Server Address Space
+
+                CHECK_RESULT(AddItem(
+                    bstrItemID,                   // ItemID
+                    arIOTypes[i].dwAccessRights,  // DaAccessRights
+                    &varVal,                      // Data Type and Initial Value
+                    &deviceItem));
+                CreateSampleVariant(arItemTypes[z].vt | VT_ARRAY, &varVal);
+                CoFileTimeNow(&TimeStamp);
+                SetItemValue(deviceItem, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
+                VariantClear(&varVal);
+                z++;
+            }
+            gNumberItems++;
+            i++;
+        }
+
+        // ---------------------------------------------------------------------
+        // Special Items
+        // ---------------------------------------------------------------------
+
+        // SpecialItems.WithAnalogEUInfo
+        // ---------------------------------------------------------------------
+        V_VT(&varVal) = VT_UI1;               // canonical data type
+        V_UI1(&varVal) = 89;
+        // Create a new item and add it to the Server Address Space
+
+        CHECK_RESULT(AddAnalogItem(
+            ITEMID_SPECIAL_EU,            // ItemID
+            DaAccessRights::ReadWritable,				   // DaAccessRights
+            &varVal,                      // Data Type and Initial Value
+            40.86,                        // Low Limit
+            92.67,                     // High Limit
+            &gItemHandle_SpecialEU));
+
+        CreateSampleVariant(VT_UI1, &varVal);
+        CoFileTimeNow(&TimeStamp);
+        SetItemValue(gItemHandle_SpecialEU, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
+        VariantClear(&varVal);
+        gNumberItems++;
+
+        // SpecialItems.WithAnalogEUInfo2
+        // ---------------------------------------------------------------------
+        V_VT(&varVal) = VT_UI1;               // canonical data type
+        V_UI1(&varVal) = 21;
+        // Create a new item and add it to the Server Address Space
+
+        CHECK_RESULT(AddAnalogItem(
+            ITEMID_SPECIAL_EU2,            // ItemID
+            DaAccessRights::ReadWritable,					// DaAccessRights
+            &varVal,						// Data Type and Initial Value
+            12.50,							// Low Limit
+            27.90,   						// High Limit
+            &gItemHandle_SpecialEU2));
+        CreateSampleVariant(VT_UI1, &varVal);
+        CoFileTimeNow(&TimeStamp);
+        SetItemValue(gItemHandle_SpecialEU2, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
+        VariantClear(&varVal);
+
+        // Add Custom Property Definitions to the generic server
+        V_VT(&varVal) = VT_R8;               // canonical data type
+        V_R8(&varVal) = 25.34;
         AddProperty(PROPID_CASING_HEIGHT, L"Casing Height", &varVal);
 
-		V_VT( &varVal )   = VT_BSTR;             // canonical data type
-		V_BSTR( &varVal )  = L"Aluminum";
-		AddProperty(PROPID_CASING_MATERIAL, L"Casing Material", &varVal);
-        
-		V_VT( &varVal )   = VT_BSTR;             // canonical data type
-		V_BSTR( &varVal )  = L"CBM";
-		AddProperty(PROPID_CASING_MANUFACTURER, L"Casing Manufacturer", &varVal);
-		gNumberItems++;
+        V_VT(&varVal) = VT_BSTR;             // canonical data type
+        V_BSTR(&varVal) = L"Aluminum";
+        AddProperty(PROPID_CASING_MATERIAL, L"Casing Material", &varVal);
 
-		// SpecialItems.WithVendorSpecificProperties
-		// ---------------------------------------------------------------------
-		V_VT( &varVal )   = VT_UI1;               // canonical data type
-		V_UI1(&varVal) = 111;
-		// Create a new item and add it to the Server Address Space
-		CHECK_RESULT( AddItem(
-			ITEMID_SPECIAL_PROPERTIES,		// ItemID
-			ReadWritable,					// DaAccessRights
-			&varVal,						// Data Type and Initial Value
-			&gItemHandle_SpecialProperties));
-		CreateSampleVariant(VT_UI1, &varVal);
-		CoFileTimeNow( &TimeStamp );
-		SetItemValue(gItemHandle_SpecialProperties, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
-		VariantClear( &varVal);
-		gNumberItems++;
+        V_VT(&varVal) = VT_BSTR;             // canonical data type
+        V_BSTR(&varVal) = L"CBM";
+        AddProperty(PROPID_CASING_MANUFACTURER, L"Casing Manufacturer", &varVal);
+        gNumberItems++;
 
-
-		int maxLoops = 100;								// Can be increased for performance tests
-
-		for (int y = 0; y < maxLoops; y++) {			// Check all specified items
-			i = 0;
-			while (arIOTypes[i].pwszBranch) {
-				z = 0;
-				while (arItemTypes[z].pwszItemID) {
-
-					CreateSampleVariant(arItemTypes[z].vt, &varVal);
-
-					if (maxLoops == 1)
-					{
-						sprintf(szMsg, "MassItems.SimpleTypes.");
-					}
-					else
-					{
-						sprintf(szMsg, "MassItems.SimpleTypes[%u].", y);
-					}
-
-					_bstr_t bstrItemID(szMsg);
-					bstrItemID += arIOTypes[i].pwszBranch;
-					bstrItemID += arItemTypes[z].pwszItemID;
-					// Create a new item and add it to the Server Address Space
-
-					CHECK_RESULT(AddItem(
-						bstrItemID,						// ItemID
-						arIOTypes[i].dwAccessRights,	// DaAccessRights
-						&varVal,						// Data Type and Initial Value
-						&deviceItem));
-					CreateSampleVariant(arItemTypes[z].vt, &varVal);
-					CoFileTimeNow(&TimeStamp);
-					SetItemValue(deviceItem, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
-					VariantClear(&varVal);
-					z++;
-
-				}
-				gNumberItems++;
-				i++;
-			}
-			if (WaitForSingleObject(m_hTerminateThreadsEvent,
-				10) != WAIT_TIMEOUT) {
-				break;									// Terminate Thread
-			}
-		}
+        // SpecialItems.WithVendorSpecificProperties
+        // ---------------------------------------------------------------------
+        V_VT(&varVal) = VT_UI1;               // canonical data type
+        V_UI1(&varVal) = 111;
+        // Create a new item and add it to the Server Address Space
+        CHECK_RESULT(AddItem(
+            ITEMID_SPECIAL_PROPERTIES,		// ItemID
+            DaAccessRights::ReadWritable,					// DaAccessRights
+            &varVal,						// Data Type and Initial Value
+            &gItemHandle_SpecialProperties));
+        CreateSampleVariant(VT_UI1, &varVal);
+        CoFileTimeNow(&TimeStamp);
+        SetItemValue(gItemHandle_SpecialProperties, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
+        VariantClear(&varVal);
+        gNumberItems++;
 
 
-		// ---------------------------------------------------------------------
-		// Arrays In/Out/InOut
-		// ---------------------------------------------------------------------
+        int maxLoops = 100;								// Can be increased for performance tests
 
-		for (int y = 0; y < maxLoops; y++) {			// Check all specified items
-			i = 0;
-			while (arIOTypes[i].pwszBranch) {
-				z = 0;
-				while (arItemTypes[z].pwszItemID) {
+        for (int y = 0; y < maxLoops; y++) {			// Check all specified items
+            i = 0;
+            while (arIOTypes[i].pwszBranch) {
+                z = 0;
+                while (arItemTypes[z].pwszItemID) {
 
-					CreateSampleVariant(arItemTypes[z].vt | VT_ARRAY, &varVal);
+                    CreateSampleVariant(arItemTypes[z].vt, &varVal);
 
-					if (maxLoops == 1)
-					{
-						sprintf(szMsg, "MassItems.Arrays.");
-					}
-					else
-					{
-						sprintf(szMsg, "MassItems.Arrays[%u].", y);
-					}
+                    if (maxLoops == 1)
+                    {
+                        sprintf_s(szMsg, "MassItems.SimpleTypes.");
+                    }
+                    else
+                    {
+                        sprintf_s(szMsg, "MassItems.SimpleTypes[%u].", y);
+                    }
 
-					_bstr_t bstrItemID(szMsg);
-					bstrItemID += arIOTypes[i].pwszBranch;
-					bstrItemID += arItemTypes[z].pwszItemID;
-					bstrItemID += L"[]";
-					// Create a new item and add it to the Server Address Space
+                    _bstr_t bstrItemID(szMsg);
+                    bstrItemID += arIOTypes[i].pwszBranch;
+                    bstrItemID += arItemTypes[z].pwszItemID;
+                    // Create a new item and add it to the Server Address Space
 
-					CHECK_RESULT(AddItem(
-						bstrItemID,						// ItemID
-						arIOTypes[i].dwAccessRights,	// DaAccessRights
-						&varVal,						// Data Type and Initial Value
-						&deviceItem));
-					CreateSampleVariant(arItemTypes[z].vt | VT_ARRAY, &varVal);
-					CoFileTimeNow(&TimeStamp);
-					SetItemValue(deviceItem, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
-					VariantClear(&varVal);
-					z++;
-				}
-				gNumberItems++;
-				i++;
-			}
-			if (WaitForSingleObject(m_hTerminateThreadsEvent,
-				10) != WAIT_TIMEOUT) {
-				break;									// Terminate Thread
-			}
-		}
+                    CHECK_RESULT(AddItem(
+                        bstrItemID,						// ItemID
+                        arIOTypes[i].dwAccessRights,	// DaAccessRights
+                        &varVal,						// Data Type and Initial Value
+                        &deviceItem));
+                    CreateSampleVariant(arItemTypes[z].vt, &varVal);
+                    CoFileTimeNow(&TimeStamp);
+                    SetItemValue(deviceItem, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
+                    VariantClear(&varVal);
+                    z++;
 
-		gServerState = ServerState::Running;
-		SetServerState(gServerState);
-		_endthreadex(0);                           // The thread terminates.
-		return 0;
+                }
+                gNumberItems++;
+                i++;
+            }
+            if (WaitForSingleObject(m_hTerminateThreadsEvent,
+                10) != WAIT_TIMEOUT) {
+                break;									// Terminate Thread
+            }
+        }
 
-	}
-	catch (HRESULT hresEx) {
-		hr = hresEx;
-	}
-	catch (_com_error &e) {
-		hr = e.Error();
-	}
-	catch (...) {
-		hr = E_FAIL;
-	}
 
-	gServerState = ServerState::Failed;
-	SetServerState(gServerState);
-	_endthreadex(0);                           // The thread terminates.
-	return 0;
+        // ---------------------------------------------------------------------
+        // Arrays In/Out/InOut
+        // ---------------------------------------------------------------------
+
+        for (int y = 0; y < maxLoops; y++) {			// Check all specified items
+            i = 0;
+            while (arIOTypes[i].pwszBranch) {
+                z = 0;
+                while (arItemTypes[z].pwszItemID) {
+
+                    CreateSampleVariant(arItemTypes[z].vt | VT_ARRAY, &varVal);
+
+                    if (maxLoops == 1)
+                    {
+                        sprintf_s(szMsg, "MassItems.Arrays.");
+                    }
+                    else
+                    {
+                        sprintf_s(szMsg, "MassItems.Arrays[%u].", y);
+                    }
+
+                    _bstr_t bstrItemID(szMsg);
+                    bstrItemID += arIOTypes[i].pwszBranch;
+                    bstrItemID += arItemTypes[z].pwszItemID;
+                    bstrItemID += L"[]";
+                    // Create a new item and add it to the Server Address Space
+
+                    CHECK_RESULT(AddItem(
+                        bstrItemID,						// ItemID
+                        arIOTypes[i].dwAccessRights,	// DaAccessRights
+                        &varVal,						// Data Type and Initial Value
+                        &deviceItem));
+                    CreateSampleVariant(arItemTypes[z].vt | VT_ARRAY, &varVal);
+                    CoFileTimeNow(&TimeStamp);
+                    SetItemValue(deviceItem, &varVal, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
+                    VariantClear(&varVal);
+                    z++;
+                }
+                gNumberItems++;
+                i++;
+            }
+            if (WaitForSingleObject(m_hTerminateThreadsEvent,
+                10) != WAIT_TIMEOUT) {
+                break;									// Terminate Thread
+            }
+        }
+
+        gServerState = ServerState::Running;
+        SetServerState(gServerState);
+        _endthreadex(0);                           // The thread terminates.
+        return 0;
+
+    }
+    catch (HRESULT hresEx) {
+        hr = hresEx;
+    }
+    catch (_com_error& e) {
+        hr = e.Error();
+    }
+    catch (...) {
+        hr = E_FAIL;
+    }
+
+    gServerState = ServerState::Failed;
+    SetServerState(gServerState);
+    _endthreadex(0);                           // The thread terminates.
+    return 0;
 
 } // ConfigThread
 
@@ -1172,56 +1174,56 @@ unsigned __stdcall ConfigThread(LPVOID pAttr)
 /// </returns>
 DLLEXP HRESULT DLLCALL OnCreateServerItems()
 {
-	HRESULT     hr = S_OK;
-	DWORD       dwCount = 0;
-	DWORD       dwItemHandle = 0;
+    HRESULT     hr = S_OK;
+    DWORD       dwCount = 0;
+    DWORD       dwItemHandle = 0;
 
-	//
-	// ----- BEGIN SAMPLE IMPLEMENTATION -----
-	//
+    //
+    // ----- BEGIN SAMPLE IMPLEMENTATION -----
+    //
 
-	unsigned uThreadID;                          // Thread identifier
+    unsigned uThreadID;                          // Thread identifier
 
-	m_hTerminateThreadsEvent = CreateEvent(
-		NULL,                // Handle cannot be inherited
-		TRUE,                // Manually reset requested
-		FALSE,               // Initial state is nonsignaled
-		NULL );              // No event object name 
+    m_hTerminateThreadsEvent = CreateEvent(
+        NULL,                // Handle cannot be inherited
+        TRUE,                // Manually reset requested
+        FALSE,               // Initial state is nonsignaled
+        NULL);              // No event object name 
 
-	if (m_hTerminateThreadsEvent == NULL) {      // Cannot create event
-		return HRESULT_FROM_WIN32( GetLastError() );
-	}
+    if (m_hTerminateThreadsEvent == NULL) {      // Cannot create event
+        return HRESULT_FROM_WIN32(GetLastError());
+    }
 
-	m_hConfigThread = (HANDLE)_beginthreadex(
-		NULL,                // No thread security attributes
-		0,                   // Default stack size  
-		ConfigThread,		 // Pointer to thread function 
-		NULL,
-		0,                   // Run thread immediately
-		&uThreadID);         // Thread identifier
+    m_hConfigThread = (HANDLE)_beginthreadex(
+        NULL,                // No thread security attributes
+        0,                   // Default stack size  
+        ConfigThread,		 // Pointer to thread function 
+        NULL,
+        0,                   // Run thread immediately
+        &uThreadID);         // Thread identifier
 
-	if (m_hConfigThread == 0) {                  // Cannot create the thread
-		return HRESULT_FROM_WIN32(GetLastError());
-	}
+    if (m_hConfigThread == 0) {                  // Cannot create the thread
+        return HRESULT_FROM_WIN32(GetLastError());
+    }
 
-	m_hUpdateThread = (HANDLE)_beginthreadex(
-		NULL,                // No thread security attributes
-		0,                   // Default stack size  
-		RefreshThread,		// Pointer to thread function 
-		NULL,   
-		0,                   // Run thread immediately
-		&uThreadID );        // Thread identifier
+    m_hUpdateThread = (HANDLE)_beginthreadex(
+        NULL,                // No thread security attributes
+        0,                   // Default stack size  
+        RefreshThread,		// Pointer to thread function 
+        NULL,
+        0,                   // Run thread immediately
+        &uThreadID);        // Thread identifier
 
 
-	if (m_hUpdateThread == 0) {                  // Cannot create the thread
-		return HRESULT_FROM_WIN32( GetLastError() );
-	}
+    if (m_hUpdateThread == 0) {                  // Cannot create the thread
+        return HRESULT_FROM_WIN32(GetLastError());
+    }
 
-	return hr;
+    return hr;
 
-	//
-	// ----- END SAMPLE IMPLEMENTATION -----
-	//
+    //
+    // ----- END SAMPLE IMPLEMENTATION -----
+    //
 }
 
 
@@ -1246,30 +1248,30 @@ DLLEXP HRESULT DLLCALL OnCreateServerItems()
 /// 
 /// 
 /// </remarks>                                                  
-DLLEXP ClassicServerDefinition* DLLCALL OnGetDaServerDefinition( void )
+DLLEXP ClassicServerDefinition* DLLCALL OnGetDaServerDefinition(void)
 {
-	// Server Registry Definitions
-	// ---------------------------
-	//    Specifies all definitions required to register the server in
-	//    the Registry.
-	static ClassicServerDefinition  DaServerDefinition =  {
-		// CLSID of current Server 
-		L"{A3254FA1-DEBA-498c-AEE4-681899192A17}",
-		// CLSID of current Server AppId
-		L"{AC2F429C-8EAB-496d-8AA1-25AB45A03975}",
-		// Version independent Prog.Id. 
-		L"OpcDllDaAe.DaSample",
-		// Prog.Id. of current Server
-		L"OpcDllDaAe.DaSample.90",
-		// Friendly name of server
-		L"OPC Server SDK DLL DA Sample Server",
-		// Friendly name of current server version
-		L"OPC Server SDK DLL DA Sample Server V9.0",
-		// Companmy Name
-		L"Technosoftware GmbH"
-	};
+    // Server Registry Definitions
+    // ---------------------------
+    //    Specifies all definitions required to register the server in
+    //    the Registry.
+    static ClassicServerDefinition  DaServerDefinition = {
+        // CLSID of current Server 
+        L"{A3254FA1-DEBA-498c-AEE4-681899192A17}",
+        // CLSID of current Server AppId
+        L"{AC2F429C-8EAB-496d-8AA1-25AB45A03975}",
+        // Version independent Prog.Id. 
+        L"OpcDllDaAe.DaSample",
+        // Prog.Id. of current Server
+        L"OpcDllDaAe.DaSample.90",
+        // Friendly name of server
+        L"OPC Server SDK DLL DA Sample Server",
+        // Friendly name of current server version
+        L"OPC Server SDK DLL DA Sample Server V9.0",
+        // Companmy Name
+        L"Technosoftware GmbH"
+    };
 
-	return &DaServerDefinition;
+    return &DaServerDefinition;
 }
 
 
@@ -1294,30 +1296,30 @@ DLLEXP ClassicServerDefinition* DLLCALL OnGetDaServerDefinition( void )
 /// 
 /// 
 /// </remarks>                                                  
-DLLEXP ClassicServerDefinition* DLLCALL OnGetAeServerDefinition( void )
+DLLEXP ClassicServerDefinition* DLLCALL OnGetAeServerDefinition(void)
 {
-	// Server Registry Definitions
-	// ---------------------------
-	//    Specifies all definitions required to register the server in
-	//    the Registry.
-	static ClassicServerDefinition  AeServerDefinition = {
-		// CLSID of current Server 
-		L"{09CFA04A-B682-4604-B929-380D8657FF7B}",
-		// CLSID of current Server AppId
-		L"{5EA3879F-E93C-4af4-895E-0E3E7C0D3386}",
-		// Version independent Prog.Id. (must be same as DA)
-		L"OpcDllDaAe.AeSample",
-		// Prog.Id. of current Server
-		L"OpcDllDaAe.AeSample.90",
-		// Friendly name of server
-		L"OPC Server SDK DLL AE Sample Server",
-		// Friendly name of current server version
-		L"OPC Server SDK DLL AE Sample Server V9.0",
-		// Companmy Name
-		L"Technosoftware GmbH"
-	};
+    // Server Registry Definitions
+    // ---------------------------
+    //    Specifies all definitions required to register the server in
+    //    the Registry.
+    static ClassicServerDefinition  AeServerDefinition = {
+        // CLSID of current Server 
+        L"{09CFA04A-B682-4604-B929-380D8657FF7B}",
+        // CLSID of current Server AppId
+        L"{5EA3879F-E93C-4af4-895E-0E3E7C0D3386}",
+        // Version independent Prog.Id. (must be same as DA)
+        L"OpcDllDaAe.AeSample",
+        // Prog.Id. of current Server
+        L"OpcDllDaAe.AeSample.90",
+        // Friendly name of server
+        L"OPC Server SDK DLL AE Sample Server",
+        // Friendly name of current server version
+        L"OPC Server SDK DLL AE Sample Server V9.0",
+        // Companmy Name
+        L"Technosoftware GmbH"
+    };
 
-	return &AeServerDefinition;
+    return &AeServerDefinition;
 }
 
 
@@ -1365,13 +1367,13 @@ DLLEXP ClassicServerDefinition* DLLCALL OnGetAeServerDefinition( void )
 ///                          that are or could be
 ///                          dynamically added to the
 ///                          server cache.<para></para></param>                    
-DLLEXP HRESULT DLLCALL OnGetDaServerParameters( int* updatePeriod, WCHAR* branchDelimiter, DaBrowseMode* browseMode)
+DLLEXP HRESULT DLLCALL OnGetDaServerParameters(int* updatePeriod, WCHAR* branchDelimiter, DaBrowseMode* browseMode)
 {
-	// Data Cache update rate in milliseconds
-	*updatePeriod = UPDATE_PERIOD;
-	*branchDelimiter = '.';
-	*browseMode = Generic;            // browse the generic server address space
-	return S_OK;
+    // Data Cache update rate in milliseconds
+    *updatePeriod = UPDATE_PERIOD;
+    *branchDelimiter = '.';
+    *browseMode = DaBrowseMode::Generic;            // browse the generic server address space
+    return S_OK;
 }
 
 
@@ -1387,18 +1389,18 @@ DLLEXP HRESULT DLLCALL OnGetDaServerParameters( int* updatePeriod, WCHAR* branch
 /// <returns>
 /// A result code with the result of the operation. Always returns S_OK
 /// </returns>
-DLLEXP HRESULT DLLCALL OnGetDaOptimizationParameters( 
-	bool * useOnRequestItems, 
-	bool * useOnRefreshItems, 
-	bool * useOnAddItem,
-	bool * useOnRemoveItem)
+DLLEXP HRESULT DLLCALL OnGetDaOptimizationParameters(
+    bool* useOnRequestItems,
+    bool* useOnRefreshItems,
+    bool* useOnAddItem,
+    bool* useOnRemoveItem)
 {
-	*useOnRequestItems = true;
-	*useOnRefreshItems = true;
-	*useOnAddItem = false;
-	*useOnRemoveItem = false;
+    *useOnRequestItems = true;
+    *useOnRefreshItems = true;
+    *useOnAddItem = false;
+    *useOnRemoveItem = false;
 
-	return S_OK;
+    return S_OK;
 }
 
 
@@ -1419,7 +1421,7 @@ DLLEXP void DLLCALL OnStartupSignal(char* commandLine)
 /// </summary>
 DLLEXP void DLLCALL OnShutdownSignal()
 {
-	KillThreads();
+    KillThreads();
 }
 
 
@@ -1434,40 +1436,40 @@ DLLEXP void DLLCALL OnShutdownSignal()
 /// A HRESULT code with the result of the operation. S_FALSE if
 /// the item has no custom properties.
 /// </returns>                                                 
-DLLEXP HRESULT DLLCALL OnQueryProperties(				   
-	void*   itemHandle, 
-	int*  noProp,
-	int** ids)
+DLLEXP HRESULT DLLCALL OnQueryProperties(
+    void* itemHandle,
+    int* noProp,
+    int** ids)
 
 {
-	if (itemHandle == gItemHandle_SpecialProperties)
-	{
-		// item has custom properties
-		*noProp = 3;
-		int *propIDs  = new int [*noProp];
-		propIDs[0] = PROPID_CASING_MATERIAL;
-		propIDs[1] = PROPID_CASING_HEIGHT;
-		propIDs[2] = PROPID_CASING_MANUFACTURER;
-		*ids = propIDs;
-		return S_OK;
-	}
-	else if (itemHandle == gItemHandle_SpecialEU || itemHandle == gItemHandle_SpecialEU2)
-	{
-		// item has custom properties
-		*noProp = 2;
-		int *propIDs  = new int [*noProp];
-		propIDs[0] = OPC_PROPERTY_HIGH_EU;
-		propIDs[1] = OPC_PROPERTY_LOW_EU;
-		*ids = propIDs;
-		return S_OK;
-	}
-	else
-	{
-		// item has no custom properties
-		*noProp = 0;
-		*ids = NULL;
-		return S_FALSE;
-	}
+    if (itemHandle == gItemHandle_SpecialProperties)
+    {
+        // item has custom properties
+        *noProp = 3;
+        int* propIDs = new int[*noProp];
+        propIDs[0] = PROPID_CASING_MATERIAL;
+        propIDs[1] = PROPID_CASING_HEIGHT;
+        propIDs[2] = PROPID_CASING_MANUFACTURER;
+        *ids = propIDs;
+        return S_OK;
+    }
+    else if (itemHandle == gItemHandle_SpecialEU || itemHandle == gItemHandle_SpecialEU2)
+    {
+        // item has custom properties
+        *noProp = 2;
+        int* propIDs = new int[*noProp];
+        propIDs[0] = OPC_PROPERTY_HIGH_EU;
+        propIDs[1] = OPC_PROPERTY_LOW_EU;
+        *ids = propIDs;
+        return S_OK;
+    }
+    else
+    {
+        // item has no custom properties
+        *noProp = 0;
+        *ids = NULL;
+        return S_FALSE;
+    }
 }
 
 
@@ -1480,42 +1482,42 @@ DLLEXP HRESULT DLLCALL OnQueryProperties(
 /// <param name="ItemHandle">Item application handle</param>
 /// <param name="propertyID">ID of the property</param>
 /// <param name="propertyValue">Property value</param>
-DLLEXP HRESULT DLLCALL OnGetPropertyValue(				   
-	void* itemHandle, 
-	int propertyId,
-	LPVARIANT propertyValue )
+DLLEXP HRESULT DLLCALL OnGetPropertyValue(
+    void* itemHandle,
+    int propertyId,
+    LPVARIANT propertyValue)
 {
 
-	if (itemHandle == gItemHandle_SpecialProperties)
-	{
-		// Item property is available
-		switch (propertyId)
-		{
-			case PROPID_CASING_HEIGHT:
-				V_VT( propertyValue ) = VT_R8;
-				V_R8( propertyValue )        = 25.45; 
-				break;
-			case PROPID_CASING_MATERIAL:
-				V_VT( propertyValue ) = VT_BSTR;
-				V_BSTR( propertyValue )      = SysAllocString( L"Aluminum" );
-				break;
-			case PROPID_CASING_MANUFACTURER:
-				V_VT( propertyValue ) = VT_BSTR;
-				V_BSTR( propertyValue )      = SysAllocString( L"CBM" );
-				break;
-			default:
-				propertyValue = NULL;
-				return S_FALSE;
-				break;
-		}
-		return S_OK;
-	}
-	else
-	{
-		// Item property is not available
-		propertyValue = NULL;
-		return S_FALSE; //E_INVALID_PID;
-	}
+    if (itemHandle == gItemHandle_SpecialProperties)
+    {
+        // Item property is available
+        switch (propertyId)
+        {
+        case PROPID_CASING_HEIGHT:
+            V_VT(propertyValue) = VT_R8;
+            V_R8(propertyValue) = 25.45;
+            break;
+        case PROPID_CASING_MATERIAL:
+            V_VT(propertyValue) = VT_BSTR;
+            V_BSTR(propertyValue) = SysAllocString(L"Aluminum");
+            break;
+        case PROPID_CASING_MANUFACTURER:
+            V_VT(propertyValue) = VT_BSTR;
+            V_BSTR(propertyValue) = SysAllocString(L"CBM");
+            break;
+        default:
+            propertyValue = NULL;
+            return S_FALSE;
+            break;
+        }
+        return S_OK;
+    }
+    else
+    {
+        // Item property is not available
+        propertyValue = NULL;
+        return S_FALSE; //E_INVALID_PID;
+    }
 }
 
 
@@ -1525,8 +1527,8 @@ DLLEXP HRESULT DLLCALL OnGetPropertyValue(
 //----------------------------------------------------------------------------
 
 /// <summary>
-/// Custom mode browse handling. Provides a way to move ‘up’ or
-/// ‘down’ or 'to' in a hierarchical space.
+/// Custom mode browse handling. Provides a way to move ï¿½upï¿½ or
+/// ï¿½downï¿½ or 'to' in a hierarchical space.
 /// 
 /// Called only from the generic server when <see cref="DaBrowseMode::Custom" text="DaBrowseMode.Custom" />
 /// is configured.
@@ -1544,9 +1546,9 @@ DLLEXP HRESULT DLLCALL OnGetPropertyValue(
 /// </returns>
 /// <remarks>
 /// An error is returned if the passed string does not represent
-/// a ‘branch’.
+/// a ï¿½branchï¿½.
 /// 
-/// Moving Up from the ‘root’ will return E_FAIL.
+/// Moving Up from the ï¿½rootï¿½ will return E_FAIL.
 /// 
 /// \Note DaBrowseDirection.To is new for DA version 2.0.
 /// Clients should be prepared to handle E_INVALIDARG if they
@@ -1578,12 +1580,12 @@ DLLEXP HRESULT DLLCALL OnGetPropertyValue(
 /// <param name="actualPosition">Actual position in the address
 ///                              tree for the calling client.</param>                                                       
 DLLEXP HRESULT DLLCALL OnBrowseChangePosition(
-	DaBrowseDirection browseDirection, 
-	LPCWSTR position, 
-	LPWSTR * actualPosition)
+    DaBrowseDirection browseDirection,
+    LPCWSTR position,
+    LPWSTR* actualPosition)
 {
-	// not supported in this default implementation
-	return E_INVALIDARG;
+    // not supported in this default implementation
+    return E_INVALIDARG;
 }
 
 
@@ -1615,22 +1617,22 @@ DLLEXP HRESULT DLLCALL OnBrowseChangePosition(
 /// ItemIDs satisfied the filter constraints. The strings
 /// returned by the enumerator represent the BRANCHs and LEAFS
 /// contained in the current level. They do NOT include any
-/// delimiters or ‘parent’ names.
+/// delimiters or ï¿½parentï¿½ names.
 /// 
 /// Whenever possible the server should return strings which can
 /// be passed directly to AddItems. However, it is allowed for
-/// the Server to return a ‘hint’ string rather than an actual
+/// the Server to return a ï¿½hintï¿½ string rather than an actual
 /// legal Item ID. For example a PLC with 32000 registers could
-/// return a single string of “0 to 31999” rather than return
+/// return a single string of ï¿½0 to 31999ï¿½ rather than return
 /// 32,000 individual strings from the enumerator. For this
 /// reason (as well as the fact that browser support is optional)
 /// clients should always be prepared to allow manual entry of
-/// ITEM ID strings. In the case of ‘hint’ strings, there is no
+/// ITEM ID strings. In the case of ï¿½hintï¿½ strings, there is no
 /// indication given as to whether the returned string will be
 /// acceptable by AddItem or ValidateItem.
 /// 
 /// Clients are allowed to get and hold Enumerators for more than
-/// one ‘browse position’ at a time.
+/// one ï¿½browse positionï¿½ at a time.
 /// 
 /// Changing the browse position will not affect any String
 /// Enumerator the client already has.
@@ -1670,19 +1672,19 @@ DLLEXP HRESULT DLLCALL OnBrowseChangePosition(
 /// <param name="noItems">Number of items returned</param>
 /// <param name="itemIDs">Items meeting the browse
 ///                       criteria.</param>                                                                    
-DLLEXP HRESULT DLLCALL OnBrowseItemIds(				   
-									   LPWSTR actualPosition, 
-									   DaBrowseType browseFilterType,
-									   LPWSTR filterCriteria, 
-									   VARTYPE dataTypeFilter, 
-									   DaAccessRights accessRightsFilter, 
-									   int * noItems, 
-									   LPWSTR ** itemIDs )
+DLLEXP HRESULT DLLCALL OnBrowseItemIds(
+    LPWSTR actualPosition,
+    DaBrowseType browseFilterType,
+    LPWSTR filterCriteria,
+    VARTYPE dataTypeFilter,
+    DaAccessRights accessRightsFilter,
+    int* noItems,
+    LPWSTR** itemIDs)
 {
-	// not supported in this default implementation
-	*noItems = 0;
-	*itemIDs = NULL;
-	return E_INVALIDARG;
+    // not supported in this default implementation
+    *noItems = 0;
+    *itemIDs = NULL;
+    return E_INVALIDARG;
 }
 
 
@@ -1706,13 +1708,13 @@ DLLEXP HRESULT DLLCALL OnBrowseItemIds(
 /// A HRESULT code with the result of the operation.
 /// </returns>
 /// <remarks>
-/// Provides a way to assemble a ‘fully qualified’ ITEM ID in a
+/// Provides a way to assemble a ï¿½fully qualifiedï¿½ ITEM ID in a
 /// hierarchical space. This is required since the browsing
 /// functions return only the components or tokens which make up
 /// an ITEMID and do NOT return the delimiters used to separate
 /// those tokens. Also, at each point one is browsing just the
-/// names ‘below’ the current node (e.g. the ‘units’ in a
-/// ‘cell’).
+/// names ï¿½belowï¿½ the current node (e.g. the ï¿½unitsï¿½ in a
+/// ï¿½cellï¿½).
 /// 
 /// A client would browse down from AREA1 to REACTOR10 to TIC1001
 /// to CURRENT_VALUE. As noted earlier the client sees only the
@@ -1741,8 +1743,8 @@ DLLEXP HRESULT DLLCALL OnBrowseItemIds(
 /// 
 /// The client must free the returned string.
 /// 
-/// ItemID is the unique ‘key’ to the data, it is considered the
-/// ‘what’ or ‘where’ that allows the server to connect to the
+/// ItemID is the unique ï¿½keyï¿½ to the data, it is considered the
+/// ï¿½whatï¿½ or ï¿½whereï¿½ that allows the server to connect to the
 /// data source.
 /// 
 /// 
@@ -1760,14 +1762,14 @@ DLLEXP HRESULT DLLCALL OnBrowseItemIds(
 ///                          item. This name is used to
 ///                          access the item or add it to a
 ///                          group. </param>                                                                   
-DLLEXP HRESULT DLLCALL OnBrowseGetFullItemId(				   
-	LPWSTR actualPosition, 
-	LPWSTR itemName, 
-	LPWSTR * fullItemId)
+DLLEXP HRESULT DLLCALL OnBrowseGetFullItemId(
+    LPWSTR actualPosition,
+    LPWSTR itemName,
+    LPWSTR* fullItemId)
 {
-	// not supported in this default implementation
-	*fullItemId = NULL;
-	return E_INVALIDARG;
+    // not supported in this default implementation
+    *fullItemId = NULL;
+    return E_INVALIDARG;
 }
 
 
@@ -1787,8 +1789,8 @@ DLLEXP HRESULT DLLCALL OnBrowseGetFullItemId(
 /// </returns>                                                  
 DLLEXP HRESULT DLLCALL OnClientConnect()
 {
-	// client is allowed to connect to server
-	return S_OK;
+    // client is allowed to connect to server
+    return S_OK;
 }
 
 
@@ -1801,7 +1803,7 @@ DLLEXP HRESULT DLLCALL OnClientConnect()
 /// </returns>                                                  
 DLLEXP HRESULT DLLCALL OnClientDisconnect()
 {
-	return S_OK;
+    return S_OK;
 }
 
 
@@ -1824,36 +1826,36 @@ DLLEXP HRESULT DLLCALL OnClientDisconnect()
 ///                            of the items that need to be
 ///                            refreshed.</param>                  
 DLLEXP HRESULT DLLCALL OnRefreshItems(
-	/* in */       int        numItems,
-	/* in */       void    ** deviceItemHandles)
+    /* in */       int        numItems,
+    /* in */       void** deviceItemHandles)
 {
-	//VARIANT     Value;
-	//FILETIME	TimeStamp;
+    //VARIANT     Value;
+    //FILETIME	TimeStamp;
 
-	//
-	// ----- BEGIN SAMPLE IMPLEMENTATION -----
-	//
+    //
+    // ----- BEGIN SAMPLE IMPLEMENTATION -----
+    //
 
-	gDataSimulation.CalculateNewData();
+    gDataSimulation.CalculateNewData();
 
-	//if (numItems == 0)
-	//{
-	//	CoFileTimeNow( &TimeStamp );
-	//	for(int i=0; i<100000; i++ ) 
-	//	{
-	//		// update server cache for this item
-	//		V_I4( &Value ) = gDataSimulation.RampValue();
-	//		V_VT( &Value ) = VT_I4;                 
+    //if (numItems == 0)
+    //{
+    //	CoFileTimeNow( &TimeStamp );
+    //	for(int i=0; i<100000; i++ ) 
+    //	{
+    //		// update server cache for this item
+    //		V_I4( &Value ) = gDataSimulation.RampValue();
+    //		V_VT( &Value ) = VT_I4;                 
 
-	//		SetItemValue(gDeviceItem_SimRamp, &Value, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
+    //		SetItemValue(gDeviceItem_SimRamp, &Value, (OPC_QUALITY_GOOD | OPC_LIMIT_OK), TimeStamp);
 
-	//	}
-	//}
+    //	}
+    //}
 
-	//
-	// ----- END SAMPLE IMPLEMENTATION -----
-	//
-	return S_OK;
+    //
+    // ----- END SAMPLE IMPLEMENTATION -----
+    //
+    return S_OK;
 }
 
 
@@ -1874,9 +1876,9 @@ DLLEXP HRESULT DLLCALL OnRefreshItems(
 ///                            of the items that need to be
 ///                            updated.</param>                    
 DLLEXP HRESULT DLLCALL OnAddItem(
-	/* in */       void*	  deviceItem)
+    /* in */       void* deviceItem)
 {
-	return S_OK;
+    return S_OK;
 }
 
 
@@ -1899,10 +1901,10 @@ DLLEXP HRESULT DLLCALL OnAddItem(
 ///                            of the items that no longer need
 ///                            to be updated.</param>              
 DLLEXP HRESULT DLLCALL OnRemoveItem(
-	/* in */       void*	  deviceItem)
+    /* in */       void* deviceItem)
 {
-	//DeleteItem(deviceItem);
-	return S_OK;
+    //DeleteItem(deviceItem);
+    return S_OK;
 }
 
 
@@ -1926,34 +1928,34 @@ DLLEXP HRESULT DLLCALL OnRemoveItem(
 /// A result code with the result of the operation. 
 /// </returns>                                                     
 DLLEXP HRESULT DLLCALL OnWriteItems(
-	int          numItems,
-	void*     *  itemHandles,
-	OPCITEMVQT*  itemVQTs,
-	HRESULT   *  errors)
+    int          numItems,
+    void** itemHandles,
+    OPCITEMVQT* itemVQTs,
+    HRESULT* errors)
 {
-	//
-	// ----- BEGIN SAMPLE IMPLEMENTATION -----
-	//
+    //
+    // ----- BEGIN SAMPLE IMPLEMENTATION -----
+    //
 
-	for (int i = 0; i < numItems; ++i)              // handle all items
-	{
-		if (itemHandles[i] == gDeviceItem_RequestShutdownCommand)
-    	{
+    for (int i = 0; i < numItems; ++i)              // handle all items
+    {
+        if (itemHandles[i] == gDeviceItem_RequestShutdownCommand)
+        {
             FireShutdownRequest(V_BSTR(&itemVQTs[i].vDataValue));
         }
-		errors[i] = S_OK;						// init to S_OK
-	}
+        errors[i] = S_OK;						// init to S_OK
+    }
 
-	//
-	// ----- END SAMPLE IMPLEMENTATION -----
-	//
-	return S_OK;
+    //
+    // ----- END SAMPLE IMPLEMENTATION -----
+    //
+    return S_OK;
 }
 
-                                                   
-DLLEXP HRESULT DLLCALL  OnTranslateToItemId( int conditionId, int subConditionId, int attributeId, LPWSTR* itemId, LPWSTR* nodeName, CLSID* clsid  )
+
+DLLEXP HRESULT DLLCALL  OnTranslateToItemId(int conditionId, int subConditionId, int attributeId, LPWSTR* itemId, LPWSTR* nodeName, CLSID* clsid)
 {
-	return S_OK;
+    return S_OK;
 }
 
 
@@ -1981,9 +1983,9 @@ DLLEXP HRESULT DLLCALL  OnTranslateToItemId( int conditionId, int subConditionId
 /// returned to the client and no indication events will be
 /// generated.
 /// </remarks>                                                   
-DLLEXP HRESULT DLLCALL  OnAckNotification( int conditionId, int subConditionId )
+DLLEXP HRESULT DLLCALL  OnAckNotification(int conditionId, int subConditionId)
 {
-	return S_OK;
+    return S_OK;
 }
 
 
@@ -1995,22 +1997,22 @@ DLLEXP HRESULT DLLCALL  OnAckNotification( int conditionId, int subConditionId )
  * @return  A LogLevel.
  */
 
-DLLEXP LogLevel DLLCALL OnGetLogLevel( )
+DLLEXP LogLevel DLLCALL OnGetLogLevel()
 {
-	return Trace;
+    return LogLevel::Trace;
 }
 
 /**
  * @fn  void OnGetLogPath(char * logPath);
  *
- * @brief   Gets the logging pazh to be used.
+ * @brief   Gets the logging path to be used.
  *
- * @param [in,out]  logPath    Path to be used for logging.
+ * @param [in,out]  log_path    Path to be used for logging.
  */
 
-DLLEXP void DLLCALL OnGetLogPath(char * logPath)
+DLLEXP void DLLCALL OnGetLogPath(char* log_path)
 {
-	logPath = "";
+    log_path = "";
 }
 
 /// <summary>
@@ -2034,9 +2036,9 @@ DLLEXP void DLLCALL OnGetLogPath(char * logPath)
 /// <param name="fullItemIds">Names of the items which does not
 ///                          exist in the server's cache</param> 
 /// <param name="dataTypes">Data Types requested by the client of the items which does not exist in the server's cache</param> 
-DLLEXP HRESULT DLLCALL OnRequestItems(int numItems, LPWSTR *fullItemIds, VARTYPE *dataTypes)
+DLLEXP HRESULT DLLCALL OnRequestItems(int numItems, LPWSTR* fullItemIds, VARTYPE* dataTypes)
 {
-	// no valid item in this default implementation
-	return S_FALSE;
+    // no valid item in this default implementation
+    return S_FALSE;
 }
 //DOM-IGNORE-END

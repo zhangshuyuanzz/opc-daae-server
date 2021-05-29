@@ -611,8 +611,8 @@ END_CONNECTION_POINT_MAP()
    ///////////////////////////////////////////////////////////////////////////
 
    STDMETHODIMP Read(
-                  /* [in] */                    DWORD             dwCount,
-                  /* [size_is][in] */           OPCHANDLE      *  phServer,
+                  /* [in] */                    DWORD             count,
+                  /* [size_is][in] */           OPCHANDLE      *  serverHandle,
                   /* [in] */                    DWORD             dwTransactionID,
                   /* [out] */                   DWORD          *  pdwCancelID,
                   /* [size_is][size_is][out] */ HRESULT        ** ppErrors

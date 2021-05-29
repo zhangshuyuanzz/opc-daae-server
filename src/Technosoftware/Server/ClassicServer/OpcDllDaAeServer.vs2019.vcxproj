@@ -139,7 +139,6 @@
       <AdditionalIncludeDirectories>.;..\System;..\System\inc32;..\Core;..\Da;..\Ae;..\;..\License;..\..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_OPC_TRACE;TECHNOSOFTWARE_NO_UNWINDOWS;TECHNOSOFTWARE_LICENSE_CHECK;TECHNOSOFTWARE_EXPORTS;WINNDEBUG;_OPC_WIN32;_OPC_SRV_DA;_OPC_SRV_AE;WIN32;_WINDOWS;_NT_SERVICE;_OPC_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
-      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>false</FunctionLevelLinking>
@@ -248,7 +247,6 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>.;..\System;..\System\inc32;..\Core;..\Da;..\Ae;..\;..\License;..\..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_OPC_TRACE;TECHNOSOFTWARE_NO_UNWINDOWS;TECHNOSOFTWARE_LICENSE_CHECK;TECHNOSOFTWARE_EXPORTS;WIN_DEBUG;_OPC_WIN32;_OPC_SRV_DA;_OPC_SRV_AE;WIN32;_WINDOWS;_NT_SERVICE;_OPC_DLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader />
@@ -307,7 +305,6 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>.;..\System;..\System\inc64;..\Core;..\Da;..\Ae;..\;..\License;..\..\..\..\include;..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_OPC_TRACE;TECHNOSOFTWARE_NO_UNWINDOWS;TECHNOSOFTWARE_LICENSE_CHECK;TECHNOSOFTWARE_EXPORTS;WIN64;_WIN64;_DEBUG;_OPC_WIN64;_OPC_SRV_DA;_OPC_SRV_AE;_OPC_SRV_AE;WIN64;_WIN64;_WINDOWS;_NT_SERVICE;_OPC_DLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader />
@@ -366,7 +363,6 @@
       <AdditionalIncludeDirectories>.;..\System;..\System\inc32;..\Core;..\Da;..\Ae;..\;..\License;..\..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_OPC_TRACE;TECHNOSOFTWARE_NO_UNWINDOWS;TECHNOSOFTWARE_LICENSE_CHECK;TECHNOSOFTWARE_EXPORTS;WINNDEBUG;WIN32;_WINDOWS;_NT_SERVICE;_OPC_DLL;_OPC_SRV_DA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
-      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>false</FunctionLevelLinking>

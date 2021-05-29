@@ -61,7 +61,8 @@ HRESULT AeCategory::Create( DWORD dwID, LPCWSTR szDescr, DWORD dwEventType )
       // Initialize class members
       m_dwID         = dwID;
       m_dwEventType  = dwEventType;
-	  m_wsDescr = szDescr;
+      hres = m_wsDescr.SetString( szDescr );
+      if (FAILED( hres )) throw hres;
 
       // Add internal default attributes
 

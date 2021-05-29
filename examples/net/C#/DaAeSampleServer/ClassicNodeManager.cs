@@ -1,9 +1,9 @@
-#region Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
+#region Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
 //-----------------------------------------------------------------------------
-// Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
+// Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
 // Web: https://technosoftware.com 
 // 
-// Purpose: 
+// License: 
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@
 //
 // SPDX-License-Identifier: MIT
 //-----------------------------------------------------------------------------
-#endregion Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
+#endregion Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
 
 #region	Using Directives
 using System;
@@ -281,7 +281,7 @@ namespace ServerPlugin
             #region 3) Specify the Condition Definitions
 
             AddSingleStateConditionDefinition(CatIdSysFail, CondDefIdSysFailTemp,
-                "SYSTEM_FAILURE Temperature", "temp > 100°C", 100, "Excess Temperature", false);
+                "SYSTEM_FAILURE Temperature", "temp > 100ï¿½C", 100, "Excess Temperature", false);
             AddSingleStateConditionDefinition(CatIdSysFail, CondDefIdSysFailHumi,
                 "SYSTEM_FAILURE Humidity", "humidity > 80%", 100, "Humidity too high", false);
             AddSingleStateConditionDefinition(CatIdLevel, CondDefIdHiLevelTank,

@@ -548,20 +548,20 @@ DaGenericGroup::~DaGenericGroup()
 		EnterCriticalSection( &m_CallbackCritSec );
 
       if (m_DataCallback) {
-         _Module.m_pGIT->RevokeInterfaceFromGlobal( m_DataCallback );
+         core_generic_main.m_pGIT->RevokeInterfaceFromGlobal( m_DataCallback );
       }
       if (m_DataTimeCallback) {
-         _Module.m_pGIT->RevokeInterfaceFromGlobal( m_DataTimeCallback );
+         core_generic_main.m_pGIT->RevokeInterfaceFromGlobal( m_DataTimeCallback );
       }
       if (m_WriteCallback) {
-         _Module.m_pGIT->RevokeInterfaceFromGlobal( m_WriteCallback );
+         core_generic_main.m_pGIT->RevokeInterfaceFromGlobal( m_WriteCallback );
       }
 
       if (m_DataTimeCallbackDisp) {
-         _Module.m_pGIT->RevokeInterfaceFromGlobal( m_DataTimeCallbackDisp );
+         core_generic_main.m_pGIT->RevokeInterfaceFromGlobal( m_DataTimeCallbackDisp );
       }
       if (m_WriteCallbackDisp) {
-         _Module.m_pGIT->RevokeInterfaceFromGlobal( m_WriteCallbackDisp );
+         core_generic_main.m_pGIT->RevokeInterfaceFromGlobal( m_WriteCallbackDisp );
       }
 
 		LeaveCriticalSection( &m_CallbackCritSec );

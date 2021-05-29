@@ -34,7 +34,7 @@ using namespace IClassicBaseNodeManager;
 //-------------------------------------------------------------------------
 // CODE
 //-------------------------------------------------------------------------
-extern LPWSTR 	 gVendorName;
+extern LPWSTR 	 vendor_name;
 
 //=========================================================================
 // Construction
@@ -128,6 +128,7 @@ HRESULT AeServer::OnConnectClient(  )
 	HRESULT  hres = S_OK;
 	hres = OnClientConnect();
 
+	LOGFMTT("OnClientConnect() finished with hres = 0x%x.", hres);
 	return hres;
 }
 
@@ -136,6 +137,7 @@ HRESULT AeServer::OnDisconnectClient(  )
 	HRESULT  hres = S_OK;
 	hres = OnClientDisconnect();
 
+	LOGFMTT("OnClientDisconnect() finished with hres = 0x%x.", hres);
 	return hres;
 }
 
@@ -226,6 +228,7 @@ HRESULT AeServer::OnTranslateToItemIdentifier(
 		*pCLSID = CLSID_NULL;
 	}
 #endif
+	LOGFMTT("OnTranslateToItemId() finished with hres = 0x%x.", hres);
 	return hres;
 }
 
@@ -260,6 +263,7 @@ HRESULT AeServer::OnAcknowledgeNotification(DWORD dwCondID, DWORD dwSubConDefID)
 	//
 	hres = OnAckNotification(dwCondID, dwSubConDefID);
 
+	LOGFMTT("OnAckNotification() finished with hres = 0x%x.", hres);
 	return hres;
 
 }
@@ -276,11 +280,28 @@ HRESULT AeServer::OnGetServerState(	/*[out]*/   OPCEVENTSERVERSTATE & serverStat
 										 /*[out]*/   LPWSTR				& vendor )
 {
 	serverState = m_dwServerState;
-	vendor		= gVendorName;
+	vendor		= vendor_name;
+	LOGFMTT("OnGetServerState() finished with hres = 0x%x.", S_OK);
 	return S_OK;
 }
 
 
+
+//=========================================================================
+// FilterName
+// ----------
+//    Filters an Process Area or Event Source name with the specified
+//    filter. This function is called if the client browse the Process
+//    Area Space with the function IEventAreaBrowser::BrowseOPCAreas().
+//
+// Parameters:
+//    szName                     The Process Area or Event Source name
+//    szFilterCriteria           A filter string.
+// Return:
+//    If szName matches szFilterCriteria, return TRUE; if there is
+//    no match, return is FALSE. If either szName or szFilterCriteria is
+//    a NULL pointer, return is FALSE.
+//=========================================================================
 BOOL EventArea::FilterName( LPCWSTR name, LPCWSTR filterCriteria)
 {
 	//

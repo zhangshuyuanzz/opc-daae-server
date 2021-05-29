@@ -48,7 +48,7 @@ public:
    WORD     m_wBuild;         // Build Number of Product
 
 // Operations
-   HRESULT  Create( HMODULE hModule = NULL );
+   HRESULT  Create( HMODULE hModule = nullptr );
    LPCTSTR  GetValue( LPCTSTR szKeyName );
    void     Clear();
 
@@ -110,7 +110,7 @@ private:
 // EXTERNALs
 //-----------------------------------------------------------------------
 
-extern CoreGenericMain _Module;
+extern CoreGenericMain core_generic_main;
 extern IMalloc*   pIMalloc;
 
 EXTERN_C CLSID CLSID_OPCServer;

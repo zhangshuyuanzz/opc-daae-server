@@ -71,7 +71,7 @@ struct ClassicServerDefinition
  * @brief   The set of possible server states.
  */
 
-enum ServerState
+enum class ServerState
 {
     /// The server state is not known.
     Unknown,
@@ -104,7 +104,7 @@ enum ServerState
  *          device.
  */
 
-enum DaAccessRights : int
+enum class DaAccessRights : int
 {
     /// The access rights for this item are unknown.
     NotKnown = 0x00,
@@ -122,14 +122,14 @@ enum DaAccessRights : int
  * @brief    Defines possible item engineering unit types
  */
 
-enum DaEuType : int
+enum class DaEuType : int
 {
     /// No engineering unit information available
     NoEnum = 0x00,
     /// Analog engineering unit - will contain a SAFEARRAY of exactly two doubles (VT_ARRAY | VT_R8) corresponding to the LOW and HI EU range.
     Analog = 0x01,
-    /// Enumerated engeniring unit - will contain a SAFEARRAY of strings *(VT_ARRAY | VT_BSTR) which contains a list of strings(Example: “OPEN”,
-    /// *“CLOSE”, “IN TRANSIT”, etc.) corresponding to sequential numeric values * (0, 1, 2, etc.)
+    /// Enumerated engeniring unit - will contain a SAFEARRAY of strings *(VT_ARRAY | VT_BSTR) which contains a list of strings(Example: ï¿½OPENï¿½,
+    /// *ï¿½CLOSEï¿½, ï¿½IN TRANSITï¿½, etc.) corresponding to sequential numeric values * (0, 1, 2, etc.)
     Enumerated = 0x02
 };
 
@@ -143,7 +143,7 @@ enum DaEuType : int
  *          determine how much functionality they want to implement.
  */
 
-enum DaQualityBits : int
+enum class DaQualityBits : int
 {
     /// The Quality of the value is Good.
     Good = 0x000000C0,
@@ -210,7 +210,7 @@ enum DaQualityBits : int
  *          diagnostic information.
  */
 
-enum DaLimitBits : int
+enum class DaLimitBits : int
 {
     /// The value is free to move up or down
     None = 0x0,
@@ -228,7 +228,7 @@ enum DaLimitBits : int
  * @brief    Defines bit masks for the quality.
  */
 
-enum DaQualityMasks : int
+enum class DaQualityMasks : int
 {
     /// Quality related bits
     QualityMask = +0x00FC,
@@ -275,7 +275,7 @@ struct DaQuality
  * @brief    Browse Mode enumerator.
  */
 
-enum DaBrowseMode
+enum class DaBrowseMode
 {
     /// Browse calls are handled in the generic server and return the item/branches that are defined in the cache.
     Generic = 0,
@@ -289,7 +289,7 @@ enum DaBrowseMode
  * @brief    Enumerator for browse mode selection.
  */
 
-enum DaBrowseType
+enum class DaBrowseType
 {
     /// Select only branches
     Branch = 1,
@@ -305,7 +305,7 @@ enum DaBrowseType
  * @brief   Defines the way to move 'up' or 'down' or 'to' in a hierarchical address space.
  */
 
-enum DaBrowseDirection
+enum class DaBrowseDirection
 {
     /// move 'up' in a hierarchical address space.
     Up = 1,
@@ -321,7 +321,7 @@ enum DaBrowseDirection
  * @brief   Represents the log level.
  */
 
-enum LogLevel
+enum class LogLevel
 {
     /** @brief
      * Represents the Trace log level. This log level is mostly
@@ -1300,7 +1300,7 @@ DLLEXP ClassicServerDefinition* DLLCALL OnGetAeServerDefinition(void);
  *                                  and typically return the items that are or could be
  *                                  dynamically added to the server cache.
  *
- * @return  A HRESULT code with the result of the operation. Always @Returns S_OK.
+ * @return  A HRESULT code with the result of the operation. Always returns S_OK.
  */
 
 DLLEXP HRESULT DLLCALL OnGetDaServerParameters(int* updatePeriod, WCHAR* branchDelimiter, DaBrowseMode* browseMode);
@@ -1478,7 +1478,7 @@ DLLEXP HRESULT DLLCALL OnBrowseChangePosition(
  *          Whenever possible the server should return strings which can be passed directly to
  *          AddItems. However, it is allowed for the Server to return a 'hint' string rather than
  *          an actual legal Item ID. For example a PLC with 32000 registers could return a single
- *          string of “0 to 31999” rather than return 32,000 individual strings from the
+ *          string of ï¿½0 to 31999ï¿½ rather than return 32,000 individual strings from the
  *          enumerator. For this reason (as well as the fact that browser support is optional)
  *          clients should always be prepared to allow manual entry of ITEM ID strings. In the
  *          case of 'hint' strings, there is no indication given as to whether the returned
@@ -1707,19 +1707,6 @@ DLLEXP HRESULT  DLLCALL OnAckNotification(int conditionId, int subConditionId);
  */
 
 DLLEXP HRESULT  DLLCALL OnTranslateToItemId(int conditionId, int subConditionId, int attributeId, LPWSTR* itemId, LPWSTR* nodeName, CLSID* clsid);
-
-/**
- * @fn  void OnGetLicenseInformation(char * licenseOwner, char * serialNumber);
- *
- * @brief   Gets a license key.
- *          
- *          Not used at the moment !
- *
- * @param [in,out]  licenseOwner    Owner of the license.
- * @param [in,out]  serialNumber    Serial Number.
- */
-
-DLLEXP void DLLCALL OnGetLicenseInformation(char * licenseOwner, char * serialNumber);
 
 /**
  * @fn  LogLevel OnGetLogLevel();

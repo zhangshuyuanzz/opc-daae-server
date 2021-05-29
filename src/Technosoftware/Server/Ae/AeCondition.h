@@ -27,7 +27,7 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
-#include "OpcString.h"
+#include "WideString.h"                         // for WideString
 #include "AeConditionDefinition.h"
 
 class AeSource;
@@ -53,7 +53,7 @@ public:
 
 // Attributes
 public:
-   inline COpcString&  Name() { return m_pCondDef->Name(); }
+   inline WideString&  Name() { return m_pCondDef->Name(); }
    inline BOOL IsActive() const { return (m_wNewState & OPC_CONDITION_ACTIVE) ? TRUE : FALSE; }
    inline BOOL IsEnabled() const { return (m_wNewState & OPC_CONDITION_ENABLED) ? TRUE : FALSE; }
    inline BOOL IsAcked() const { return (m_wNewState & OPC_CONDITION_ACKED) ? TRUE : FALSE; }
@@ -88,9 +88,9 @@ protected:
    FILETIME    m_ftCondLastInactive;
    FILETIME    m_ftTime;                  // time that the condition transitioned
                                           // into the new state or sub condition.
-   COpcString m_wsAcknowledgerID;
-   COpcString m_wsAckComment;
-   COpcString m_wsMessage;               // Current Message
+   WideString m_wsAcknowledgerID;
+   WideString m_wsAckComment;
+   WideString m_wsMessage;               // Current Message
 
    DWORD                   m_dwCondID;
    AeSource*           m_pSource;

@@ -27,7 +27,7 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
-#include "OpcString.h"
+#include "WideString.h"                         // for WideString
 
 class AeCategory;
 
@@ -49,19 +49,19 @@ public:
 
 // Attributes
 public:
-   inline COpcString&  Name()               { return m_wsName;      }
-   inline COpcString&  Definition()         { return m_wsDef;       }
+   inline WideString&  Name()               { return m_wsName;      }
+   inline WideString&  Definition()         { return m_wsDef;       }
    inline DWORD         Severity() const     { return m_dwSeverity;  }
-   inline COpcString&  Description()        { return m_wsDescr;     }
+   inline WideString&  Description()        { return m_wsDescr;     }
    inline BOOL          AckRequired() const  { return m_fAckRequired;}
 
 // Implementation
 protected:
-	COpcString    m_wsName;
-	COpcString    m_wsDef;
-	DWORD          m_dwSeverity;
-	COpcString    m_wsDescr;
-	BOOL           m_fAckRequired;               // Defines if acknowledge is required if the
+   WideString    m_wsName;
+   WideString    m_wsDef;
+   DWORD          m_dwSeverity;
+   WideString    m_wsDescr;
+   BOOL           m_fAckRequired;               // Defines if acknowledge is required if the
                                                 // sub condition becomes active.
 };
 
@@ -91,7 +91,7 @@ public:
 // Attributes
 public:
    inline DWORD CondDefID() const { return m_dwCondDefID; }
-   inline COpcString& Name() { return m_wsName; }
+   inline WideString& Name() { return m_wsName; }
    inline AeCategory* Category() { return m_pCategory; }
    inline AeSubConditionDefiniton* DefaultSubCondition() { return m_mapSubCond.m_aVal[0]; }
    inline AeSubConditionDefiniton* SubCondition( DWORD dwSubCondDefID ) { return m_mapSubCond.Lookup( dwSubCondDefID ); }
@@ -123,7 +123,7 @@ protected:
    CComAutoCriticalSection m_csMem;             // lock/unlock data members
    DWORD                   m_dwCondDefID;
    AeCategory*         m_pCategory;
-   COpcString             m_wsName;
+   WideString             m_wsName;
 
    CSimpleMap<DWORD, AeSubConditionDefiniton*> m_mapSubCond;
 };

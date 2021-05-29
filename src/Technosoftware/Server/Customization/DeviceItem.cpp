@@ -25,6 +25,7 @@
 #include "DaDeviceItem.h"
                                                 // Application specific definitions
 #include "DaServer.h"
+#include "Logger.h"
 
 using namespace IClassicBaseNodeManager;
 
@@ -69,6 +70,7 @@ HRESULT DeviceItem::AttachActiveCount( void )
 
 		OnAddItem(this);
 	}
+	LOGFMTT("OnAddItem() finished with hres = 0x%x.", hres);
 	return hres;
 }
 
@@ -78,7 +80,7 @@ HRESULT DeviceItem::AttachActiveCount( void )
 //=========================================================================
 // DetachActiveCount
 //=========================================================================
-HRESULT DeviceItem::DetachActiveCount(void)
+HRESULT DeviceItem::DetachActiveCount( void )
 {
 	   HRESULT        hres;
 
@@ -90,5 +92,6 @@ HRESULT DeviceItem::DetachActiveCount(void)
 			OnRemoveItem(this);
 		}
 	}
+	LOGFMTT("OnRemoveItem() finished with hres = 0x%x.", hres);
 	return hres;
 }

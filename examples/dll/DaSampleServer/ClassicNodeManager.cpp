@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
- * Web: https://technosoftware.com
- *
- * Purpose:
+ * Web: https://technosoftware.com 
+ * 
+ * License:
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -445,10 +445,10 @@ unsigned __stdcall ConfigThread(LPVOID pAttr)
 		DWORD				dwSignalTypeMask;
 
 	} arIOTypes[] =   {
-		{ L"In.",      Readable,     SIGMASK_INTERN_IN    },
-		{ L"Out.",     Writable,     SIGMASK_INTERN_OUT   },
-		{ L"InOut.",   ReadWritable, SIGMASK_INTERN_INOUT },
-		{ NULL,        NotKnown                            }
+		{ L"In.", DaAccessRights::Readable,     SIGMASK_INTERN_IN    },
+		{ L"Out.", DaAccessRights::Writable,     SIGMASK_INTERN_OUT   },
+		{ L"InOut.", DaAccessRights::ReadWritable, SIGMASK_INTERN_INOUT },
+		{ NULL, DaAccessRights::NotKnown                            }
 	};
 
 	VariantInit( &varVal );
@@ -475,7 +475,7 @@ unsigned __stdcall ConfigThread(LPVOID pAttr)
 
 		CHECK_RESULT(AddItem(
 			L"SimulatedData.NumberItems",       // ItemID
-			Readable,							// DaAccessRights
+			DaAccessRights::Readable,							// DaAccessRights
 			&varVal,									// Data Type and Initial Value
 			&gDeviceItem_NumberItems))					// It's an item with simulated data               
 		gNumberItems++;
@@ -488,7 +488,7 @@ unsigned __stdcall ConfigThread(LPVOID pAttr)
 
 		CHECK_RESULT(AddItem(
 			L"SimulatedData.Ramp",						// ItemID
-			Readable,									// DaAccessRights
+			DaAccessRights::Readable,									// DaAccessRights
 			&varVal,									// Data Type and Initial Value
 			&gDeviceItem_SimRamp))						// It's an item with simulated data               
 		gNumberItems++;
@@ -501,7 +501,7 @@ unsigned __stdcall ConfigThread(LPVOID pAttr)
 
 		CHECK_RESULT(AddItem(
 			L"SimulatedData.Sine",						// ItemID
-			Readable,									// DaAccessRights
+			DaAccessRights::Readable,									// DaAccessRights
 			&varVal,									// Data Type and Initial Value
 			&gDeviceItem_SimSine))						// It's an item with simulated data               
 		gNumberItems++;
@@ -514,7 +514,7 @@ unsigned __stdcall ConfigThread(LPVOID pAttr)
 
 		CHECK_RESULT(AddItem(
 			L"SimulatedData.Random",					// ItemID
-			Readable,									// DaAccessRights
+			DaAccessRights::Readable,									// DaAccessRights
 			&varVal,			  						// Data Type and Initial Value
 			&gDeviceItem_SimRandom))					// It's an item with simulated data               
 		gNumberItems++;
@@ -527,7 +527,7 @@ unsigned __stdcall ConfigThread(LPVOID pAttr)
 
 		CHECK_RESULT(AddItem(
 			L"Commands.RequestShutdown",				// ItemID
-			ReadWritable,								// DaAccessRights
+			DaAccessRights::ReadWritable,								// DaAccessRights
 			&varVal,									// Data Type and Initial Value
 			&gDeviceItem_RequestShutdownCommand))		// It's an item with simulated data               
 		gNumberItems++;
@@ -614,7 +614,7 @@ unsigned __stdcall ConfigThread(LPVOID pAttr)
 
 		CHECK_RESULT( AddAnalogItem(
 			ITEMID_SPECIAL_EU,            // ItemID
-			ReadWritable,				   // DaAccessRights
+			DaAccessRights::ReadWritable,				   // DaAccessRights
 			&varVal,                      // Data Type and Initial Value
 			40.86,                        // Low Limit
 			92.67,                     // High Limit
@@ -634,7 +634,7 @@ unsigned __stdcall ConfigThread(LPVOID pAttr)
 
 		CHECK_RESULT( AddAnalogItem(
 			ITEMID_SPECIAL_EU2,            // ItemID
-			ReadWritable,					// DaAccessRights
+			DaAccessRights::ReadWritable,					// DaAccessRights
 			&varVal,						// Data Type and Initial Value
 			12.50,							// Low Limit
 			27.90,   						// High Limit
@@ -665,7 +665,7 @@ unsigned __stdcall ConfigThread(LPVOID pAttr)
 		// Create a new item and add it to the Server Address Space
 		CHECK_RESULT( AddItem(
 			ITEMID_SPECIAL_PROPERTIES,		// ItemID
-			ReadWritable,					// DaAccessRights
+			DaAccessRights::ReadWritable,					// DaAccessRights
 			&varVal,						// Data Type and Initial Value
 			&gItemHandle_SpecialProperties));
 		CreateSampleVariant(VT_UI1, &varVal);
@@ -1008,7 +1008,7 @@ DLLEXP HRESULT DLLCALL OnGetDaServerParameters( int* updatePeriod, WCHAR* branch
 	// Data Cache update rate in milliseconds
 	*updatePeriod = UPDATE_PERIOD;
 	*branchDelimiter = '.';
-	*browseMode = Generic;            // browse the generic server address space
+	*browseMode = DaBrowseMode::Generic;            // browse the generic server address space
 	return S_OK;
 }
 
@@ -1635,7 +1635,7 @@ DLLEXP HRESULT DLLCALL  OnAckNotification( int conditionId, int subConditionId )
 
 DLLEXP LogLevel DLLCALL OnGetLogLevel( )
 {
-	return Info;
+	return LogLevel::Info;
 }
 
 /**

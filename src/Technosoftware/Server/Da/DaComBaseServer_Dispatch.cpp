@@ -297,7 +297,7 @@ STDMETHODIMP DaComBaseServer::get_MajorVersion(
 		return E_INVALIDARG;
 	}
 
-	*pMajorVersion = _Module.m_VersionInfo.m_wMajor;
+	*pMajorVersion = core_generic_main.m_VersionInfo.m_wMajor;
 	return S_OK;
 }
 
@@ -317,7 +317,7 @@ STDMETHODIMP DaComBaseServer::get_MinorVersion(
 		return E_INVALIDARG;
 	}
 
-	*pMinorVersion = _Module.m_VersionInfo.m_wMinor;
+	*pMinorVersion = core_generic_main.m_VersionInfo.m_wMinor;
 	return S_OK;
 }
 
@@ -337,7 +337,7 @@ STDMETHODIMP DaComBaseServer::get_BuildNumber(
 		return E_INVALIDARG;
 	}
 
-	*pBuildNumber = _Module.m_VersionInfo.m_wBuild;
+	*pBuildNumber = core_generic_main.m_VersionInfo.m_wBuild;
 	return S_OK;
 }
 
@@ -358,7 +358,7 @@ STDMETHODIMP DaComBaseServer::get_VendorInfo(
 	}
 
 	// Get the vendor name
-	LPCTSTR pszVendor = _Module.m_VersionInfo.GetValue(_T("CompanyName"));
+	LPCTSTR pszVendor = core_generic_main.m_VersionInfo.GetValue(_T("CompanyName"));
 	if (pszVendor == NULL) {
 		_ASSERTE(0);                            // The company name string must exist in the Version Info
 		return E_FAIL;

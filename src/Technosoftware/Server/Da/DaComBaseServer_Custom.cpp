@@ -313,9 +313,9 @@ STDMETHODIMP DaComBaseServer::GetStatus(
 	if (SUCCEEDED( hres )) {
 		// Set the version numbers
 		LOGFMTI( "Get the version numbers" );
-		pServerStatus->wMajorVersion  = _Module.m_VersionInfo.m_wMajor;
-		pServerStatus->wMinorVersion  = _Module.m_VersionInfo.m_wMinor;
-		pServerStatus->wBuildNumber   = _Module.m_VersionInfo.m_wBuild;
+		pServerStatus->wMajorVersion  = core_generic_main.m_VersionInfo.m_wMajor;
+		pServerStatus->wMinorVersion  = core_generic_main.m_VersionInfo.m_wMinor;
+		pServerStatus->wBuildNumber   = core_generic_main.m_VersionInfo.m_wBuild;
 
 		*ppServerStatus = pServerStatus;          // Attach the server status record to the result pointer.
 	}

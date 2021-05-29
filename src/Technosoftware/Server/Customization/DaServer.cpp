@@ -23,11 +23,10 @@
  //-----------------------------------------------------------------------------
 #include "stdafx.h"                             // Generic server part headers
 
+#include "UtilityFuncs.h"                       // for WSTRClone()
+#include "MatchPattern.h"                       // for default filtering
 // Application specific definitions
 #include "DaServer.h"
-#ifdef _OPC_EVALUATION_VERSION
-#include "LicenseHandler.h"
-#endif
 #include "IClassicBaseNodeManager.h"
 #include "Logger.h"
 
@@ -38,7 +37,7 @@ extern bool 	            gUseOnItemRequest;
 extern bool                 gUseOnRefreshItems;
 extern bool 	            gUseOnAddItem;
 extern bool 	            gUseOnRemoveItem;
-extern WCHAR* 	            gVendorName;
+extern WCHAR* 	 vendor_name;
 
 //-----------------------------------------------------------------------------
 // CODE
@@ -180,7 +179,7 @@ HRESULT DaServer::OnGetServerState(
     case 0:
         bandWidth = BandWidth();          // Current Band With
         serverState = ServerState();        // Current State
-        vendor = gVendorName;
+		vendor = vendor_name;
         break;
 
     default:
@@ -367,14 +366,6 @@ HRESULT DaServer::OnValidateItems(
     LPWSTR		  *fullItemIds;
     VARTYPE		  *dataTypes;
     hres = S_OK;
-
-#ifdef _OPC_EVALUATION_VERSION
-    if (LicenseHandler::IsExpired() || LicenseHandler::IsRestartRequired())
-    {
-		LOGFMTE(const_cast<LPSTR>(LicenseHandler::LicenseStatus().c_str()));
-        return S_FALSE;
-    }
-#endif
 
     m_OnRequestItemsLock.BeginWriting();               // protect item list access
 
@@ -571,13 +562,6 @@ HRESULT DaServer::OnRefreshInputCache(
 
     hresReturn = S_OK;
 
-#ifdef _OPC_EVALUATION_VERSION
-    if (!LicenseHandler::Validate() || LicenseHandler::IsExpired() || LicenseHandler::IsRestartRequired())
-    {
-        return S_OK;
-    }
-#endif
-
     if (numItems == 0) {
         //
         // All data has to be refreshed.
@@ -598,8 +582,9 @@ HRESULT DaServer::OnRefreshInputCache(
 				LOGFMTE("EXCEPTION CAUGHT !!!");
                 hres = S_FALSE;
             }
-	    LOGFMTT("OnRefreshItems(0, NULL) finished with hres = 0x%x.", hres);
+
             if (FAILED(hres)) {
+		LOGFMTE("OnRefreshItems(0, NULL) failed with hres = 0x%x.", hres);
                 return S_FALSE;
             }
         }
@@ -722,12 +707,6 @@ HRESULT DaServer::OnRefreshOutputDevices(
 
 
     hresReturn = S_OK;
-#ifdef _OPC_EVALUATION_VERSION
-    if (!LicenseHandler::Validate() || LicenseHandler::IsExpired() || LicenseHandler::IsRestartRequired())
-    {
-        return S_OK;
-    }
-#endif
 
     if (numItems == 0) {
         // Do nothing for the OPC Server Developer Studio version

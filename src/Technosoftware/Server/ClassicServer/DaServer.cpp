@@ -40,7 +40,7 @@ extern bool 	 gUseOnItemRequest;
 extern bool      gUseOnRefreshItems;
 extern bool 	 gUseOnAddItem;
 extern bool 	 gUseOnRemoveItem;
-extern WCHAR* 	 gVendorName;
+extern WCHAR* 	 vendor_name;
 
 //-----------------------------------------------------------------------------
 // CODE
@@ -198,7 +198,7 @@ HRESULT DaServer::OnGetServerState(
 	case 0:
 		bandWidth = BandWidth();          // Current Band With
 		serverState = ServerState();        // Current State
-		vendor = gVendorName;
+		vendor = vendor_name;
 		break;
 
 	default:

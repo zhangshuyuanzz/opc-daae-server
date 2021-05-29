@@ -178,7 +178,7 @@ void DaBaseServer::GetClients(int * numClientHandles, void* ** clientHandles, LP
             servers_.GetElem(idx, &pSrv);
             if (pSrv && !pSrv->Killed()) {        
                 connectedClients[counter] = pSrv;
-                connectedClientNames[counter] = pSrv->m_pCOpcSrv->GetClientName().Copy();
+                connectedClientNames[counter] = pSrv->m_pCOpcSrv->ClientName.Copy();
                 counter++;
             }
             hres = servers_.Next(idx, &idx);

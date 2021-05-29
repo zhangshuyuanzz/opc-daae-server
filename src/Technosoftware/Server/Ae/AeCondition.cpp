@@ -71,22 +71,25 @@ HRESULT AeCondition::Create(DWORD dwCondID, AeConditionDefiniton* pCondDef, AeSo
     m_pCondDef = pCondDef;
     m_pSource = pSource;
 
-    m_wsAckComment = COpcString("");
+    HRESULT hres = m_wsAckComment.SetString(L"");
+    if (FAILED(hres)) return hres;
 
-    m_wsAcknowledgerID = COpcString("");
+    hres = m_wsAcknowledgerID.SetString(L"");
+    if (FAILED(hres)) return hres;
 
     m_pActiveSubCond = pCondDef->DefaultSubCondition();
     m_dwSeverity = m_pActiveSubCond->Severity();
 
-    m_wsMessage = COpcString(m_pActiveSubCond->Description());
+    hres = m_wsMessage.SetString(m_pActiveSubCond->Description());
+    if (FAILED(hres)) return hres;
 
     m_dwNumOfAttrs = pCondDef->Category()->NumOfAttrs();
     m_pavAttrValues = new _variant_t[m_dwNumOfAttrs];
     if (!m_pavAttrValues) return E_OUTOFMEMORY;
 
     try {                                        // Initialize Internal handled attributes
-        m_pavAttrValues[ATTRNDX_ACKCOMMENT] = (LPCWSTR)m_wsAckComment;
-        HRESULT hres = m_pSource->GetAreaNames(&m_pavAttrValues[ATTRNDX_AREAS]);
+        m_pavAttrValues[ATTRNDX_ACKCOMMENT] = m_wsAckComment;
+        hres = m_pSource->GetAreaNames(&m_pavAttrValues[ATTRNDX_AREAS]);
         if (FAILED(hres)) return hres;
     }
     catch (_com_error &e) {                      // catch _variant_t operation errors
@@ -246,15 +249,17 @@ HRESULT AeCondition::Acknowledge(LPCWSTR szAcknowledgerID, LPCWSTR szComment, FI
     }
     m_ftLastAckTime = m_ftTime;                 // Time of acknowledge
 
-    m_wsAcknowledgerID = COpcString(szAcknowledgerID);
+    hres = m_wsAcknowledgerID.SetString(szAcknowledgerID);
+    if (FAILED(hres)) return hres;
 
     m_wChangeMask = 0;                          // Reset the change mask
 
     if (*szComment) {                           // Only if comment is allowed
-        m_wsAckComment = COpcString(szComment);
+        hres = m_wsAckComment.SetString(szComment);
+        if (FAILED(hres)) return hres;
         // Update the 'ACK COMMENT' attribute if changed
         try {
-            if (V_BSTR(&m_pavAttrValues[ATTRNDX_ACKCOMMENT]) != NULL && wcscmp(V_BSTR(&m_pavAttrValues[ATTRNDX_ACKCOMMENT]), szComment) != 0) {
+            if (wcscmp(V_BSTR(&m_pavAttrValues[ATTRNDX_ACKCOMMENT]), szComment) != 0) {
                 m_pavAttrValues[ATTRNDX_ACKCOMMENT] = szComment;
                 m_wChangeMask |= OPC_CHANGE_ATTRIBUTE;
             }
@@ -551,7 +556,8 @@ HRESULT AeCondition::ChangeState(AeConditionChangeStates& cs, AeEvent** ppEvent,
     //
     LPCWSTR szNewMessage = cs.Message() ? cs.Message() : m_pActiveSubCond->Description();
     if (wcscmp(m_wsMessage, szNewMessage)) {
-        m_wsMessage = COpcString(szNewMessage);
+        hres = m_wsMessage.SetString(szNewMessage);
+        if (FAILED(hres)) return hres;
         m_wChangeMask |= OPC_CHANGE_MESSAGE;
     }
 

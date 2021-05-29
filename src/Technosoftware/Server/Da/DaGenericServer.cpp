@@ -22,7 +22,7 @@
 
 #include "stdafx.h"
 #include <process.h>
-#include <stdio.h>
+#include <cstdio>
 #include "DaGenericServer.h"
 #include "UtilityFuncs.h"
 #include "DaComServer.h"
@@ -35,14 +35,22 @@ DaGenericServer::DaGenericServer()
 {
     m_Created = FALSE;
 
-    m_pServerHandler = NULL;
-    m_pCOpcSrv = NULL;
-    m_FilterCriteria = NULL;
-    m_hUpdateThread = NULL;
+    m_pServerHandler = nullptr
+    ;
+    m_pCOpcSrv = nullptr;
+    m_FilterCriteria = nullptr;
+    m_hUpdateThread = nullptr;
 
-    InitializeCriticalSection(&m_CritSec);
-    InitializeCriticalSection(&m_GroupsCritSec);
-    InitializeCriticalSection(&m_UpdateRateCritSec);
+    try
+    {
+        InitializeCriticalSection(&m_CritSec);
+        InitializeCriticalSection(&m_GroupsCritSec);
+        InitializeCriticalSection(&m_UpdateRateCritSec);
+    }
+    catch (...)
+    {
+    }
+
     CriticalSectionCOMGroupList.Initialize();
 }
 
@@ -64,13 +72,13 @@ HRESULT DaGenericServer::Create(DaBaseServer* pServerClassHandler, DaComBaseServ
 
     // fill position zero with no group
     // so that zero won't be used as a valid group handle!
-    res = m_GroupList.PutElem(0, NULL);
+    res = m_GroupList.PutElem(0, nullptr);
     if (FAILED(res)) {
         return res;
     }
     // actual filter criteria
     m_FilterCriteria = SysAllocString(L"");
-    if (m_FilterCriteria == NULL) {
+    if (m_FilterCriteria == nullptr) {
         return E_OUTOFMEMORY;
     }
     // server class handler
@@ -99,7 +107,7 @@ HRESULT DaGenericServer::Create(DaBaseServer* pServerClassHandler, DaComBaseServ
     // automation browse server address space enumerartions
     m_EnumeratingItemIDs = TRUE;
     // if m_EnumeratingItemIDs == FALSE => enumerating Access Paths
-    m_BrowseItemIDForAccessPath = FALSE;
+    m_BrowseItemIDForAccessPath = nullptr;
 
     m_BrowseFilterType = OPC_FLAT;
     m_DataTypeFilter = VT_EMPTY;
@@ -107,14 +115,14 @@ HRESULT DaGenericServer::Create(DaBaseServer* pServerClassHandler, DaComBaseServ
 
     // Create the update event
     TCHAR szEventName[30];                       // Name must be unique
-    _stprintf_s(szEventName, 30, _T("UpdateEvent_0x%X"), this);
+    _stprintf_s(szEventName,  30, _T("UpdateEvent_0x%X"), this);
 
-    m_hUpdateEvent = CreateEvent(NULL,          // Cannot inherit handle.
-        FALSE,         // Automatically reset.
-        FALSE,         // Nonsignaled initial state.
-        szEventName);
+    m_hUpdateEvent = CreateEvent(nullptr,          // Cannot inherit handle.
+                                 FALSE,         // Automatically reset.
+                                 FALSE,         // Nonsignaled initial state.
+                                 szEventName);
 
-    if (m_hUpdateEvent == NULL) {
+    if (m_hUpdateEvent == nullptr) {
         res = E_FAIL;                             // Cannot create an event.
         goto CreateExit2;
     }
@@ -145,11 +153,11 @@ CreateExit4:
 
 CreateExit3:
     CloseHandle(m_hUpdateEvent);
-    m_hUpdateEvent = NULL;
+    m_hUpdateEvent = nullptr;
 
 CreateExit2:
     SysFreeString(m_FilterCriteria);
-    m_FilterCriteria = NULL;
+    m_FilterCriteria = nullptr;
 
     return res;
 }
@@ -165,7 +173,7 @@ DaGenericServer::~DaGenericServer(void)
         m_pServerHandler->RemoveServerFromList(this);
 
         CloseHandle(m_hUpdateEvent);
-        m_hUpdateEvent = NULL;
+        m_hUpdateEvent = nullptr;
     }
 
     if (m_FilterCriteria) {
@@ -365,7 +373,7 @@ HRESULT DaGenericServer::ReleaseGenericGroup(
         goto ReleaseGenericGroupExit0;
     }
     if (group->Detach() < 0) {         // killed due to request
-        res = m_GroupList.PutElem(ServerGroupHandle, NULL);
+        res = m_GroupList.PutElem(ServerGroupHandle, nullptr);
     }
     res = S_OK;
 
@@ -387,7 +395,7 @@ HRESULT DaGenericServer::RemoveGenericGroup(
     EnterCriticalSection(&m_GroupsCritSec);
 
     m_GroupList.GetElem(ServerGroupHandle, &pGGroup);
-    if ((pGGroup == NULL) || pGGroup->Killed()) {
+    if ((pGGroup == nullptr) || pGGroup->Killed()) {
         hres = OPC_E_INVALIDHANDLE;
     }
     else {
@@ -416,7 +424,7 @@ HRESULT DaGenericServer::SearchGroup(
     DaGenericGroup  *group;
     HRESULT        res;
 
-    if (theName != NULL) {
+    if (theName != nullptr) {
         size = m_GroupList.Size();
         for (i = 0; i < size; i++) {
             res = m_GroupList.GetElem(i, &group);
@@ -430,7 +438,7 @@ HRESULT DaGenericServer::SearchGroup(
             }
         }
     }
-    *theGroup = NULL;
+    *theGroup = nullptr;
     return E_FAIL;
 }
 
@@ -497,7 +505,7 @@ HRESULT DaGenericServer::GetCOMGroup(
     HRESULT                 hr;
     CComObject<DaGroup>*  pCOMGroup;
 
-    *ppUnk = NULL;
+    *ppUnk = nullptr;
 
     CriticalSectionCOMGroupList.BeginReading();                        // Lock reading COM list
 
@@ -612,7 +620,7 @@ HRESULT DaGenericServer::GetGrpList(
         goto GetGrpListExit0;
     }
     *GroupList = new LPUNKNOWN[size];
-    if (*GroupList == NULL) {
+    if (*GroupList == nullptr) {
         res = E_OUTOFMEMORY;
         goto GetGrpListExit0;
     }
@@ -650,7 +658,7 @@ HRESULT DaGenericServer::GetGrpList(
 
                 }
                 else {         // IID_IEnumString
-                    (*GroupList)[count] = (LPUNKNOWN)WSTRClone(group->m_Name, NULL);
+                    (*GroupList)[count] = (LPUNKNOWN)WSTRClone(group->m_Name, nullptr);
                 }
 
                 // count the group
@@ -677,7 +685,7 @@ GetGrpListExit1:
     delete GroupList;
 
 GetGrpListExit0:
-    *GroupList = NULL;            // init results
+    *GroupList = nullptr;            // init results
     *GroupCount = 0;
     return res;
 }
@@ -694,7 +702,7 @@ HRESULT DaGenericServer::FreeGrpList(
 {
     int   sh;
 
-    if ((count == 0) && (GroupList == NULL)) {
+    if ((count == 0) && (GroupList == nullptr)) {
         return S_OK;
     }
 
@@ -702,7 +710,7 @@ HRESULT DaGenericServer::FreeGrpList(
         // free the strings
         for (sh = 0; sh < count; sh++) {
             //delete ( LPOLESTR ) ( GroupList[sh] );     
-            WSTRFree((LPWSTR)(GroupList[sh]), NULL);
+            WSTRFree((LPWSTR)(GroupList[sh]), nullptr);
         }
     }
     else {
@@ -751,7 +759,7 @@ HRESULT DaGenericServer::RefreshPublicGroups()
                 if (FAILED(res)) {
                     // public group isn't there
                     // remove DaGenericGroup from server list and delete
-                    m_GroupList.PutElem(sh, NULL);
+                    m_GroupList.PutElem(sh, nullptr);
                     // invalid handle or group has to be removed
                     group->Kill();
                 }
@@ -794,7 +802,7 @@ HRESULT DaGenericServer::RefreshPublicGroups()
 
                 // create the group from the DaPublicGroup
                 theGroup = new DaGenericGroup();
-                if (theGroup == NULL) {
+                if (theGroup == nullptr) {
                     // unnail the public group
                     pgHandler->ReleaseGroup(pgh);
                     res = E_OUTOFMEMORY;
@@ -856,21 +864,23 @@ HRESULT DaGenericServer::GetGroupUniqueName(long ServerGroupHandle, WCHAR **theN
     DaGenericGroup  *foundGroup;
 
     i = ServerGroupHandle;
-    *theName = new WCHAR[32];
-    if (*theName == NULL) {
+    *theName = new wchar_t[32];
+    if (*theName == nullptr) {
         return E_OUTOFMEMORY;
     }
 
-    wcscpy(*theName, L"Group_");
-    _itow(i, wc, 10);
+    WCHAR defaultGroupName[] = L"Group_";
+
+    wcscpy_s(*theName, wcslen(defaultGroupName)+1, defaultGroupName);
+    _itow_s(i, wc, 10);
     wcscat(*theName, wc);
 
     while ((SUCCEEDED(SearchGroup(TRUE, *theName, &foundGroup, &sgh)))
         || (SUCCEEDED(SearchGroup(FALSE, *theName, &foundGroup, &sgh)))) {
         // it's already a public or private group name
         // generate another
-        wcscpy(*theName, L"Group_");
-        _itow(i, wc, 10);
+        wcscpy_s(*theName, wcslen(*theName), defaultGroupName);
+        _itow_s(i, wc, 10);
         wcscat(*theName, wc);
         i++;
     }
@@ -943,8 +953,8 @@ unsigned __stdcall WaitForUpdateThread(void* pArg)
                         group->m_csKeepAlive.Lock();
                         if (group->KeepAliveTime()) {    // Activated keep-alive callbacks
 
-                            CComObject<DaGroup>* pCOMGroup = NULL;
-                            IUnknown** ppCallback = NULL;
+                            CComObject<DaGroup>* pCOMGroup = nullptr;
+                            IUnknown** ppCallback = nullptr;
 
                             serv->CriticalSectionCOMGroupList.BeginReading();   // lock reading
                             if (SUCCEEDED(serv->m_COMGroupList.GetElem(group->m_hServerGroupHandle, &pCOMGroup))) {
@@ -956,7 +966,7 @@ unsigned __stdcall WaitForUpdateThread(void* pArg)
                                     if (group->m_dwKeepAliveCount == 0) {
                                         group->ResetKeepAliveCounter();
                                         HRESULT hrErr = S_OK;
-                                        pCOMGroup->FireOnDataChange(0, NULL, &hrErr);
+                                        pCOMGroup->FireOnDataChange(0, nullptr, &hrErr);
                                     }
                                 }
                             }
@@ -998,7 +1008,7 @@ HRESULT DaGenericServer::CreateWaitForUpdateThread(void)
     m_UpdateThreadToKill = FALSE;
 
     m_hUpdateThread = (HANDLE)_beginthreadex(
-        NULL,                // No thread security attributes
+        nullptr,                // No thread security attributes
         0,                   // Default stack size  
         WaitForUpdateThread, // Pointer to thread function 
         this,                // Pass class to new thread for access to the AppHandler
@@ -1006,7 +1016,7 @@ HRESULT DaGenericServer::CreateWaitForUpdateThread(void)
         &uThreadID);        // Thread identifier
 
 
-    if (m_hUpdateThread == 0) {                  // Cannot create the thread
+    if (m_hUpdateThread == nullptr) {                  // Cannot create the thread
         return HRESULT_FROM_WIN32(GetLastError());
     }
     return S_OK;
@@ -1032,7 +1042,7 @@ HRESULT DaGenericServer::KillWaitForUpdateThread(void)
             TerminateThread(m_hUpdateThread, 1);
         }
         CloseHandle(m_hUpdateThread);
-        m_hUpdateThread = NULL;
+        m_hUpdateThread = nullptr;
     }
     return S_OK;
 }
@@ -1219,7 +1229,7 @@ HRESULT DaGenericServer::InternalReadMaxAge(
     DWORD dwNumOfItemsToReadFromDevice = 0;
     for (i = 0; i < dwNumOfItems; i++) {         // Check each requested Item
 
-        pDItemsToReadFromDevice[i] = NULL;
+        pDItemsToReadFromDevice[i] = nullptr;
         DaDeviceItem* pDItem = ppDItems[i];
         if (pDItem) {
 
@@ -1313,7 +1323,7 @@ HRESULT DaGenericServer::InternalWriteVQT(
     /* [in][dwNumOfItems] */      BOOL           *  pfPhyval /* = NULL */,
     /* [in] */                    long              hServerGroupHandle /* = -1 */)
 {
-    DaDeviceItem*   pDItem = NULL;
+    DaDeviceItem*   pDItem = nullptr;
     HRESULT        hr = S_OK;
     HRESULT        hrRet = S_OK;
 
@@ -1321,7 +1331,7 @@ HRESULT DaGenericServer::InternalWriteVQT(
     for (DWORD i = 0; i < dwNumOfItems; ++i) {   // Write value into cache
 
         pDItem = ppDItems[i];
-        if (pDItem == NULL) {                     // No refresh requested for this item
+        if (pDItem == nullptr) {                     // No refresh requested for this item
             continue;
         }
 
@@ -1340,7 +1350,7 @@ HRESULT DaGenericServer::InternalWriteVQT(
 
         if (FAILED(hr)) {
             errors[i] = hr;
-            ppDItems[i] = NULL;
+            ppDItems[i] = nullptr;
             pDItem->Detach();                      // Do not refresh output for this item
             hrRet = S_FALSE;
         }

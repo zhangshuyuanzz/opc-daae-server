@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------
 OPC DA/AE Server SDK .NET                  DA Sample Server Customization
 -------------------------------------------------------------------------
-Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
+Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
 
 This C# based customization for the OPC DA/AE Server SDK .NET is the 
 reference sample showing a OPC DA 2.05a/3.00 server implementation.

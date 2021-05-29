@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------
 OPC DA/AE Server SDK DLL                Base DA/AE Sample Server Adaption
 -------------------------------------------------------------------------
-Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
+Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
 
 This C++ based plugin for the OPC DA/AE Server SDK DLL shows a base 
 OPC DA 2.05a/3.00 and AE 1.00/1.10 server implementation.

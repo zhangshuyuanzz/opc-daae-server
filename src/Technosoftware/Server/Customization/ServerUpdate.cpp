@@ -26,9 +26,7 @@
 #include "DaServer.h"
 #include <process.h>
 #include <math.h>                               // for data simulation only
-#ifdef _OPC_EVALUATION_VERSION
-#include "LicenseHandler.h"
-#endif
+#include "Logger.h"
 
 //-----------------------------------------------------------------------------
 // CODE
@@ -96,16 +94,6 @@ unsigned __stdcall NotifyUpdateThread( LPVOID pAttr )
       dwBaseUpdateRate = pDataServer->GetBaseUpdateRate();
 
       pDataServer->m_dwBandWith = dwDuration * 100 / dwBaseUpdateRate;
-
-
-#ifdef _OPC_EVALUATION_VERSION
-	  if (!LicenseHandler::Validate() || LicenseHandler::IsExpired() || LicenseHandler::IsRestartRequired())
-	  {
-		  OPCTRACE(const_cast<LPSTR>(LicenseHandler::LicenseStatus().c_str()));
-		  _endthreadex(0);                           // The thread terminates.
-			return 0;
-      }
-#endif
 
       if (dwDuration > dwBaseUpdateRate) {
          //
@@ -178,11 +166,13 @@ HRESULT DaServer::CreateUpdateThread(void)
 //    of the server.
 //=============================================================================
 HRESULT DaServer::KillUpdateThread(void)
-{
-   if (m_hTerminateThraedsEvent == NULL) {
+{	
+	if (m_hTerminateThraedsEvent == nullptr) {
       return S_OK;
    }
 
+    //LOGFMTT("KillUpdateThread() called.");
+    
    SetEvent( m_hTerminateThraedsEvent );        // Set the signal to shutdown the threads.
 
    if (m_hUpdateThread) {  
@@ -191,11 +181,12 @@ HRESULT DaServer::KillUpdateThread(void)
          TerminateThread( m_hUpdateThread, 1 );
       }
       CloseHandle( m_hUpdateThread );
-      m_hUpdateThread = NULL;
+      m_hUpdateThread = nullptr;
    }
 
    CloseHandle( m_hTerminateThraedsEvent );
-   m_hTerminateThraedsEvent = NULL;
+   m_hTerminateThraedsEvent = nullptr;
 
+   //LOGFMTT("KillUpdateThread() finished with hres = 0x%x.", S_OK);
    return S_OK;
 }

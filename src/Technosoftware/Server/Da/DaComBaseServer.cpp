@@ -40,7 +40,7 @@ DaComBaseServer::DaComBaseServer()
     // initialize server if not yet done
     creationFailed_ = FALSE;
     daBaseServer_ = NULL;
-    res = _Module.InitializeServer();
+    res = core_generic_main.InitializeServer();
     if (FAILED(res)) {
         creationFailed_ = TRUE;
     }
@@ -74,12 +74,15 @@ HRESULT DaComBaseServer::FinalConstructBase()
         return E_FAIL;
     }
 
+    HRESULT hres = OpcCommon::Create();        // Initialize base class
+    if (FAILED(hres)) return hres;
+
     daGenericServer_ = new DaGenericServer();
     if (daGenericServer_ == NULL) {
         return E_OUTOFMEMORY;
     }
 
-	HRESULT hres = daGenericServer_->Create(daBaseServer_, this);
+    hres = daGenericServer_->Create(daBaseServer_, this);
     if (SUCCEEDED(hres)) {
         hres = DaBrowse::Create(&daGenericServer_->m_BrowseData, daBaseServer_);
     }

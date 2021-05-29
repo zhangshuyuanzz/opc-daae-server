@@ -69,7 +69,7 @@ bool 		gUseOnItemRequest = true;
 bool		gUseOnRefreshItems = true;
 bool 		gUseOnAddItem = false;
 bool 		gUseOnRemoveItem = false;
-LPWSTR	    gVendorName;
+LPWSTR	    vendor_name;
 
 
 HINSTANCE   gDLLHandle = 0;                     // DLL Handle from LoadLibrary
@@ -368,9 +368,9 @@ LPSERVERREGDEFS OnGetServerRegistryDefs()
 		LOGFMTI( "   CurrDescr   '%s'", OPCastr );
     }
 
-	gVendorName = pRegDefsDLL->CompanyName;
+	vendor_name = pRegDefsDLL->CompanyName;
 
-	OPCWSTOAS( gVendorName );
+	OPCWSTOAS( vendor_name );
 	LOGFMTT( "   VendorName  '%s'", OPCastr );
     }
 

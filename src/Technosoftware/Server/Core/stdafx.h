@@ -51,10 +51,12 @@
 // The __stdcall calling convention must be used for all
 // functions exported by this DLL.
 //----------------------------------------------------------------------------
+#define DLLEXP
+#define DLLCALL __stdcall
 
-#define DLLEXP    
-#define DLLCALL   
-
+#ifdef _OPC_DLL
+#define DLLIMP __declspec(dllimport)
+#endif
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Developer Studio will insert additional declarations immediately before the previous line.

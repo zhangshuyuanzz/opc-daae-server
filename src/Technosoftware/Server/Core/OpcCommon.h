@@ -21,13 +21,13 @@
 #ifndef __OpcCommon_H
 #define __OpcCommon_H
 
- //DOM-IGNORE-BEGIN
+//DOM-IGNORE-BEGIN
 
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000
 
-#include "OpcString.h"
+#include "WideString.h"                         // for WideString
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -35,67 +35,67 @@
 /////////////////////////////////////////////////////////////////////////////
 class OpcCommon : public IOPCCommon
 {
-	// Construction
+// Construction
 public:
-	OpcCommon();
+   OpcCommon();
+   HRESULT  Create();
 
-	//  Destruction
-	~OpcCommon();
+//  Destruction
+   ~OpcCommon();
 
-	// Operations
+// Operations
 public:
-	///////////////////////////////////////////////////////////////////////////
-	///////////////////////////////// IOPCCommon //////////////////////////////
-	///////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////// IOPCCommon //////////////////////////////
+   ///////////////////////////////////////////////////////////////////////////
 
-	STDMETHODIMP SetLocaleID(
-		/* [in] */                    LCID           dwLcid
-	);
+   STDMETHODIMP SetLocaleID(
+                  /* [in] */                    LCID           dwLcid
+                  );
 
-	STDMETHODIMP GetLocaleID(
-		/* [out] */                   LCID        *  pdwLcid
-	);
+   STDMETHODIMP GetLocaleID(
+                  /* [out] */                   LCID        *  pdwLcid
+                  );
 
-	STDMETHODIMP QueryAvailableLocaleIDs(
-		/* [out] */                   DWORD       *  pdwCount,
-		/* [size_is][size_is][out] */ LCID        ** pdwLcid
-	);
+   STDMETHODIMP QueryAvailableLocaleIDs(
+                  /* [out] */                   DWORD       *  pdwCount,
+                  /* [size_is][size_is][out] */ LCID        ** pdwLcid
+                  );
 
-	STDMETHODIMP GetErrorString(
-		/* [in] */                    HRESULT        dwError,
-		/* [string][out] */           LPWSTR      *  ppString
-	);
+   STDMETHODIMP GetErrorString(
+                  /* [in] */                    HRESULT        dwError,
+                  /* [string][out] */           LPWSTR      *  ppString
+                  );
 
-	STDMETHODIMP SetClientName(
-		/* [string][in] */            LPCWSTR        szName
-	);
+   STDMETHODIMP SetClientName(
+                  /* [string][in] */            LPCWSTR        szName
+                  );
 
-	///////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////////
 
-	HRESULT  GetErrorString(
-		/* [in] */                    HRESULT        dwError,
-		/* [in] */                    LCID           dwLcid,
-		/* [string][out] */           LPWSTR      *  ppString
-	);
+   HRESULT  GetErrorString(
+                  /* [in] */                    HRESULT        dwError,
+                  /* [in] */                    LCID           dwLcid,
+                  /* [string][out] */           LPWSTR      *  ppString
+                  );
 
-	HRESULT  GetClientName(
-		/* [string][out] */           LPWSTR     *   pszName
-	);
+   HRESULT  GetClientName(
+                  /* [string][out] */           LPWSTR     *   pszName
+                  );
 
-	// GetClientName
-	COpcString& GetClientName() { return m_cClientName; }
 
+public:
+    WideString ClientName;                      // The name of the client.
+
+// Impmementation
 protected:
-	CComAutoCriticalSection             // Protect data member access.
-		m_csMembers;            // Functions are called from different threads.
+   LCID        m_dwLCID;               // The default locale ID for the server/client session.
 
-	HRESULT GetOPCErrorString(HRESULT dwError, LCID dwLcid, LPWSTR* ppString);
-	HRESULT GetErrorStringFromModule(HMODULE hModule, HRESULT dwError, LCID dwLcid, LPWSTR* ppString);
+   CComAutoCriticalSection             // Protect data member access.
+               m_csMembers;            // Functions are called from different threads.
 
-private:
-	LCID        m_dwLCID;               // The default locale ID for the server/client session.
-	COpcString m_cClientName;
-	COpcString m_cUserName;
+   HRESULT GetOPCErrorString( HRESULT dwError, LCID dwLcid, LPWSTR* ppString );
+   HRESULT GetErrorStringFromModule( HMODULE hModule, HRESULT dwError, LCID dwLcid, LPWSTR* ppString );
 };
 //DOM-IGNORE-END
 

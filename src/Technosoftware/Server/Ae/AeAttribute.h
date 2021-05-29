@@ -21,13 +21,13 @@
 #ifndef __EVENTATTRIBUTE_H
 #define __EVENTATTRIBUTE_H
 
- //DOM-IGNORE-BEGIN
+//DOM-IGNORE-BEGIN
 
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000
 
-#include "OpcString.h"
+#include "WideString.h"                         // for WideString
 
 //-----------------------------------------------------------------------
 // DEFINES
@@ -45,35 +45,34 @@
 //-----------------------------------------------------------------------
 class AeAttribute
 {
-	// Construction
+// Construction
 public:
-	AeAttribute()
-	{
-		m_dwAttrID = 0;
-		m_vt = VT_EMPTY;
-	}
-	HRESULT Create(DWORD dwAttrID, LPCWSTR szDescr, VARTYPE vt)
-	{
-		m_dwAttrID = dwAttrID;
-		m_vt = vt;
-		m_wsDescr = szDescr;
-		return S_OK;
-	}
+   AeAttribute()
+      {
+         m_dwAttrID = 0;
+         m_vt = VT_EMPTY;
+      }
+   HRESULT Create( DWORD dwAttrID, LPCWSTR szDescr, VARTYPE vt )
+      {
+         m_dwAttrID = dwAttrID;
+         m_vt = vt;
+         return m_wsDescr.SetString( szDescr );
+      }
 
-	// Destruction
-	~AeAttribute() {};
+// Destruction
+   ~AeAttribute() {};
 
-	// Attributes
+// Attributes
 public:
-	inline DWORD			AttrID()    const { return m_dwAttrID; }
-	inline COpcString&		Descr() { return m_wsDescr; }
-	inline VARTYPE			VarType()   const { return m_vt; }
+   inline DWORD         AttrID()    const { return m_dwAttrID; }
+   inline WideString&  Descr()           { return m_wsDescr; }
+   inline VARTYPE       VarType()   const { return m_vt; }
 
-	// Implementation
+// Implementation
 protected:
-	DWORD       m_dwAttrID;
-	COpcString	m_wsDescr;
-	VARTYPE     m_vt;
+   DWORD       m_dwAttrID;
+   WideString m_wsDescr;
+   VARTYPE     m_vt;
 };
 //DOM-IGNORE-END
 

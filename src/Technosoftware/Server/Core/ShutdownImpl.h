@@ -96,7 +96,7 @@ template <class T>
 IOPCShutdownConnectionPointImpl<T>::~IOPCShutdownConnectionPointImpl()
 {
       if (m_dwCookieGITShutdown) {
-         _Module.m_pGIT->RevokeInterfaceFromGlobal( m_dwCookieGITShutdown );
+         core_generic_main.m_pGIT->RevokeInterfaceFromGlobal( m_dwCookieGITShutdown );
       }
 }
 
@@ -134,7 +134,7 @@ STDMETHODIMP IOPCShutdownConnectionPointImpl<T>::Advise(IUnknown* pUnkSink, DWOR
    HRESULT hres = _BaseClassCP::Advise( pUnkSink, pdwCookie );
    if (SUCCEEDED( hres )) {
                                                 // Register the callback interface in the global interface table
-      hres = _Module.m_pGIT->RegisterInterfaceInGlobal( pUnkSink, IID_IOPCShutdown, &m_dwCookieGITShutdown );
+      hres = core_generic_main.m_pGIT->RegisterInterfaceInGlobal( pUnkSink, IID_IOPCShutdown, &m_dwCookieGITShutdown );
       if (FAILED( hres )) {
          m_dwCookieGITShutdown = 0;
          _BaseClassCP::Unadvise( *pdwCookie );
@@ -163,7 +163,7 @@ STDMETHODIMP IOPCShutdownConnectionPointImpl<T>::Unadvise(DWORD dwCookie)
    pT->Lock();                                  // Lock the connection point list
 
    HRESULT hresGIT = S_OK;
-   hresGIT = _Module.m_pGIT->RevokeInterfaceFromGlobal( m_dwCookieGITShutdown );
+   hresGIT = core_generic_main.m_pGIT->RevokeInterfaceFromGlobal( m_dwCookieGITShutdown );
    m_dwCookieGITShutdown = 0;
 
    HRESULT hres = _BaseClassCP::Unadvise( dwCookie );
@@ -212,7 +212,7 @@ HRESULT IOPCShutdownConnectionPointImpl<T>::GetShutdownInterface( IOPCShutdown**
 
    IUnknown** pp = m_vec.begin();               // There can be only one registered shutdown sink.
    if (*pp) {
-      hres = _Module.m_pGIT->GetInterfaceFromGlobal( m_dwCookieGITShutdown, IID_IOPCShutdown, (LPVOID*)ppShutdown );
+      hres = core_generic_main.m_pGIT->GetInterfaceFromGlobal( m_dwCookieGITShutdown, IID_IOPCShutdown, (LPVOID*)ppShutdown );
    }
 
    pT->Unlock();                                // Unlock the connection point list

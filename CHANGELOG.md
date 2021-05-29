@@ -1,5 +1,8 @@
 This is the changelog file for the OPC DA/AE Server Base.
 
+## OPC DA/AE Server Base - 2.0.0
+- Refactored several parts of the server and removed a lot of warnings
+
 ## OPC DA/AE Server Base - 1.0.902
 
 ###	Enhancement

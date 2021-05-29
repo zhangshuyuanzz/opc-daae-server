@@ -1556,7 +1556,7 @@ not to have too many calls outstanding. Otherwise the system resources may get e
           <PropertyValue m="2011-09-08T14:50:18.4189453Z">#FFFFFF</PropertyValue>
         </PropertyDefinitionValue>
         <PropertyDefinitionValue PropertyDefinitionId="08de2c63-c533-49c3-a1d7-52b3995b9bec">
-          <PropertyValue m="2020-01-04T14:23:54.7413359Z">Copyright © 2011-2020 Technosoftware GmbH</PropertyValue>
+          <PropertyValue m="2021-05-29T05:27:56.6652034Z">Copyright © 2011-2021 Technosoftware GmbH</PropertyValue>
         </PropertyDefinitionValue>
         <PropertyDefinitionValue PropertyDefinitionId="76de16a8-8dcb-462c-b636-b20ff0b3c3a1">
           <PropertyValue m="2020-10-07T10:28:48.9227524Z">&lt;a href="mailto:support@technosoftware.com?subject=OPC DA/AE Server Base .NET Documentation Feedback: %%FileName%%"&gt;Send comments&lt;/a&gt; on this topic.</PropertyValue>

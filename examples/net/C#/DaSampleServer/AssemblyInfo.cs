@@ -1,9 +1,9 @@
-#region Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
+#region Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
 //-----------------------------------------------------------------------------
-// Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
+// Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
 // Web: https://technosoftware.com 
 // 
-// Purpose: 
+// License: 
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@
 //
 // SPDX-License-Identifier: MIT
 //-----------------------------------------------------------------------------
-#endregion Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
+#endregion Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
 
 #region	Using Directives
 
@@ -43,7 +43,7 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Technosoftware GmbH")]
 [assembly: AssemblyProduct("OPC DA/AE SERVER SDK .NET Plugin")]
-[assembly: AssemblyCopyright("Copyright © 2011-2020 Technosoftware GmbH")]
+[assembly: AssemblyCopyright("Copyright ï¿½ 2011-2021 Technosoftware GmbH")]
 [assembly: AssemblyTrademark("www.technosoftware.com")]
 [assembly: AssemblyCulture("")]
 //
@@ -57,8 +57,8 @@ using System.Reflection;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.0.419.0")]
-[assembly: AssemblyFileVersion("1.0.419.0")]
+[assembly: AssemblyVersion("9.0.0.0")]
+[assembly: AssemblyFileVersion("9.0.0.0")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 

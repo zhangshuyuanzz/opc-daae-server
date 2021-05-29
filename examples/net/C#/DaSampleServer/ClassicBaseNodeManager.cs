@@ -1,9 +1,9 @@
-#region Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
+#region Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
 //-----------------------------------------------------------------------------
-// Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
+// Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
 // Web: https://technosoftware.com 
 // 
-// Purpose: 
+// License: 
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@
 //
 // SPDX-License-Identifier: MIT
 //-----------------------------------------------------------------------------
-#endregion Copyright (c) 2011-2020 Technosoftware GmbH. All rights reserved
+#endregion Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
 
 #region Using Directives
 
@@ -484,9 +484,9 @@ namespace ServerPlugin
         /// In Milliseconds. This represents the fastest rate at which the server could
         /// obtain data from the underlying data source. The nature of this source is not defined
         /// but is typically a DCS system, a SCADA system, a PLC via a COMM port or network, a
-        /// Device Network, etc. This value generally represents the ‘best case’ fastest
+        /// Device Network, etc. This value generally represents the ï¿½best caseï¿½ fastest
         /// RequestedUpdateRate which could be used if this item were added to an OPCGroup.<br/>
-        /// The accuracy of this value (the ability of the server to attain ‘best case’
+        /// The accuracy of this value (the ability of the server to attain ï¿½best caseï¿½
         /// performance) can be greatly affected by system load and other factors.
         /// </remarks>
         public static readonly DaPropertyId ScanRate = new DaPropertyId("scanRate", 6, Namespaces.OpcDataAccess);
@@ -508,8 +508,8 @@ namespace ServerPlugin
         ///             enginieering unit.
         ///         </item>
         /// 		<item>2 - Enumerated - EUINFO will contain a SAFEARRAY of strings (VT_ARRAY |
-        ///         VT_BSTR) which contains a list of strings (Example: “OPEN”, “CLOSE”, “IN
-        ///         TRANSIT”, etc.) corresponding to sequential numeric values (0, 1, 2,
+        ///         VT_BSTR) which contains a list of strings (Example: ï¿½OPENï¿½, ï¿½CLOSEï¿½, ï¿½IN
+        ///         TRANSITï¿½, etc.) corresponding to sequential numeric values (0, 1, 2,
         ///         etc.)</item>
         /// 	</list>
         /// </remarks>
@@ -524,15 +524,15 @@ namespace ServerPlugin
         /// </summary>
         /// <value>
         /// 	<para>
-        ///         If EUTYPE is “Analog” EUINFO will contain a SAFEARRAY of exactly two doubles
+        ///         If EUTYPE is ï¿½Analogï¿½ EUINFO will contain a SAFEARRAY of exactly two doubles
         ///         (VT_ARRAY | VT_R8) corresponding to the LOW and HI EU range. Items added to the
         ///         generic with the function
         ///         <see cref="ClassicBaseNodeManager.AddAnalogItem">AddAnalogItem</see> automatically have
         ///         this EUINFO.
         ///     </para>
-        /// 	<para>If EUTYPE is “Enumerated” - EUINFO will contain a SAFEARRAY of strings
-        ///     (VT_ARRAY | VT_BSTR) which contains a list of strings (Example: “OPEN”, “CLOSE”,
-        ///     “IN TRANSIT”, etc.) corresponding to sequential numeric values (0, 1, 2,
+        /// 	<para>If EUTYPE is ï¿½Enumeratedï¿½ - EUINFO will contain a SAFEARRAY of strings
+        ///     (VT_ARRAY | VT_BSTR) which contains a list of strings (Example: ï¿½OPENï¿½, ï¿½CLOSEï¿½,
+        ///     ï¿½IN TRANSITï¿½, etc.) corresponding to sequential numeric values (0, 1, 2,
         ///     etc.)</para>
         /// </value>
         public static readonly DaPropertyId EuInfo = new DaPropertyId("euInfo", 8, Namespaces.OpcDataAccess);
@@ -564,28 +564,28 @@ namespace ServerPlugin
         public static readonly DaPropertyId LowEu = new DaPropertyId("lowEU", 103, Namespaces.OpcDataAccess);
         /// <summary>
         /// 	<para>High Instrument Range</para>
-        /// 	<para>Present only for ‘analog’ data. This represents the highest value that can be
+        /// 	<para>Present only for ï¿½analogï¿½ data. This represents the highest value that can be
         ///     returned by the instrument.</para>
         /// 	<para>e.g. 9999.9</para>
         /// </summary>
         public static readonly DaPropertyId HighIr = new DaPropertyId("highIR", 104, Namespaces.OpcDataAccess);
         /// <summary>
         /// 	<para>Low Instrument Range</para>
-        /// 	<para>Present only for ‘analog’ data. This represents the lowest value that can be
+        /// 	<para>Present only for ï¿½analogï¿½ data. This represents the lowest value that can be
         ///     returned by the instrument.</para>
         /// 	<para>e.g. -9999.9</para>
         /// </summary>
         public static readonly DaPropertyId LowIr = new DaPropertyId("lowIR", 105, Namespaces.OpcDataAccess);
         /// <summary>
         /// 	<para>Contact Close Label</para>
-        /// 	<para>Present only for ‘discrete' data. This represents a string to be associated
+        /// 	<para>Present only for ï¿½discrete' data. This represents a string to be associated
         ///     with this contact when it is in the closed (non-zero) state</para>
         /// 	<para>e.g. "RUN", "CLOSE", "ENABLE", "SAFE" ,etc.</para>
         /// </summary>
         public static readonly DaPropertyId CloseLabel = new DaPropertyId("closeLabel", 106, Namespaces.OpcDataAccess);
         /// <summary>
         /// 	<para>Contact Open Label</para>
-        /// 	<para>Present only for ‘discrete' data. This represents a string to be associated
+        /// 	<para>Present only for ï¿½discrete' data. This represents a string to be associated
         ///     with this contact when it is in the open (zero) state</para>
         /// 	<para>e.g. "STOP", "OPEN", "DISABLE", "UNSAFE" ,etc.</para>
         /// </summary>
@@ -687,7 +687,7 @@ namespace ServerPlugin
         Analog = 0x01,
         /// <summary>
         /// Enumerated enginnering unit - will contain a SAFEARRAY of strings (VT_ARRAY |
-        /// VT_BSTR) which contains a list of strings (Example: “OPEN”, “CLOSE”, “IN TRANSIT”,
+        /// VT_BSTR) which contains a list of strings (Example: ï¿½OPENï¿½, ï¿½CLOSEï¿½, ï¿½IN TRANSITï¿½,
         /// etc.) corresponding to sequential numeric values (0, 1, 2, etc.)
         /// </summary>
         Enumerated = 0x02
@@ -723,13 +723,13 @@ namespace ServerPlugin
         /// <summary>A device failure has been detected.</summary>
         BadDeviceFailure = 0x0000000c,
         /// <summary>
-        /// A sensor failure had been detected (the ’Limits’ field can provide additional
+        /// A sensor failure had been detected (the ï¿½Limitsï¿½ field can provide additional
         /// diagnostic information in some situations).
         /// </summary>
         BadSensorFailure = 0x00000010,
         /// <summary>
         /// Communications have failed. However, the last known value is available. Note that
-        /// the ‘age’ of the value may be determined from the time stamp in the item state.
+        /// the ï¿½ageï¿½ of the value may be determined from the time stamp in the item state.
         /// </summary>
         BadLastKnownValue = 0x00000014,
         /// <summary>Communications have failed. There is no last known value is available.</summary>
@@ -751,16 +751,16 @@ namespace ServerPlugin
         Uncertain = 0x00000040,
         /// <summary>
         /// Whatever was writing this value has stopped doing so. The returned value should
-        /// be regarded as ‘stale’. Note that this differs from a BAD value with Substatus
+        /// be regarded as ï¿½staleï¿½. Note that this differs from a BAD value with Substatus
         /// badLastKnownValue (Last Known Value). That status is associated specifically with a
-        /// detectable communications error on a ‘fetched’ value. This error is associated with the
-        /// failure of some external source to ‘put’ something into the value within an acceptable
-        /// period of time. Note that the ‘age’ of the value can be determined from the time stamp
+        /// detectable communications error on a ï¿½fetchedï¿½ value. This error is associated with the
+        /// failure of some external source to ï¿½putï¿½ something into the value within an acceptable
+        /// period of time. Note that the ï¿½ageï¿½ of the value can be determined from the time stamp
         /// in the item state.
         /// </summary>
         UncertainLastUsableValue = 0x00000044,
         /// <summary>
-        /// Either the value has ‘pegged’ at one of the sensor limits (in which case the
+        /// Either the value has ï¿½peggedï¿½ at one of the sensor limits (in which case the
         /// limit field should be set to low or high) or the sensor is otherwise known to be out of
         /// calibration via some form of internal diagnostics (in which case the limit field should
         /// be none).
@@ -768,7 +768,7 @@ namespace ServerPlugin
         UncertainSensorNotAccurate = 0x00000050,
         /// <summary>
         /// The returned value is outside the limits defined for this parameter. Note that in
-        /// this case (per the Fieldbus Specification) the ‘Limits’ field indicates which limit has
+        /// this case (per the Fieldbus Specification) the ï¿½Limitsï¿½ field indicates which limit has
         /// been exceeded but does NOT necessarily imply that the value cannot move farther out of
         /// range.
         /// </summary>
@@ -789,9 +789,9 @@ namespace ServerPlugin
     {
         /// <summary>The value is free to move up or down</summary>
         None = 0x0,
-        /// <summary>The value has ‘pegged’ at some lower limit</summary>
+        /// <summary>The value has ï¿½peggedï¿½ at some lower limit</summary>
         Low = 0x1,
-        /// <summary>The value has ‘pegged’ at some high limit</summary>
+        /// <summary>The value has ï¿½peggedï¿½ at some high limit</summary>
         High = 0x2,
         /// <summary>The value is a constant and cannot move</summary>
         Constant = 0x3
@@ -1116,9 +1116,9 @@ namespace ServerPlugin
     /// </summary>
     public enum DaBrowseDirection
     {
-        /// <summary>move ‘up’ in a hierarchical address space.</summary>
+        /// <summary>move ï¿½upï¿½ in a hierarchical address space.</summary>
         Up = 1,
-        /// <summary>move ‘down’ in a hierarchical address space.</summary>
+        /// <summary>move ï¿½downï¿½ in a hierarchical address space.</summary>
         Down = 2,
         /// <summary>move 'to' in a hierarchical address space.</summary>
         To = 3
@@ -2659,7 +2659,7 @@ namespace ServerPlugin
         }
 
         /// <summary>
-        /// 	<para>Custom mode browse handling. Provides a way to move ‘up’ or ‘down’ or 'to' in
+        /// 	<para>Custom mode browse handling. Provides a way to move ï¿½upï¿½ or ï¿½downï¿½ or 'to' in
         ///     a hierarchical space.</para>
         /// 	<para>
         ///         Called only from the generic server when
@@ -2699,8 +2699,8 @@ namespace ServerPlugin
         /// </returns>
         /// <remarks>
         /// 	<para>An error is returned if the passed string does not represent a
-        ///     ‘branch’.</para>
-        /// 	<para>Moving Up from the ‘root’ will return E_FAIL.</para>
+        ///     ï¿½branchï¿½.</para>
+        /// 	<para>Moving Up from the ï¿½rootï¿½ will return E_FAIL.</para>
         /// 	<para>Note DaBrowseDirection.To is new for DA version 2.0. Clients should be
         ///     prepared to handle BadInvalidArgument if they pass this to a DA 1.0 server.</para>
         /// </remarks>
@@ -2771,17 +2771,17 @@ namespace ServerPlugin
         /// 	<para>The returned enumerator may have nothing to enumerate if no ItemIDs satisfied
         ///     the filter constraints. The strings returned by the enumerator represent the
         ///     BRANCHs and LEAFS contained in the current level. They do NOT include any
-        ///     delimiters or ‘parent’ names.</para>
+        ///     delimiters or ï¿½parentï¿½ names.</para>
         /// 	<para>Whenever possible the server should return strings which can be passed
-        ///     directly to AddItems. However, it is allowed for the Server to return a ‘hint’
+        ///     directly to AddItems. However, it is allowed for the Server to return a ï¿½hintï¿½
         ///     string rather than an actual legal Item ID. For example a PLC with 32000 registers
-        ///     could return a single string of “0 to 31999” rather than return 32,000 individual
+        ///     could return a single string of ï¿½0 to 31999ï¿½ rather than return 32,000 individual
         ///     strings from the enumerator. For this reason (as well as the fact that browser
         ///     support is optional) clients should always be prepared to allow manual entry of
-        ///     ITEM ID strings. In the case of ‘hint’ strings, there is no indication given as to
+        ///     ITEM ID strings. In the case of ï¿½hintï¿½ strings, there is no indication given as to
         ///     whether the returned string will be acceptable by AddItem or ValidateItem.</para>
-        /// 	<para>Clients are allowed to get and hold Enumerators for more than one ‘browse
-        ///     position’ at a time.</para>
+        /// 	<para>Clients are allowed to get and hold Enumerators for more than one ï¿½browse
+        ///     positionï¿½ at a time.</para>
         /// 	<para>Changing the browse position will not affect any String Enumerator the client
         ///     already has.</para>
         /// 	<para>The client must Release each Enumerator when he is done with it.</para>
@@ -2840,11 +2840,11 @@ namespace ServerPlugin
         /// </summary>
         /// <returns>A <see cref="StatusCodes"/> code with the result of the operation.</returns>
         /// <remarks>
-        /// 	<para>Provides a way to assemble a ‘fully qualified’ ITEM ID in a hierarchical
+        /// 	<para>Provides a way to assemble a ï¿½fully qualifiedï¿½ ITEM ID in a hierarchical
         ///     space. This is required since the browsing functions return only the components or
         ///     tokens which make up an ITEMID and do NOT return the delimiters used to separate
-        ///     those tokens. Also, at each point one is browsing just the names ‘below’ the
-        ///     current node (e.g. the ‘units’ in a ‘cell’).</para>
+        ///     those tokens. Also, at each point one is browsing just the names ï¿½belowï¿½ the
+        ///     current node (e.g. the ï¿½unitsï¿½ in a ï¿½cellï¿½).</para>
         /// 	<para>A client would browse down from AREA1 to REACTOR10 to TIC1001 to
         ///     CURRENT_VALUE. As noted earlier the client sees only the components, not the
         ///     delimiters which are likely to be very server specific. The function rebuilds the
@@ -2863,8 +2863,8 @@ namespace ServerPlugin
         ///     (CURRENT_VALUE). The resulting string might fail if passed to AddItem but could be
         ///     passed to ChangeBrowsePosition using OPC_BROWSE_TO.</para>
         /// 	<para>The client must free the returned string.</para>
-        /// 	<para>ItemID is the unique ‘key’ to the data, it is considered the ‘what’ or
-        ///     ‘where’ that allows the server to connect to the data source.</para>
+        /// 	<para>ItemID is the unique ï¿½keyï¿½ to the data, it is considered the ï¿½whatï¿½ or
+        ///     ï¿½whereï¿½ that allows the server to connect to the data source.</para>
         /// </remarks>
         /// <param name="actualPosition">Fully qualified name of the current branch</param>
         /// <param name="itemName">

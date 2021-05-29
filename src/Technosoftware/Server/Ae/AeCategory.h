@@ -21,13 +21,13 @@
 #ifndef __EVENTCATEGORY_H
 #define __EVENTCATEGORY_H
 
- //DOM-IGNORE-BEGIN
+//DOM-IGNORE-BEGIN
 
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000
 
-#include "OpcString.h"
+#include "WideString.h"                         // for WideString
 
 class AeAttribute;
 class AeConditionDefiniton;
@@ -38,60 +38,57 @@ class AeConditionDefiniton;
 //-----------------------------------------------------------------------
 class AeCategory
 {
-	// Construction / Destruction
+// Construction / Destruction
 public:
-	AeCategory();                            // Default Constructor
-	HRESULT Create(DWORD dwID, LPCWSTR szDescr, DWORD dwEventType);
-	~AeCategory();                           // Destructor
+   AeCategory();                            // Default Constructor
+   HRESULT Create( DWORD dwID, LPCWSTR szDescr, DWORD dwEventType );
+   ~AeCategory();                           // Destructor
 
- // Attributes
+// Attributes
 public:
-	inline DWORD         CatID()     const { return m_dwID; }
-	inline COpcString&	Descr() { return m_wsDescr; }
-	inline DWORD         EventType() const { return m_dwEventType; }
-	inline DWORD         NumOfAttrs() {
-		m_csAttrMap.Lock();
-		DWORD dwNum = m_mapAttributes.GetSize();
-		m_csAttrMap.Unlock();
-		return dwNum;
-	}
-	inline DWORD         NumOfInternalAttrs()
-		const {
-		return m_dwNumOfInternalAttrs;
-	}
+   inline DWORD         CatID()     const { return m_dwID; }
+   inline WideString&  Descr()           { return m_wsDescr; }
+   inline DWORD         EventType() const { return m_dwEventType; }
+   inline DWORD         NumOfAttrs()      {  m_csAttrMap.Lock();
+                                             DWORD dwNum = m_mapAttributes.GetSize();
+                                             m_csAttrMap.Unlock();
+                                             return dwNum;
+                                          }
+   inline DWORD         NumOfInternalAttrs()
+                                    const { return m_dwNumOfInternalAttrs; }
 
 
-	// Operations
+// Operations
 public:
-	HRESULT  AddEventAttribute(AeAttribute* pAttr);
-	BOOL     ExistEventAttribute(DWORD dwAttrID);
-	BOOL     ExistEventAttribute(LPCWSTR szAttrDescr);
-	HRESULT  QueryEventAttributes(DWORD    *  pdwCount,
-		DWORD    ** ppdwAttrIDs,
-		LPWSTR   ** ppszAttrDescs,
-		VARTYPE  ** ppvtAttrTypes);
-	HRESULT  GetAttributeIDs(DWORD* pdwCount, DWORD** ppdwAttrIDs);
+   HRESULT  AddEventAttribute( AeAttribute* pAttr );
+   BOOL     ExistEventAttribute( DWORD dwAttrID );
+   BOOL     ExistEventAttribute( LPCWSTR szAttrDescr );
+   HRESULT  QueryEventAttributes(   DWORD    *  pdwCount,
+                                    DWORD    ** ppdwAttrIDs,
+                                    LPWSTR   ** ppszAttrDescs,
+                                    VARTYPE  ** ppvtAttrTypes );
+   HRESULT  GetAttributeIDs( DWORD* pdwCount, DWORD** ppdwAttrIDs );
 
-	HRESULT  AttachConditionDef(AeConditionDefiniton* pCondDef);
-	HRESULT  DetachConditionDef(AeConditionDefiniton* pCondDef);
-	HRESULT  QueryConditionNames(DWORD    *  pdwCount,
-		LPWSTR   ** ppszConditionNames);
+   HRESULT  AttachConditionDef( AeConditionDefiniton* pCondDef );
+   HRESULT  DetachConditionDef( AeConditionDefiniton* pCondDef );
+   HRESULT  QueryConditionNames(    DWORD    *  pdwCount,
+                                    LPWSTR   ** ppszConditionNames );
 
-	// Implementation
+// Implementation
 protected:
-	DWORD								m_dwID;        // Event Category ID
-	COpcString							m_wsDescr;     // Event Category Description
-	DWORD                               m_dwEventType; // Associated Event Type
+   DWORD                               m_dwID;        // Event Category ID
+   WideString                         m_wsDescr;     // Event Category Description
+   DWORD                               m_dwEventType; // Associated Event Type
 
-													   // The number of internal handled
-													   // attributes in m_mapAttributes
-	DWORD                               m_dwNumOfInternalAttrs;
+                                                      // The number of internal handled
+                                                      // attributes in m_mapAttributes
+   DWORD                               m_dwNumOfInternalAttrs;
 
-	CComAutoCriticalSection             m_csAttrMap;
-	CSimpleMap<DWORD, AeAttribute*>		m_mapAttributes;
+   CComAutoCriticalSection             m_csAttrMap;
+   CSimpleMap<DWORD, AeAttribute*> m_mapAttributes;
 
-	CComAutoCriticalSection             m_csCondDefRefs;
-	CSimpleArray<AeConditionDefiniton*> m_arCondDefRefs;
+   CComAutoCriticalSection             m_csCondDefRefs;
+   CSimpleArray<AeConditionDefiniton*>   m_arCondDefRefs;
 };
 //DOM-IGNORE-END
 

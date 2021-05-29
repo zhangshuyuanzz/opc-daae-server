@@ -151,9 +151,9 @@ STDMETHODIMP AeComBaseServer::GetStatus(
 
 	if (SUCCEEDED( hres )) {
 		// Set the version numbers
-		pESStat->wMajorVersion  = _Module.m_VersionInfo.m_wMajor;
-		pESStat->wMinorVersion  = _Module.m_VersionInfo.m_wMinor;
-		pESStat->wBuildNumber   = _Module.m_VersionInfo.m_wBuild;
+		pESStat->wMajorVersion  = core_generic_main.m_VersionInfo.m_wMajor;
+		pESStat->wMinorVersion  = core_generic_main.m_VersionInfo.m_wMinor;
+		pESStat->wBuildNumber   = core_generic_main.m_VersionInfo.m_wBuild;
 
 		*ppEventServerStatus = pESStat;          // Attach the event server status record to the result pointer.
 	}

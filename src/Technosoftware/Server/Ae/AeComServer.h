@@ -91,6 +91,9 @@ public:
                                  GetControllingUnknown(), 
                                  &m_pUnkMarshaler.p);
       if (SUCCEEDED( hres )) {
+         hres = OpcCommon::Create();
+      }
+      if (SUCCEEDED( hres )) {
          hres = AeComBaseServer::Create();
       }
       return hres;

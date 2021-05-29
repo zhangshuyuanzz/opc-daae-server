@@ -17,7 +17,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE.
  */
-                                                                          
+
 #ifndef __DASERVER_H_
 #define __DASERVER_H_
 
@@ -43,9 +43,9 @@
 // Do not change or delete !
 //-----------------------------------------------------------------------------
 typedef struct _tagSERVER_REGDEF {
-      WCHAR  * ClsidServer;                     // CLSID of current Server 
+	WCHAR * ClsidServer; // CLSID of current Server
       WCHAR  * ClsidApp;                        // CLSID of current Server Application
-      WCHAR  * PrgidServer;                     // Version independent Prog.Id. 
+	WCHAR * PrgidServer; // Version independent Prog.Id.
       WCHAR  * PrgidCurrServer;                 // Prog.Id. of current Server
       WCHAR  * NameServer;                      // Friendly name of server
       WCHAR  * NameCurrServer;                  // Friendly name of current server version
@@ -61,15 +61,15 @@ typedef struct _tagSERVER_REGDEF {
 // Utility class used by OnRefreshOutputDevices()
 class DaDeviceCache
 {
-// Constrution
+	// Constrution
 public:
    DaDeviceCache();
-   HRESULT Create( DWORD dwSize );
+	HRESULT Create(DWORD dwSize);
 
-// Destruction
+	// Destruction
    ~DaDeviceCache();
 
-// Attributes
+	// Attributes
 public:
    void**      m_paHandles;
    OPCITEMVQT* m_paItemVQTs;
@@ -77,7 +77,7 @@ public:
    WORD*       m_paQualities;
    FILETIME*   m_paTimeStamps;
 
-// Implementation
+	// Implementation
 protected:
    void Cleanup();
 };
@@ -89,11 +89,11 @@ protected:
 // My Server Specific Item Definition
 class DeviceItem : public DaDeviceItem
 {
-// Construction
+	// Construction
 public:
    DeviceItem();
    inline HRESULT Create(                       // Initializer
-                     LPWSTR         szItemID, 
+		LPWSTR szItemID,
                      DWORD          dwAccessRights,
                      LPVARIANT      pvValue,
                      BOOL           fActive        = TRUE,
@@ -104,7 +104,7 @@ public:
                      LPVARIANT      pvEUInfo       = NULL
                  ) {
 
-      return DaDeviceItem::Create(   szItemID,
+		return DaDeviceItem::Create(szItemID,
                                     dwAccessRights,
                                     pvValue,
                                     fActive,
@@ -112,14 +112,14 @@ public:
                                     pBlob,
                                     szAccessPath,
                                     eEUType,
-                                    pvEUInfo );
+			pvEUInfo);
    }
 
-// Destruction
+	// Destruction
    ~DeviceItem();
 
-   HRESULT DetachActiveCount(void);
    HRESULT AttachActiveCount(void);
+   HRESULT DetachActiveCount(void);
 
 };
 
@@ -130,17 +130,17 @@ public:
 // My Server Specific Data Access Implementation
 class DaServer : public DaBaseServer
 {
-   friend unsigned __stdcall NotifyUpdateThread( LPVOID pAttr );
+	friend unsigned __stdcall NotifyUpdateThread(LPVOID pAttr);
 
-// Construction
+	// Construction
 public:
    DaServer();
-   HRESULT Create( DWORD dwUpdateRate, LPCTSTR szDLLParams, LPCTSTR szInstanceNamebool );
+	HRESULT Create(DWORD dwUpdateRate, LPCTSTR szDLLParams, LPCTSTR szInstanceNamebool);
 
-// Destruction
+	// Destruction
    ~DaServer();
 
-// Attributes
+	// Attributes
 public:
    inline OPCSERVERSTATE ServerState() const { return m_dwServerState; }
    inline void SetServerState(OPCSERVERSTATE serverState) { m_dwServerState = serverState; m_fServerStateChanged = TRUE; }
@@ -149,11 +149,11 @@ public:
 
 
 
-// Operations
+	// Operations
 public:
-   HRESULT AddDeviceItem( DeviceItem* pDItem );
-   HRESULT RemoveDeviceItem( DeviceItem* pDItem );
-   void DeleteDeviceItem( DeviceItem* pDItem );
+	HRESULT AddDeviceItem(DeviceItem* pDItem);
+	HRESULT RemoveDeviceItem(DeviceItem* pDItem);
+	void DeleteDeviceItem(DeviceItem* pDItem);
 
          // array of items supported by this server
    CSimplePtrArray<DeviceItem*>  m_arServerItems;
@@ -165,7 +165,7 @@ public:
    ReadWriteLock                    m_ItemListLock;
    ReadWriteLock                    m_OnRequestItemsLock;
 
-// Implementation
+	// Implementation
 protected:
 
    /////////////////////////////////////////////////////////////////////////////
@@ -179,10 +179,10 @@ protected:
    HRESULT OnGetServerState(
          /*[out]        */          DWORD          & bandWidth,
 		 /*[out]		*/			OPCSERVERSTATE & serverState,
-		 /*[out]		*/			LPWSTR		   & vendor );
+		/*[out] */ LPWSTR & vendor);
 
       // use to add/release custom specific client related data
-   HRESULT OnCreateCustomServerData( LPVOID* customData );
+	HRESULT OnCreateCustomServerData(LPVOID* customData);
 
    //*************************************************************************
    //* INFO: The following function is declared as virtual and
@@ -191,7 +191,7 @@ protected:
    //*       and if no server specific handling is needed the code
    //*       can savely be deleted.
    //*************************************************************************
-   HRESULT OnDestroyCustomServerData( LPVOID* customData );
+	HRESULT OnDestroyCustomServerData(LPVOID* customData);
 
 		///////////////////////
 		// Validate Function //
@@ -237,27 +237,27 @@ protected:
 
    HRESULT OnBrowseChangeAddressSpacePosition(
          /*[in]         */          OPCBROWSEDIRECTION
-                                                   dwBrowseDirection,  
+		dwBrowseDirection,
          /*[in, string] */          LPCWSTR        szString,
          /*[in,out]     */          LPWSTR      *  szActualPosition,
-         /*[in,out]     */          LPVOID      *  customData );
+		/*[in,out] */ LPVOID * customData);
 
 
    HRESULT OnBrowseGetFullItemIdentifier(
          /*[in]         */          LPWSTR         szActualPosition,
          /*[in]         */          LPWSTR         szItemDataID,
          /*[out, string]*/          LPWSTR      *  szItemID,
-         /*[in,out]     */          LPVOID      *  customData );
+		/*[in,out] */ LPVOID * customData);
 
    HRESULT OnBrowseItemIdentifiers(
          /*[in]         */          LPWSTR         szActualPosition,
          /*[in]         */          OPCBROWSETYPE  dwBrowseFilterType,
-         /*[in, string] */          LPWSTR         szFilterCriteria,  
-         /*[in]         */          VARTYPE        vtDataTypeFilter,     
+		/*[in, string] */ LPWSTR szFilterCriteria,
+		/*[in] */ VARTYPE vtDataTypeFilter,
          /*[in]         */          DWORD          dwAccessRightsFilter,
          /*[out]        */          DWORD       *  pNrItemIds,
          /*[out, string]*/          LPWSTR      ** ppItemIds,
-         /*[in,out]     */          LPVOID      *  customData );
+		/*[in,out] */ LPVOID * customData);
 
    //*************************************************************************
    //* INFO: The following function is declared as virtual and
@@ -268,7 +268,7 @@ protected:
    //*************************************************************************
    // HRESULT OnBrowseAccessPaths(
    //       /*[in]         */          LPWSTR         szItemID,
-   //       /*[out]        */          DWORD       *  pNrAccessPaths, 
+	// /*[out] */ DWORD * pNrAccessPaths,
    //       /*[out, string]*/          LPWSTR      ** szAccessPaths,
    //       /*[in,out]     */          LPVOID      *  customData );
 
@@ -280,13 +280,13 @@ protected:
          /*[in]         */          LPCWSTR        szItemID,
          /*[out]        */          LPDWORD        pdwCount,
          /*[out]        */          LPDWORD     *  ppdwPropIDs,
-         /*[out]        */          LPVOID      *  ppCookie );
+		/*[out] */ LPVOID * ppCookie);
 
    HRESULT OnGetItemProperty(
          /*[in]         */          LPCWSTR        szItemID,
          /*[in]         */          DWORD          dwPropID,
          /*[out]        */          LPVARIANT      pvPropData,
-         /*[in]         */          LPVOID         pCookie );
+		/*[in] */ LPVOID pCookie);
 
    //*************************************************************************
    //* INFO: The following function is declared as virtual and
@@ -302,7 +302,7 @@ protected:
    //       /*[in]         */          LPVOID         pCookie );
 
    HRESULT OnReleasePropertyCookie(
-         /*[in]         */          LPVOID         pCookie );
+		/*[in] */ LPVOID pCookie);
 
    //////////////////////////////////////////////////////////////
    // Implementation internal functions (application specific) //
@@ -311,7 +311,7 @@ protected:
    HRESULT DeleteServerItems();
    HRESULT CreateUpdateThread();
    HRESULT KillUpdateThread();
-   HRESULT FindDeviceItem( LPCWSTR szItemID, DaDeviceItem** ppDItem );
+	HRESULT FindDeviceItem(LPCWSTR szItemID, DaDeviceItem** ppDItem);
 
 
       // Handle of the Refresh Thread

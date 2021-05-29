@@ -42,10 +42,6 @@
 #include "OpcSdk.h"
 #include "Logger.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 static const char *const LOG_STRING[]=
 {
     "TRACE",

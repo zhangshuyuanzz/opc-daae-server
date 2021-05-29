@@ -49,7 +49,23 @@
 OpcCommon::OpcCommon()
 {
    m_dwLCID = LOCALE_SYSTEM_DEFAULT;
-   m_cClientName = L"Unspecified";
+}
+
+/**
+ * @fn	HRESULT OpcCommon::Create()
+ *
+ * @brief	=========================================================================
+ * 			 Initializer
+ * 			 -----------
+ * 			    Must be called after construction.
+ * 			=========================================================================.
+ *
+ * @return	A hResult.
+ */
+
+HRESULT OpcCommon::Create()
+{
+   return ClientName.SetString( L"Unspecified" );
 }
 
 /**
@@ -214,9 +230,9 @@ STDMETHODIMP OpcCommon::SetClientName(
 	LOGFMTI( "IOPCCommon::SetClientName to %s", W2A(szName) );
 
    m_csMembers.Lock();
-   m_cClientName = szName;
+   HRESULT hres = ClientName.SetString( szName );
    m_csMembers.Unlock();
-   return S_OK;
+   return hres;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -286,7 +302,7 @@ HRESULT OpcCommon::GetClientName(
                   )
 {
    m_csMembers.Lock();
-   *pszName = m_cClientName.CopyCOM();
+   *pszName = ClientName.CopyCOM();
    m_csMembers.Unlock();
    return *pszName ? S_OK : E_OUTOFMEMORY;
 }

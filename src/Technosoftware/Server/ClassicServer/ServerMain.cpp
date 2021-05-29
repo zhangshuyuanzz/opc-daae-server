@@ -2,23 +2,20 @@
  * Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
  * Web: https://technosoftware.com 
  * 
- * Purpose: Data Access Sample Implementation
- *          This is the server specific main module.
+ * The source code in this file is covered under a dual-license scenario:
+ *   - Owner of a purchased license: SCLA 1.0
+ *   - GPL V3: everybody else
  *
- *          Implementation of the global interface functions between the generic
- *          and the specific part of the server.
- *          This module includes also the Server Registry definitions.
- *          The following methods of this module are called from the generic
- *          server part:
- *             - OnGetServerRegistryDefs
- *             - OnProcessParam
- *             - OnInitializeServer
- *             - OnTerminateServer
- *             - OnGetDaBaseServer
+ * SCLA license terms accompanied with this source code.
+ * See https://technosoftware.com/license/Source_Code_License_Agreement.pdf
  *
- * The Software is subject to the Technosoftware GmbH Source Code License Agreement, 
- * which can be found here:
- * https://technosoftware.com/documents/Source_License_Agreement.pdf
+ * GNU General Public License as published by the Free Software Foundation;
+ * version 3 of the License are accompanied with this source code.
+ * See https://technosoftware.com/license/GPLv3License.txt
+ *
+ * This source code is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
 //-----------------------------------------------------------------------------
@@ -87,7 +84,7 @@ bool 		gUseOnItemRequest = true;
 bool		gUseOnRefreshItems = true;
 bool 		gUseOnAddItem = false;
 bool 		gUseOnRemoveItem = false;
-LPWSTR	    gVendorName;
+LPWSTR	    vendor_name;
 
 
 HINSTANCE   gDLLHandle = 0;                     // DLL Handle from LoadLibrary
@@ -388,14 +385,14 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 	if (SUCCEEDED( hres )) {
 		// Delete the existing Version info from this application
 		// and load the Version Info from the loaded DLL.
-		hres = _Module.m_VersionInfo.Create( gDLLHandle );
+		hres = core_generic_main.m_VersionInfo.Create( gDLLHandle );
 
 		// Check the Version Info from the loaded DLL
 		LPCTSTR  psz;
 		TCHAR    buf[ _MAX_PATH + 150 ] = _T("\0");
 
 		if (SUCCEEDED( hres )) {
-			psz = _Module.m_VersionInfo.GetValue( _T("CompanyName") );
+			psz = core_generic_main.m_VersionInfo.GetValue( _T("CompanyName") );
 			if (!psz) {
 				_tcscpy_s( buf, _T("Cannot start the server!\nThe item 'CompanyName' is missing in the version resource\nof the DLL '") );
 				_tcscat_s( buf, DLLName );
@@ -412,7 +409,7 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 			hres = S_OK;
 		}
 		if (!(*buf)) {
-			psz = _Module.m_VersionInfo.GetValue( _T("FileDescription") );
+			psz = core_generic_main.m_VersionInfo.GetValue( _T("FileDescription") );
 			if (!psz) {
 				_tcscpy_s( buf, _T("Cannot start the server!\nThe item 'FileDescription' is missing in the version resource\nof the DLL '") );
 				_tcscat_s( buf, DLLName );
@@ -776,14 +773,14 @@ LPSERVERREGDEFS OnGetServerRegistryDefs()
 	}
 
 #ifdef _OPC_NET
-	gVendorName = pRegDefsDLL->CompanyName;
+    vendor_name = pRegDefsDLL->CompanyName;
 #elif _OPC_DLL
-	gVendorName = pRegDefsDLL->CompanyName;
+	vendor_name = pRegDefsDLL->CompanyName;
 #else
-	gVendorName = _wcsdup( T2CW( _Module.m_VersionInfo.GetValue( _T("CompanyName") ) ) );
+    vendor_name = _wcsdup( T2CW( _Module.m_VersionInfo.GetValue( _T("CompanyName") ) ) );
 #endif
 
-	OPCWSTOAS( gVendorName );
+	OPCWSTOAS( vendor_name );
 	LOGFMTT( "   VendorName  '%s'", OPCastr );
 	}
 
@@ -930,9 +927,6 @@ HRESULT OnTerminateServer()
 		free( gpszDLLParams );
 		gpszDLLParams = NULL;
 	}
-#ifdef _OPC_NET
-	GenericServerAPI::OnCleanup();
-#endif
 	return hres;
 }
 

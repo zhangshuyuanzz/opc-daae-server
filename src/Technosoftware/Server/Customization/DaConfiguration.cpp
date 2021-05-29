@@ -25,7 +25,6 @@
 #include "DaComBaseServer.h"
 #include "Logger.h"
 
-
 //-----------------------------------------------------------------------------
 // CODE
 //-----------------------------------------------------------------------------
@@ -56,8 +55,8 @@
 //=============================================================================
 // IOPCServerDisp::SaveConfig                                         INTERFACE
 //=============================================================================
-STDMETHODIMP DaComBaseServer:: SaveConfig( 
-	/* [in] */                    BSTR        FileName )
+STDMETHODIMP DaComBaseServer::SaveConfig(
+	/* [in] */                    BSTR        FileName)
 {
 	return E_NOTIMPL;
 }
@@ -66,8 +65,8 @@ STDMETHODIMP DaComBaseServer:: SaveConfig(
 //=============================================================================
 // IOPCServerDisp::LoadConfig                                         INTERFACE
 //=============================================================================
-STDMETHODIMP DaComBaseServer:: LoadConfig(
-	/*[in]*/                      BSTR        FileName )
+STDMETHODIMP DaComBaseServer::LoadConfig(
+	/*[in]*/                      BSTR        FileName)
 {
 	return E_NOTIMPL;
 }
@@ -80,7 +79,7 @@ STDMETHODIMP DaComBaseServer:: LoadConfig(
 //=============================================================================
 // IPersistFile::IsDirty                                              INTERFACE
 //=============================================================================
-STDMETHODIMP DaComBaseServer:: IsDirty( void )
+STDMETHODIMP DaComBaseServer::IsDirty(void)
 {
 	LOGFMTI("IPersistFile::IsDirty");
 	return E_NOTIMPL;
@@ -92,7 +91,7 @@ STDMETHODIMP DaComBaseServer:: IsDirty( void )
 //=============================================================================
 STDMETHODIMP DaComBaseServer::Load(
 								  /* [in] */                    LPCOLESTR   pszFileName,
-								  /* [in] */                    DWORD       dwMode )
+	/* [in] */                    DWORD       dwMode)
 {
 	USES_CONVERSION; 
 	LOGFMTI("IPersistFile::Load file %s", W2A(pszFileName));
@@ -105,7 +104,7 @@ STDMETHODIMP DaComBaseServer::Load(
 //=============================================================================
 STDMETHODIMP DaComBaseServer::Save(
 								  /* [in, unique] */            LPCOLESTR   pszFileName,
-								  /* [in]         */            BOOL        fRemember )
+	/* [in]         */            BOOL        fRemember)
 {
 	USES_CONVERSION;
 	LOGFMTI("IPersistFile::Save file %s", W2A(pszFileName));
@@ -117,7 +116,7 @@ STDMETHODIMP DaComBaseServer::Save(
 // IPersistFile::SaveCompleted                                        INTERFACE
 //=============================================================================
 STDMETHODIMP DaComBaseServer::SaveCompleted(
-	/* [in, unique] */            LPCOLESTR   pszFileName )
+	/* [in, unique] */            LPCOLESTR   pszFileName)
 {
 	USES_CONVERSION;
 	LOGFMTI("IPersistFile::SaveCompleted file %s", W2A(pszFileName));
@@ -129,7 +128,7 @@ STDMETHODIMP DaComBaseServer::SaveCompleted(
 // IPersistFile::GetCurFile                                           INTERFACE
 //=============================================================================
 STDMETHODIMP DaComBaseServer::GetCurFile(
-										/* [out] */                   LPOLESTR *  ppszFileName )
+	/* [out] */                   LPOLESTR *  ppszFileName)
 {
 	LOGFMTI("IPersistFile::GetCurFile");
 
@@ -141,8 +140,8 @@ STDMETHODIMP DaComBaseServer::GetCurFile(
 //=============================================================================
 // IPersistFile::GetClassID                                           INTERFACE
 //=============================================================================
-STDMETHODIMP DaComBaseServer:: GetClassID( 
-	/* [out] */                   CLSID    *  pClassID )
+STDMETHODIMP DaComBaseServer::GetClassID(
+	/* [out] */                   CLSID    *  pClassID)
 {
 	LOGFMTI("IPersistFile::GetClassID");
 

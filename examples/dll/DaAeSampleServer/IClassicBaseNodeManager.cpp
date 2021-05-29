@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
- * Web: http://www.technosoftware.com 
+ * Web: https://technosoftware.com 
  * 
  * License:
  *
@@ -34,7 +34,7 @@
 //-----------------------------------------------------------------------------
 // INCLUDES
 //-----------------------------------------------------------------------------
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "IClassicBaseNodeManager.h"
 
 namespace IClassicBaseNodeManager
@@ -84,12 +84,12 @@ GetItemStatesPtr                        getItemStatesCallback;
 
 HRESULT AddItem(LPWSTR itemID, DaAccessRights accessRights, LPVARIANT initValue, void ** deviceItemHandle)
 {
-   return addItemCallback(itemID, accessRights, initValue, true, NoEnum, 0.0, 0.0, deviceItemHandle);
+   return addItemCallback(itemID, accessRights, initValue, true, DaEuType::NoEnum, 0.0, 0.0, deviceItemHandle);
 }
 
 HRESULT AddAnalogItem(LPWSTR itemID, DaAccessRights accessRights, LPVARIANT initValue, double minValue, double maxValue, void ** deviceItemHandle)
 {
-	return addItemCallback(itemID, accessRights, initValue, true, Analog, minValue, maxValue, deviceItemHandle);
+	return addItemCallback(itemID, accessRights, initValue, true, DaEuType::Analog, minValue, maxValue, deviceItemHandle);
 }
 
 HRESULT RemoveItem(void* deviceItemHandle)

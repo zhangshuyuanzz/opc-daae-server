@@ -1,28 +1,21 @@
 /*
  * Copyright (c) 2011-2021 Technosoftware GmbH. All rights reserved
- * Web: https://technosoftware.com
+ * Web: https://technosoftware.com 
+ * 
+ * The source code in this file is covered under a dual-license scenario:
+ *   - Owner of a purchased license: SCLA 1.0
+ *   - GPL V3: everybody else
  *
- * Purpose:
+ * SCLA license terms accompanied with this source code.
+ * See https://technosoftware.com/license/Source_Code_License_Agreement.pdf
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
-
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
-
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * GNU General Public License as published by the Free Software Foundation;
+ * version 3 of the License are accompanied with this source code.
+ * See https://technosoftware.com/license/GPLv3License.txt
  *
- * SPDX-License-Identifier: MIT
+ * This source code is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
  /** @file
@@ -78,7 +71,7 @@ struct ClassicServerDefinition
  * @brief   The set of possible server states.
  */
 
-enum ServerState
+enum class ServerState
 {
     /// The server state is not known.
     Unknown,
@@ -111,7 +104,7 @@ enum ServerState
  *          device.
  */
 
-enum DaAccessRights : int
+enum class DaAccessRights : int
 {
     /// The access rights for this item are unknown.
     NotKnown = 0x00,
@@ -129,14 +122,14 @@ enum DaAccessRights : int
  * @brief    Defines possible item engineering unit types
  */
 
-enum DaEuType : int
+enum class DaEuType : int
 {
     /// No engineering unit information available
     NoEnum = 0x00,
     /// Analog engineering unit - will contain a SAFEARRAY of exactly two doubles (VT_ARRAY | VT_R8) corresponding to the LOW and HI EU range.
     Analog = 0x01,
-    /// Enumerated engeniring unit - will contain a SAFEARRAY of strings *(VT_ARRAY | VT_BSTR) which contains a list of strings(Example: “OPEN”,
-    /// *“CLOSE”, “IN TRANSIT”, etc.) corresponding to sequential numeric values * (0, 1, 2, etc.)
+    /// Enumerated engeniring unit - will contain a SAFEARRAY of strings *(VT_ARRAY | VT_BSTR) which contains a list of strings(Example: ï¿½OPENï¿½,
+    /// *ï¿½CLOSEï¿½, ï¿½IN TRANSITï¿½, etc.) corresponding to sequential numeric values * (0, 1, 2, etc.)
     Enumerated = 0x02
 };
 
@@ -150,7 +143,7 @@ enum DaEuType : int
  *          determine how much functionality they want to implement.
  */
 
-enum DaQualityBits : int
+enum class DaQualityBits : int
 {
     /// The Quality of the value is Good.
     Good = 0x000000C0,
@@ -217,7 +210,7 @@ enum DaQualityBits : int
  *          diagnostic information.
  */
 
-enum DaLimitBits : int
+enum class DaLimitBits : int
 {
     /// The value is free to move up or down
     None = 0x0,
@@ -235,7 +228,7 @@ enum DaLimitBits : int
  * @brief    Defines bit masks for the quality.
  */
 
-enum DaQualityMasks : int
+enum class DaQualityMasks : int
 {
     /// Quality related bits
     QualityMask = +0x00FC,
@@ -282,7 +275,7 @@ struct DaQuality
  * @brief    Browse Mode enumerator.
  */
 
-enum DaBrowseMode
+enum class DaBrowseMode
 {
     /// Browse calls are handled in the generic server and return the item/branches that are defined in the cache.
     Generic = 0,
@@ -296,7 +289,7 @@ enum DaBrowseMode
  * @brief    Enumerator for browse mode selection.
  */
 
-enum DaBrowseType
+enum class DaBrowseType
 {
     /// Select only branches
     Branch = 1,
@@ -312,7 +305,7 @@ enum DaBrowseType
  * @brief   Defines the way to move 'up' or 'down' or 'to' in a hierarchical address space.
  */
 
-enum DaBrowseDirection
+enum class DaBrowseDirection
 {
     /// move 'up' in a hierarchical address space.
     Up = 1,
@@ -328,7 +321,7 @@ enum DaBrowseDirection
  * @brief   Represents the log level.
  */
 
-enum LogLevel
+enum class LogLevel
 {
     /** @brief
      * Represents the Trace log level. This log level is mostly
@@ -451,6 +444,12 @@ protected:
 
 };
 
+/**
+ * @class   DaGroupState
+ *
+ * @brief   The state of an OPC DA Group.
+ */
+
 class DaGroupState
 {
     // Attributes
@@ -493,6 +492,12 @@ public:
     BOOL  DataChangeEnabled;
 
 };
+
+/**
+ * @class   DaItemState
+ *
+ * @brief   The state of an OPC DA Item.
+ */
 
 class DaItemState
 {
@@ -914,7 +919,7 @@ HRESULT AddConditionEventCategory(int categoryId, LPWSTR categoryDescription);
  *
  * @param   categoryId              Identifier of an existing Event Category.
  * @param   eventAttribute          Identifier of the new Event Attribute. This ID must be unique
- *                                  within the Event Server.
+ *                                  within the Event Category.
  * @param   attributeDescription    Description of the Event Attribute.
  * @param   dataType                Object identifying the data type of the event attribute.
  *
@@ -1473,7 +1478,7 @@ DLLEXP HRESULT DLLCALL OnBrowseChangePosition(
  *          Whenever possible the server should return strings which can be passed directly to
  *          AddItems. However, it is allowed for the Server to return a 'hint' string rather than
  *          an actual legal Item ID. For example a PLC with 32000 registers could return a single
- *          string of “0 to 31999” rather than return 32,000 individual strings from the
+ *          string of ï¿½0 to 31999ï¿½ rather than return 32,000 individual strings from the
  *          enumerator. For this reason (as well as the fact that browser support is optional)
  *          clients should always be prepared to allow manual entry of ITEM ID strings. In the
  *          case of 'hint' strings, there is no indication given as to whether the returned

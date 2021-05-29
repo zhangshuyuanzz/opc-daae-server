@@ -26,10 +26,6 @@
 #include "AeServer.h"
 #endif
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 static CSimplePtrArray<WideString*> m_apPropDescr;
 
 namespace IClassicBaseNodeManager
@@ -60,7 +56,7 @@ namespace IClassicBaseNodeManager
 		{
 			hres = CreateOneItem(
 				szItemID,						// ItemId
-				dwAccessRights,					// DaAccessRights
+				(DWORD)dwAccessRights,			// DaAccessRights
 				pvValue,					 	// Initial Value
 				fActive,						// Active State
 				OPC_NOENUM,						// EU Type
