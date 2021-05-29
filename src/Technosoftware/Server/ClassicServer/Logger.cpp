@@ -21,7 +21,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <time.h>
 #include <string.h>
 
@@ -32,14 +31,12 @@
 #include <algorithm>
 
 
-#include <io.h>
-#include <shlwapi.h>
+#include <Shlwapi.h>
 #include <process.h>
 #pragma comment(lib, "shlwapi")
 #pragma comment(lib, "User32.lib")
 #pragma warning(disable:4996)
 
-#include "OpcSdk.h"
 #include "Logger.h"
 
 static const char *const LOG_STRING[]=
@@ -81,35 +78,35 @@ const static char LOG_COLOR[LOG_LEVEL_FATAL + 1][50] = {
 class LoggerFileHandler
 {
 public:
-    LoggerFileHandler(){ _file = NULL; }
+    LoggerFileHandler(){ file = nullptr; }
     ~LoggerFileHandler(){ close(); }
-    inline bool isOpen(){ return _file != NULL; }
+    inline bool isOpen(){ return file != nullptr; }
     inline bool open(const char *path, const char * mod)
     {
-        if (_file != NULL){fclose(_file);_file = NULL;}
-        _file = fopen(path, mod);
-        return _file != NULL;
+        if (file != nullptr){fclose(file);file = nullptr;}
+        file = fopen(path, mod);
+        return file != nullptr;
     }
     inline void close()
     {
-        if (_file != NULL){fclose(_file);_file = NULL;}
+        if (file != nullptr){fclose(file);file = nullptr;}
     }
     inline void write(const char * data, size_t len)
     {
-        if (_file && len > 0)
+        if (file && len > 0)
         {
-            if (fwrite(data, 1, len, _file) != len)
+            if (fwrite(data, 1, len, file) != len)
             {
                 close();
             }
         }
     }
-    inline void flush(){ if (_file) fflush(_file); }
+    inline void flush(){ if (file) fflush(file); }
 
     inline std::string readLine()
     {
         char buf[500] = { 0 };
-        if (_file && fgets(buf, 500, _file) != NULL)
+        if (file && fgets(buf, 500, file) != nullptr)
         {
             return std::string(buf);
         }
@@ -118,7 +115,7 @@ public:
     inline const std::string readContent();
 	inline bool removeFile(const std::string & path) { return ::remove(path.c_str()) == 0; }
 public:
-    FILE *_file;
+    FILE *file;
 };
 
 
@@ -411,7 +408,7 @@ const std::string LoggerFileHandler::readContent()
 {
     std::string content;
 
-    if (!_file)
+    if (!file)
     {
         return content;
     }
@@ -419,7 +416,7 @@ const std::string LoggerFileHandler::readContent()
     size_t ret = 0;
     do  
     {
-        ret = fread(buf, sizeof(char), BUFSIZ, _file);
+        ret = fread(buf, sizeof(char), BUFSIZ, file);
         content.append(buf, ret);
     }
     while (ret == BUFSIZ);
@@ -781,7 +778,7 @@ bool createRecursionDir(std::string path)
         {
             bool ret = false;
 #ifdef WIN32
-            ret = CreateDirectoryA(cur.c_str(), NULL) ? true : false;
+            ret = CreateDirectoryA(cur.c_str(), nullptr) ? true : false;
 #else
             ret = (mkdir(cur.c_str(), S_IRWXU|S_IRWXG|S_IRWXO) == 0);
 #endif
@@ -817,7 +814,7 @@ std::string getProcessName()
     std::string name = "process";
     char buf[260] = {0};
 #ifdef WIN32
-    if (GetModuleFileNameA(NULL, buf, 259) > 0)
+    if (GetModuleFileNameA(nullptr, buf, 259) > 0)
     {
         name = buf;
     }
@@ -910,7 +907,7 @@ void LockHelper::unLock()
 SemHelper::SemHelper()
 {
 #ifdef WIN32
-    _hSem = NULL;
+    _hSem = nullptr;
 #elif defined(__APPLE__)
     _semid = NULL;
 #else
@@ -921,10 +918,10 @@ SemHelper::SemHelper()
 SemHelper::~SemHelper()
 {
 #ifdef WIN32
-    if (_hSem != NULL)
+    if (_hSem != nullptr)
     {
         CloseHandle(_hSem);
-        _hSem = NULL;
+        _hSem = nullptr;
     }
 #elif defined(__APPLE__)
     if (_semid)
@@ -953,8 +950,8 @@ bool SemHelper::create(int initcount)
     {
         return false;
     }
-    _hSem = CreateSemaphore(NULL, initcount, 64, NULL);
-    if (_hSem == NULL)
+    _hSem = CreateSemaphore(nullptr, initcount, 64, nullptr);
+    if (_hSem == nullptr)
     {
         return false;
     }
@@ -1037,7 +1034,7 @@ bool SemHelper::wait(int timeout)
 bool SemHelper::post()
 {
 #ifdef WIN32
-    return ReleaseSemaphore(_hSem, 1, NULL) ? true : false;
+    return ReleaseSemaphore(_hSem, 1, nullptr) ? true : false;
 #elif defined(__APPLE__)
     return dispatch_semaphore_signal(_semid) == 0;
 #else
@@ -1052,7 +1049,7 @@ bool SemHelper::post()
 bool ThreadHelper::start()
 {
 #ifdef WIN32
-    unsigned long long ret = _beginthreadex(NULL, 0, threadProc, (void *) this, 0, NULL);
+    unsigned long long ret = _beginthreadex(nullptr, 0, threadProc, this, 0, nullptr);
 
     if (ret == -1 || ret == 0)
     {
@@ -1117,10 +1114,10 @@ LogerManager::~LogerManager()
 
 LogData * LogerManager::makeLogData(LoggerId id, int level)
 {
-    LogData * pLog = NULL;
+    LogData * pLog = nullptr;
     if (true)
     {
-        if (pLog == NULL)
+        if (pLog == nullptr)
         {
             pLog = new LogData();
         }
@@ -1302,7 +1299,7 @@ bool LogerManager::configFromString(const char* configContent)
 //! create with overwriting
 LoggerId LogerManager::createLogger(const char* key)
 {
-    if (key == NULL)
+    if (key == nullptr)
     {
         return LOGGER_INVALID_LOGGER_ID;
     }
@@ -1535,7 +1532,7 @@ bool LogerManager::setLoggerName(LoggerId id, const char * name)
     //the name by main logger is the process name and it's can't change. 
 //    if (id == LOGGER_MAIN_LOGGER_ID) return false; 
     
-    if (name == NULL || strlen(name) == 0) 
+    if (name == nullptr || strlen(name) == 0) 
     {
         return false;
     }
@@ -1545,7 +1542,7 @@ bool LogerManager::setLoggerName(LoggerId id, const char * name)
 bool LogerManager::setLoggerPath(LoggerId id, const char * path)
 {
     if (id <0 || id > _lastId) return false;
-    if (path == NULL || strlen(path) == 0)  return false;
+    if (path == nullptr || strlen(path) == 0)  return false;
     std::string copyPath = path;
     {
         char ch = copyPath.at(copyPath.length() - 1);
@@ -1684,13 +1681,13 @@ bool LogerManager::openLogger(LogData * pLog)
 		{
 			if (pLogger->_historyLogs.size() > LOGGER_FORCE_RESERVE_FILE_COUNT)
 			{
-				while (!pLogger->_historyLogs.empty() && pLogger->_historyLogs.front().first < time(NULL) - pLogger->_logReserveTime)
+				while (!pLogger->_historyLogs.empty() && pLogger->_historyLogs.front().first < time(nullptr) - pLogger->_logReserveTime)
 				{
 					pLogger->_handle.removeFile(pLogger->_historyLogs.front().second.c_str());
 					pLogger->_historyLogs.pop_front();
 				}
 			}
-			pLogger->_historyLogs.push_back(std::make_pair(time(NULL), path));
+			pLogger->_historyLogs.push_back(std::make_pair(time(nullptr), path));
 		}
         return true;
     }
@@ -1743,9 +1740,9 @@ void LogerManager::run()
     _semaphore.post();
 
 
-    LogData * pLog = NULL;
+    LogData * pLog = nullptr;
     int needFlush[LOGGER_LOGGER_MAX] = {0};
-    time_t lastCheckUpdate = time(NULL);
+    time_t lastCheckUpdate = time(nullptr);
     while (true)
     {
         while(popLog(pLog))
@@ -1837,10 +1834,10 @@ void LogerManager::run()
             break;
         }
         
-        if (_hotUpdateInterval != 0 && time(NULL) - lastCheckUpdate > _hotUpdateInterval)
+        if (_hotUpdateInterval != 0 && time(nullptr) - lastCheckUpdate > _hotUpdateInterval)
         {
             updateConfig();
-            lastCheckUpdate = time(NULL);
+            lastCheckUpdate = time(nullptr);
         }
         
 

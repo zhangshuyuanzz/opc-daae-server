@@ -65,11 +65,11 @@ using namespace IClassicBaseNodeManager;
 //=============================================================================
 
 // Global pointer to the Application Specific OPC Data Access Handler.
-DaServer* gpDataServer = NULL;
+DaServer* gpDataServer = nullptr;
 
 #ifdef   _OPC_SRV_AE                            // Alarms & Events Server
 // Global pointer to the Application Specific OPC Alarms&Events Handler.
-AeServer* gpEventServer = NULL;
+AeServer* gpEventServer = nullptr;
 #endif
 
 // The fully qualified name of the loaded DLL
@@ -87,8 +87,8 @@ bool 		gUseOnRemoveItem = false;
 LPWSTR	    vendor_name;
 
 
-HINSTANCE   gDLLHandle = 0;                     // DLL Handle from LoadLibrary
-TCHAR*      gpszDLLParams = NULL;               // Parameter string for the Application-DLL
+HINSTANCE   gDLLHandle = nullptr;                     // DLL Handle from LoadLibrary
+TCHAR*      gpszDLLParams = nullptr;               // Parameter string for the Application-DLL
 BOOL        gfRegister = FALSE;
 
 #ifdef _OPC_DLL
@@ -195,15 +195,15 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 
 	// LoadLibrary call was successfully
 
-	pOnGetLogLevel = (PFNONGETLOGLEVEL)GetProcAddress(gDLLHandle, "OnGetLogLevel");
-	if (pOnGetLogLevel == NULL)
+	pOnGetLogLevel = GetProcAddress(gDLLHandle, "OnGetLogLevel");
+	if (pOnGetLogLevel == nullptr)
 	{
 		LOGFMTE("Function OnGetLogLevel not found().");
 		hres = TYPE_E_DLLFUNCTIONNOTFOUND;
 	}
 
 	pOnGetLogPath = (PFNONGETLOGPATH)GetProcAddress(gDLLHandle, "OnGetLogPath");
-	if (pOnGetLogPath == NULL)
+	if (pOnGetLogPath == nullptr)
 	{
 		LOGFMTE("Function OnGetLogPath() not found.");
 		hres = TYPE_E_DLLFUNCTIONNOTFOUND;
@@ -216,7 +216,7 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 	{
 		pOnGetLogPath(logPath);
 		USES_CONVERSION;
-		if (logPath != NULL && strlen(logPath) > 0)
+		if (logPath != nullptr && strlen(logPath) > 0)
 		{
 			LOGFMTT("OnGetLogPath() returned log path %s.", logPath);
 			LogManager::getRef().setLoggerPath(LOGGER_MAIN_LOGGER_ID, logPath);
@@ -244,7 +244,7 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 	}
 
 	pOnGetDaServerDefinition = (PFNONGETDASEERVERREGISTRYDEFINITION)GetProcAddress( gDLLHandle, "OnGetDaServerDefinition" );
-	if (pOnGetDaServerDefinition == NULL)  
+	if (pOnGetDaServerDefinition == nullptr)  
 	{
 		LOGFMTE("Function OnGetDaServerDefinition() not found." );
 		hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
@@ -252,25 +252,25 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 
 #ifdef   _OPC_SRV_AE                            // Alarms & Events Server
 	pOnGetAeServerDefinition = (PFNONGETAESEERVERREGISTRYDEFINITION)GetProcAddress( gDLLHandle, "OnGetAeServerDefinition" );
-	if (pOnGetAeServerDefinition == NULL)  hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
+	if (pOnGetAeServerDefinition == nullptr)  hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
 #endif
 
 	pOnGetDaServerParameters = (PFNONGETDASERVERPARAMETERS)GetProcAddress( gDLLHandle, "OnGetDaServerParameters" );
-	if (pOnGetDaServerParameters == NULL)
+	if (pOnGetDaServerParameters == nullptr)
 	{
 		LOGFMTE("Function OnGetDaServerParameters() not found." );
 		hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
 	}
 
 	pOnDefineDaCallbacks = (PFNONDEFINEDACALLBACKS)GetProcAddress( gDLLHandle, "OnDefineDaCallbacks" );
-	if (pOnDefineDaCallbacks == NULL)
+	if (pOnDefineDaCallbacks == nullptr)
 	{
 		LOGFMTE("Function OnDefineDaCallbacks() not found." );
 		hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
 	}
 
 	pOnCreateServerItems = (PFNONCREATESERVERITEMS)GetProcAddress( gDLLHandle, "OnCreateServerItems" );
-	if (pOnCreateServerItems == NULL)
+	if (pOnCreateServerItems == nullptr)
 	{
 		LOGFMTE("Function OnCreateServerItems() not found." );
 		hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
@@ -289,14 +289,14 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 	//if (pOnClientDisconnect == NULL)     hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
 
 	pOnRefreshItems = (PFNONREFRESHITEMS)GetProcAddress( gDLLHandle, "OnRefreshItems" );
-	if (pOnRefreshItems == NULL)
+	if (pOnRefreshItems == nullptr)
 	{
 		LOGFMTE("Function OnRefreshItems() not found." );
 		hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
 	}
 
 	pOnWriteItems = (PFNONWRITEITEMS)GetProcAddress( gDLLHandle, "OnWriteItems" );
-	if (pOnWriteItems == NULL)
+	if (pOnWriteItems == nullptr)
 	{
 		LOGFMTE("Function OnWriteItems() not found." );
 		hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
@@ -309,7 +309,7 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 	//if (pOnRequestItems == NULL)        hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
 
 	pOnStartupSignal = (PFNONSTARTUPSIGNAL)GetProcAddress( gDLLHandle, "OnStartupSignal" );
-	if (pOnStartupSignal == NULL)
+	if (pOnStartupSignal == nullptr)
 	{
 		LOGFMTE("Function OnStartupSignal() not found." );
 		hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
@@ -352,7 +352,7 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 	//if (pOnGetPropertyValue == NULL)        hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
 
 	pOnGetDaOptimizationParameters = (PFNONGETDAOPTIMIZATIONPARAMETERS)GetProcAddress( gDLLHandle, "OnGetDaOptimizationParameters" );
-	if (pOnGetDaOptimizationParameters == NULL)
+	if (pOnGetDaOptimizationParameters == nullptr)
 	{
 		LOGFMTE("Function OnGetDaOptimizationParameters() not found." );
 		hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
@@ -372,13 +372,13 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 
 #ifdef   _OPC_SRV_AE                            // Alarms & Events Server
 	pOnDefineAeCallbacks = (PFNONDEFINEAECALLBACKS)GetProcAddress( gDLLHandle, "OnDefineAeCallbacks" );	
-	if (pOnDefineAeCallbacks == NULL)     hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
+	if (pOnDefineAeCallbacks == nullptr)     hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
 
 	pOnTranslateToItemId = (PFNONTRANSLATETOItemId)GetProcAddress( gDLLHandle, "OnTranslateToItemId" );	
-	if (pOnTranslateToItemId == NULL)     hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
+	if (pOnTranslateToItemId == nullptr)     hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
 
 	pOnAckNotification = (PFNONACKNOTIFICATION)GetProcAddress( gDLLHandle, "OnAckNotification" );	
-	if (pOnAckNotification == NULL)     hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
+	if (pOnAckNotification == nullptr)     hres = TYPE_E_DLLFUNCTIONNOTFOUND ;
 #endif
 
 	// Get the Version Info from the loaded DLL
@@ -422,7 +422,7 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 			}
 		}
 		if (*buf) {
-			MessageBox( NULL, buf, MSGBOX_TITLE, MB_OK | MB_ICONSTOP ); 
+			MessageBox(nullptr, buf, MSGBOX_TITLE, MB_OK | MB_ICONSTOP ); 
 			fErrMsgDisplayed = TRUE;
 			hres = E_FAIL;
 		}
@@ -433,7 +433,7 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 	if (FAILED( hres )) {                        // Function not found or other error
 		LOGFMTE( "LoadLibrary() failed with hres = 0x%x.", hres );
 		FreeLibrary( gDLLHandle );
-		gDLLHandle = 0;
+		gDLLHandle = nullptr;
 		return hres;
 	}
 	LOGFMTT( "LoadLibrary() finished with hres = 0x%x.", hres );
@@ -674,8 +674,6 @@ HRESULT OnProcessParam( COpcString cFlags )
 LPSERVERREGDEFS OnGetServerRegistryDefs()
 {
 	HRESULT  hres = S_OK;
-	BOOL     fErrMsgDisplayed = FALSE;
-	BOOL     fAbort = FALSE;
 	COpcString cFlags;
 
 #ifdef _OPC_NET
@@ -684,7 +682,7 @@ LPSERVERREGDEFS OnGetServerRegistryDefs()
 #ifdef _OPC_DLL
 	(*pOnStartupSignal) (GetCommandLine());
 #endif
-	LOGFMTT("OnStartupSignal( %ls ) finished.", GetCommandLine());
+	LOGFMT_TRACE(LOGGER_MAIN_LOGGER_ID, "OnStartupSignal( %ls ) finished.",GetCommandLine());
 
 
 	WCHAR    wDelimiter;
@@ -714,7 +712,7 @@ LPSERVERREGDEFS OnGetServerRegistryDefs()
 
 #ifdef _OPC_DLL
 	hres = (*pOnGetDaOptimizationParameters) ( &gUseOnItemRequest, &gUseOnRefreshItems, &gUseOnAddItem, &gUseOnRemoveItem );
-	if (pOnRequestItems == NULL)
+	if (pOnRequestItems == nullptr)
 	{
 		gUseOnItemRequest = false;
 	}
@@ -738,9 +736,9 @@ LPSERVERREGDEFS OnGetServerRegistryDefs()
 	ServerRegDefs* pRegDefsDLL = (*pOnGetDaServerDefinition)();
 #endif
 
-	if (pRegDefsDLL == NULL) {
+	if (pRegDefsDLL == nullptr) {
 		LOGFMTE("OnGetDaServerDefinition() failed with returning NULL.");
-		return NULL;
+		return nullptr;
 	}                                            // Initialize the new Registry Definition Structure
 	// Application
 	RegistryDefinitions.m_szAppID            = pRegDefsDLL->ClsidApp;
@@ -793,7 +791,7 @@ LPSERVERREGDEFS OnGetServerRegistryDefs()
 #ifdef _OPC_DLL
 	pRegDefsDLL = (*pOnGetAeServerDefinition)();
 #endif
-	if (pRegDefsDLL == NULL || !pRegDefsDLL->ClsidServer) {
+	if (pRegDefsDLL == nullptr || !pRegDefsDLL->ClsidServer) {
 		LOGFMTT("OnGetAeServerDefinition() returned NULL.");
 		return &RegistryDefinitions;
 	}                                            // Initialize the new Registry Definition Structure
@@ -844,7 +842,7 @@ HRESULT OnInitializeServer()
     //_CrtSetDbgFlag( _CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag( _CRTDBG_REPORT_FLAG ) );
 	// Init the global Data Access Server Instance
 	gpDataServer = new DaServer();
-	if (gpDataServer == NULL) {
+	if (gpDataServer == nullptr) {
 		return E_OUTOFMEMORY;
 	}
 #ifdef   _OPC_SRV_AE                            // Alarms & Events Server
@@ -852,14 +850,14 @@ HRESULT OnInitializeServer()
 	if (RegistryDefinitions.m_fUseAE_Server == TRUE)
 	{
 		gpEventServer = new AeServer();
-		if (gpEventServer == NULL) {
+		if (gpEventServer == nullptr) {
 			return E_OUTOFMEMORY;
 		}
 	}
 #endif
 	HRESULT hres;
 #ifdef   _OPC_SRV_AE                            // Alarms & Events Server
-	if (gpEventServer != NULL)
+	if (gpEventServer != nullptr)
 	{
 		hres = gpEventServer->Create();
 	}
@@ -871,14 +869,14 @@ HRESULT OnInitializeServer()
 
 	if (FAILED( hres )) {
 #ifdef   _OPC_SRV_AE                            // Alarms & Events Server
-		if (gpEventServer != NULL)
+		if (gpEventServer != nullptr)
 		{
 			delete gpEventServer;
-			gpEventServer = NULL;
+			gpEventServer = nullptr;
 		}
 #endif
 		delete gpDataServer;
-		gpDataServer = NULL;
+		gpDataServer = nullptr;
 	}
 	return hres;
 }
@@ -902,7 +900,7 @@ HRESULT OnTerminateServer()
 #endif
 
 #ifdef _OPC_DLL
-	if (pOnShutdownSignal != NULL)
+	if (pOnShutdownSignal != nullptr)
 	{
 		(*pOnShutdownSignal)();
 	}
@@ -911,21 +909,21 @@ HRESULT OnTerminateServer()
 #ifdef   _OPC_SRV_AE                            // Alarms & Events Server
 	if (gpEventServer) {
 		delete gpEventServer;
-		gpEventServer = NULL;
+		gpEventServer = nullptr;
 	}
 #endif
 	if (gpDataServer) {
 		delete gpDataServer;
-		gpDataServer = NULL;
+		gpDataServer = nullptr;
 	}
 
 	if (gDLLHandle) {
 		FreeLibrary( gDLLHandle );
-		gDLLHandle = 0;
+		gDLLHandle = nullptr;
 	}
 	if (gpszDLLParams) {
 		free( gpszDLLParams );
-		gpszDLLParams = NULL;
+		gpszDLLParams = nullptr;
 	}
 	return hres;
 }
