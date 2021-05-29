@@ -14,7 +14,7 @@
 \addindex serverdevelopment
 \tableofcontents
 
-<p>With the OPC DA/AE Server Base DLL the OPC Data Access and Alarms&Events Server development is reduced to the development within one C++ file with configuration definitions and device access methods. The OPC specification handling for OPC DA 2.05a, 3.00 00 and OPC AE 1.00, 1.10 is done in the generic source code part.<br/>
+<p>With the OPC DA/AE Server Solution DLL the OPC Data Access and Alarms&Events Server development is reduced to the development within one C++ file with configuration definitions and device access methods. The OPC specification handling for OPC DA 2.05a, 3.00 00 and OPC AE 1.00, 1.10 is done in the generic source code part.<br/>
 The customization is developed with Visual Studio using C++.<br/>
 The sample applications are provided with projects for several Visual Studio versions but can easily be converted to be used with newer versions of Visual Studio.<br/>
 
@@ -48,7 +48,7 @@ The customization part calls the generic server to update item values. This even
 The write to the device is handled only when a client executes a write function. There is no periodic refresh of output items.
 
 \subsection dataaccess_1_1 Customization
-The OPC DA/AE Server Base DLL customization is a located in the ClassicNodeManager.cpp with a set of methods that are called from the generic server and a set of generic server callback methods.
+The OPC DA/AE Server Solution DLL customization is a located in the ClassicNodeManager.cpp with a set of methods that are called from the generic server and a set of generic server callback methods.
 \image html Customization.png
 
 Immediately after startup of the generic server executable the generic server is setting up the logging feature. For this it calls
@@ -111,7 +111,7 @@ Additional callback functions can be used:
 </ol>
 
 \subsection dataaccess_1_2 Optimizations
-The OPC DA/AE Server Base DLL allows the usage of several optimization methods depending on the server requirements. Some of the optimization methods are called from the customization part like GetActiveItems but others are called from the generic server. The optimization methods called by the generic server can be turned on or off during server startup phase by setting the parameters of the OnGetDaOptimizationParameters method. <br/>
+The OPC DA/AE Server Solution DLL allows the usage of several optimization methods depending on the server requirements. Some of the optimization methods are called from the customization part like GetActiveItems but others are called from the generic server. The optimization methods called by the generic server can be turned on or off during server startup phase by setting the parameters of the OnGetDaOptimizationParameters method. <br/>
 To get an impression of the usage of these optimization methods they are explained in more detail below: 
 <table cellspacing="0" width="100%">
   <tr>
@@ -196,8 +196,8 @@ In addition the customization part can setup an Alarms&Events Server. For this t
 </ul>
 
 \section debugging_3 Debugging
-A new OPC DA/AE Server Base DLL customization can easily be debugged by starting the application in debug mode and then connect with a client.<br/>
-Since the OPC DA/AE Server Base DLL includes full source code it is easy to debug your application.<br/>
+A new OPC DA/AE Server Solution DLL customization can easily be debugged by starting the application in debug mode and then connect with a client.<br/>
+Since the OPC DA/AE Server Solution DLL includes full source code it is easy to debug your application.<br/>
 To set up a project for debugging the following needs to be done: <br/>
 <ul>
 	<li>Compile the server in debug mode</li>

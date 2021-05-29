@@ -733,7 +733,7 @@
             <TopicSections>
               <TopicSection Name="BodyText">
                 <Content m="2020-10-07T09:16:52.1653313Z">&lt;H1&gt;OPC DA/AE Server&amp;nbsp;Base.NET&lt;/H1&gt;
-&lt;P&gt;&lt;IMG border=0 alt="" src="images/OPCDAAEServerBase.png" align=right&gt;The OPC DA/AE Server Base .NET offers a fast and easy access to the OPC Data Access (DA) and OPC Alarms&amp;amp;Events (AE) technology. Develop OPC DA 2.05a, DA 3.00 and OPC AE 1.00, OPC AE 1.10 compliant Servers with C#/VB.NET or any other compiler capable of generating a .NET assembly.&lt;/P&gt;
+&lt;P&gt;&lt;IMG border=0 alt="" src="images/OPCDAAEServerBase.png" align=right&gt;The OPC DA/AE Server Solution .NET offers a fast and easy access to the OPC Data Access (DA) and OPC Alarms&amp;amp;Events (AE) technology. Develop OPC DA 2.05a, DA 3.00 and OPC AE 1.00, OPC AE 1.10 compliant Servers with C#/VB.NET or any other compiler capable of generating a .NET assembly.&lt;/P&gt;
 &lt;P&gt;The developer can concentrate on his application and servers can be developed fast and easily without the need to spend a lot of time learning how to implement the OPC Classic specifications. The server API is easy to use and many OPC specific functions are handled by the framework.&lt;/P&gt;
 &lt;P&gt;The &lt;STRONG&gt;"Framework"&lt;/STRONG&gt; includes all OPC DA 2.05a, 3.00 and OPC AE 1.00, 1.10 handling and ensures the OPC compliance. It is implemented as a generic C++ based executable.&lt;/P&gt;
 &lt;P&gt;The &lt;STRONG&gt;"Server API"&lt;/STRONG&gt; defines easy to use interface functions required for developing OPC DA and OPC AE compliant servers. The OPC server is supplied as an EXE file with the application adaptation part in a .NET assembly DLL. This imposes some limitations on the adaptation possibilities but makes the adaptation much easier and quicker. By using this API DA and AE servers can be easily implemented by adapting just a few functions. The functions handle the configuration of the server and the read/write functionality of items.&lt;/P&gt;
@@ -767,7 +767,7 @@
             <Notes></Notes>
             <TopicSections>
               <TopicSection Name="BodyText">
-                <Content m="2020-10-07T10:28:48.9377479Z">&lt;P&gt;The following assemblies are part of the OPC DA/AE Server Base .NET.&lt;/P&gt;
+                <Content m="2020-10-07T10:28:48.9377479Z">&lt;P&gt;The following assemblies are part of the OPC DA/AE Server Solution .NET.&lt;/P&gt;
 &lt;H3&gt;64bit Applications&lt;/H3&gt;
 &lt;TABLE class=InfoTable cellSpacing=0 cellPadding=0&gt;
 &lt;TBODY&gt;
@@ -969,7 +969,7 @@
             <Notes></Notes>
             <TopicSections>
               <TopicSection Name="BodyText">
-                <Content m="2020-10-07T10:28:48.9527043Z">&lt;P&gt;The OPC DA/AE Server Base .NET&amp;nbsp;Server consists of two components:&lt;/P&gt;
+                <Content m="2020-10-07T10:28:48.9527043Z">&lt;P&gt;The OPC DA/AE Server Solution .NET&amp;nbsp;Server consists of two components:&lt;/P&gt;
 &lt;UL&gt;
 &lt;LI&gt;the generic OPC Server EXE ( OpcNetDaAeServer.exe ) 
 &lt;LI&gt;the customization assembly DLL ( ServerPlugin.dll ) &lt;/LI&gt;&lt;/UL&gt;
@@ -1009,7 +1009,7 @@
             <Notes></Notes>
             <TopicSections>
               <TopicSection Name="BodyText">
-                <Content m="2020-10-07T10:28:48.9727597Z">&lt;P&gt;The OPC DA/AE Server Base .NET customization&amp;nbsp;is a .NET&amp;nbsp;assembly with a set of methods that are called from the generic server and a set of generic server callback methods. The generic server calls methods from the &lt;A href="ServerPlugin~ServerPlugin.ClassicNodeManager.html"&gt;ClassicNodeManager&lt;/A&gt; class. This class can override methods implemented in the &lt;A href="ServerPlugin~ServerPlugin.ClassicBaseNodeManager.html"&gt;ClassicBaseNodeManager&lt;/A&gt; class. This allows the implementation of methods your customization requires. All other methods then use the methods from the &lt;A href="ServerPlugin~ServerPlugin.ClassicBaseNodeManager.html"&gt;ClassicBaseNodeManager&lt;/A&gt;&amp;nbsp;class.&lt;/P&gt;&lt;innovasys:widget type="Colorized Example Code" layout="block"&gt;&lt;innovasys:widgetproperty layout="inline" name="Title"&gt;Definition of the ClassicNodeManager class&lt;/innovasys:widgetproperty&gt; &lt;innovasys:widgetproperty layout="inline" name="LanguageName"&gt;CS&lt;/innovasys:widgetproperty&gt; &lt;innovasys:widgetproperty layout="block" name="Content"&gt;
+                <Content m="2020-10-07T10:28:48.9727597Z">&lt;P&gt;The OPC DA/AE Server Solution .NET customization&amp;nbsp;is a .NET&amp;nbsp;assembly with a set of methods that are called from the generic server and a set of generic server callback methods. The generic server calls methods from the &lt;A href="ServerPlugin~ServerPlugin.ClassicNodeManager.html"&gt;ClassicNodeManager&lt;/A&gt; class. This class can override methods implemented in the &lt;A href="ServerPlugin~ServerPlugin.ClassicBaseNodeManager.html"&gt;ClassicBaseNodeManager&lt;/A&gt; class. This allows the implementation of methods your customization requires. All other methods then use the methods from the &lt;A href="ServerPlugin~ServerPlugin.ClassicBaseNodeManager.html"&gt;ClassicBaseNodeManager&lt;/A&gt;&amp;nbsp;class.&lt;/P&gt;&lt;innovasys:widget type="Colorized Example Code" layout="block"&gt;&lt;innovasys:widgetproperty layout="inline" name="Title"&gt;Definition of the ClassicNodeManager class&lt;/innovasys:widgetproperty&gt; &lt;innovasys:widgetproperty layout="inline" name="LanguageName"&gt;CS&lt;/innovasys:widgetproperty&gt; &lt;innovasys:widgetproperty layout="block" name="Content"&gt;
 &lt;P&gt;namespace ServerPlugin&lt;BR&gt;{&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;public class ClassicNodeManager : ClassicBaseNodeManager&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;{&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; }&lt;BR&gt;}&lt;/P&gt;&lt;/innovasys:widgetproperty&gt;&lt;/innovasys:widget&gt;
 &lt;TABLE width="99%" border=0&gt;
 &lt;TBODY&gt;
@@ -1080,7 +1080,7 @@
             <Notes></Notes>
             <TopicSections>
               <TopicSection Name="BodyText">
-                <Content m="2020-10-07T10:28:49.0076065Z">&lt;P&gt;The OPC DA/AE Server Base .NET&amp;nbsp;allows the usage of several optimization methods depending on the server requirements. Some of the optimization methods are called from the customization part like &lt;A href="ServerPlugin~ServerPlugin.ClassicBaseNodeManager~GetActiveItems.html"&gt;GetActiveItems&lt;/A&gt; but others are called from the generic server. The optimization methods called by the generic server&amp;nbsp;can be turned on or off during server startup phase by setting the parameters of the &lt;A href="ServerPlugin~ServerPlugin.ClassicBaseNodeManager~OnGetDaOptimizationParameters.html"&gt;OnGetDaOptimizationParameters&lt;/A&gt;&amp;nbsp;method.&lt;/P&gt;
+                <Content m="2020-10-07T10:28:49.0076065Z">&lt;P&gt;The OPC DA/AE Server Solution .NET&amp;nbsp;allows the usage of several optimization methods depending on the server requirements. Some of the optimization methods are called from the customization part like &lt;A href="ServerPlugin~ServerPlugin.ClassicBaseNodeManager~GetActiveItems.html"&gt;GetActiveItems&lt;/A&gt; but others are called from the generic server. The optimization methods called by the generic server&amp;nbsp;can be turned on or off during server startup phase by setting the parameters of the &lt;A href="ServerPlugin~ServerPlugin.ClassicBaseNodeManager~OnGetDaOptimizationParameters.html"&gt;OnGetDaOptimizationParameters&lt;/A&gt;&amp;nbsp;method.&lt;/P&gt;
 &lt;P&gt;To get an impression of the usage of these optimization methods they are explained in more detail below:&lt;/P&gt;
 &lt;P&gt;&lt;/P&gt;
 &lt;TABLE cellSpacing=0 cellPadding=0 width="100%" border=0&gt;
@@ -1124,7 +1124,7 @@
             <Notes></Notes>
             <TopicSections>
               <TopicSection Name="BodyText">
-                <Content m="2020-10-07T10:28:49.014606Z">&lt;P&gt;With the OPC DA/AE Server Base .NET the OPC Data Access&amp;nbsp;and OPC Alarms&amp;amp;Events Server development is reduced to the development of a .NET&amp;nbsp;assembly with configuration definitions and device access methods. The OPC specification handling for OPC DA&amp;nbsp;2.05a, 3.00 00 and OPC AE 1.00, 1.10 is done in the generic executable.&lt;/P&gt;
+                <Content m="2020-10-07T10:28:49.014606Z">&lt;P&gt;With the OPC DA/AE Server Solution .NET the OPC Data Access&amp;nbsp;and OPC Alarms&amp;amp;Events Server development is reduced to the development of a .NET&amp;nbsp;assembly with configuration definitions and device access methods. The OPC specification handling for OPC DA&amp;nbsp;2.05a, 3.00 00 and OPC AE 1.00, 1.10 is done in the generic executable.&lt;/P&gt;
 &lt;P&gt;The customization plug-in is developed with Visual Studio 2008, 2010, 2012&amp;nbsp;or Visual Studio 2013 using C#/VB.NET which builds applications for .NET Framework 3.5, 4.0 or 4.5.&lt;/P&gt;
 &lt;P&gt;The sample applications are provided with projects for Visual Studio 2013.&lt;/P&gt;
 &lt;P&gt;The projects have a &lt;STRONG&gt;post build step&lt;/STRONG&gt; that copies the generic server (OpcNetDaAeServer.exe)&amp;nbsp;and configuration files into the project output directory. OpcNetDaAeServer.exe is copied from the project directory and if it's not there, from the parent directory.&lt;/P&gt;
@@ -1179,7 +1179,7 @@
 &lt;LI&gt;If the operating system used is a 64bit operating system and the used generic server executable is&amp;nbsp;64bit you need to use the x64 download version. &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
 &lt;LI&gt;If the operating system used is a 32bit operating system or&amp;nbsp;the used generic server executable is&amp;nbsp;32bit you need to use the x86 download version.&lt;BR&gt;&lt;/LI&gt;&lt;/OL&gt;&lt;/LI&gt;&lt;/OL&gt;&lt;/DIV&gt;
 &lt;LI&gt;
-&lt;DIV&gt;&lt;STRONG&gt;OPC Core Components distributable&lt;/STRONG&gt;&lt;BR&gt;This setup application installs the OPC Core components required by applications based on the OPC DA/AE Server Base&amp;nbsp;.NET. You csan get it from:&amp;nbsp; &lt;/DIV&gt;
+&lt;DIV&gt;&lt;STRONG&gt;OPC Core Components distributable&lt;/STRONG&gt;&lt;BR&gt;This setup application installs the OPC Core components required by applications based on the OPC DA/AE Server Solution&amp;nbsp;.NET. You csan get it from:&amp;nbsp; &lt;/DIV&gt;
 &lt;DIV&gt;
 &lt;OL&gt;
 &lt;LI&gt;&lt;A href="https://opcfoundation.org/developer-tools/samples-and-tools-classic/core-components/"&gt;https://opcfoundation.org/developer-tools/samples-and-tools-classic/core-components/&lt;/A&gt;&lt;BR&gt;We used the 3.00.108 version for our tests &lt;/LI&gt;&lt;/OL&gt;&lt;/DIV&gt;&lt;/LI&gt;&lt;/OL&gt;
@@ -1546,7 +1546,7 @@ not to have too many calls outstanding. Otherwise the system resources may get e
       <StripMetadata>false</StripMetadata>
       <AlwaysCopyTemplateFiles>true</AlwaysCopyTemplateFiles>
       <OutputFileExtension>.html</OutputFileExtension>
-      <Title m="2020-10-07T10:28:48.9247395Z">OPC DA/AE Server Base .NET</Title>
+      <Title m="2020-10-07T10:28:48.9247395Z">OPC DA/AE Server Solution .NET</Title>
       <ClearOutputDirectoryBeforeBuild>true</ClearOutputDirectoryBeforeBuild>
       <IsNewIndicatorEnabled>false</IsNewIndicatorEnabled>
       <IsNewDateTime>1899-12-30T00:00:00Z</IsNewDateTime>
@@ -1559,7 +1559,7 @@ not to have too many calls outstanding. Otherwise the system resources may get e
           <PropertyValue m="2021-05-29T05:27:56.6652034Z">Copyright © 2011-2021 Technosoftware GmbH</PropertyValue>
         </PropertyDefinitionValue>
         <PropertyDefinitionValue PropertyDefinitionId="76de16a8-8dcb-462c-b636-b20ff0b3c3a1">
-          <PropertyValue m="2020-10-07T10:28:48.9227524Z">&lt;a href="mailto:support@technosoftware.com?subject=OPC DA/AE Server Base .NET Documentation Feedback: %%FileName%%"&gt;Send comments&lt;/a&gt; on this topic.</PropertyValue>
+          <PropertyValue m="2020-10-07T10:28:48.9227524Z">&lt;a href="mailto:support@technosoftware.com?subject=OPC DA/AE Server Solution .NET Documentation Feedback: %%FileName%%"&gt;Send comments&lt;/a&gt; on this topic.</PropertyValue>
         </PropertyDefinitionValue>
         <PropertyDefinitionValue PropertyDefinitionId="dfae4477-6a1c-4fa6-82bb-d2f487f5b99b">
           <PropertyValue m="2012-03-08T22:09:25.711914Z">&amp;copy;%%year%%. Technosoftware GmbH. All Rights Reserved.</PropertyValue>
@@ -1583,7 +1583,7 @@ not to have too many calls outstanding. Otherwise the system resources may get e
           <PropertyValue m="2012-03-08T22:09:18.1601562Z">&amp;copy; %%year%% Technosoftware GmbH. All Rights Reserved.</PropertyValue>
         </PropertyDefinitionValue>
         <PropertyDefinitionValue PropertyDefinitionId="a3dbf170-4a46-4d3f-9571-9b10189c0037">
-          <PropertyValue m="2020-10-07T10:28:48.9236075Z">&lt;a href="mailto:support@technosoftware.com?subject=OPC DA/AE Server Base .NET Documentation Feedback: %%FileName%%"&gt;Send comments&lt;/a&gt; on this topic.</PropertyValue>
+          <PropertyValue m="2020-10-07T10:28:48.9236075Z">&lt;a href="mailto:support@technosoftware.com?subject=OPC DA/AE Server Solution .NET Documentation Feedback: %%FileName%%"&gt;Send comments&lt;/a&gt; on this topic.</PropertyValue>
         </PropertyDefinitionValue>
       </PropertyDefinitionValues>
       <IsTidyXhtmlEnabled>false</IsTidyXhtmlEnabled>

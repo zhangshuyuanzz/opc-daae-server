@@ -23,7 +23,7 @@
 <p>The following lists give an overview on the learning targets covered by each lesson.</p>
 <h2>Lesson 1: Distribution Contents</h2>
 <ul>
-  <li>Understand the structure of the OPC DA/AE Server Base DLL delivery</li>
+  <li>Understand the structure of the OPC DA/AE Server Solution DLL delivery</li>
 </ul>
 <h2>Lesson 2: Development Steps</h2>
 <ul>
@@ -34,7 +34,7 @@
   <li>Step-by-step description of the server development process</li>
 </ul>
 \section lession_1 Lesson 1: Distribution Contents
-<p>List of components included in the OPC DA/AE Server Base DLL:</p>
+<p>List of components included in the OPC DA/AE Server Solution DLL:</p>
 <table cellspacing="0" width="100%">
   <tr>
     <th valign="top" align="left" width="15%">Component

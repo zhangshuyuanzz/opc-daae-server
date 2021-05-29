@@ -66,7 +66,7 @@ begin
       action.target.execute
       begin
         actionlistid = {C5ACACB8-F32D-4FB6-BE8E-7CACA5C464C0}
-        description = "Run Target [ Build OPC DA/AE Server Base .NET ]"
+        description = "Run Target [ Build OPC DA/AE Server Solution .NET ]"
         failifactionlistempty = false
         id = {E5F1626E-C27C-47E3-8F1E-C0AE973596AE}
         resetdependencychain = false
@@ -74,7 +74,7 @@ begin
       action.target.execute
       begin
         actionlistid = {6D2DDA45-84DB-4F3A-AE61-14F5DD1EA29C}
-        description = "Run Target [ Build OPC DA/AE Server Base DLL ]"
+        description = "Run Target [ Build OPC DA/AE Server Solution DLL ]"
         failifactionlistempty = false
         id = {C11492D7-3318-419B-A67D-CE3B4B80915F}
         resetdependencychain = false
@@ -82,7 +82,7 @@ begin
       action.target.execute
       begin
         actionlistid = {2E67C720-9884-4FAE-924A-BEB4E4E00573}
-        description = "Run Target [ Build OPC DA/AE Server Base C\+\+ ]"
+        description = "Run Target [ Build OPC DA/AE Server Solution C\+\+ ]"
         failifactionlistempty = false
         id = {1110D305-CDFA-400F-B88B-E12C82E3109C}
         resetdependencychain = false
@@ -90,7 +90,7 @@ begin
       action.target.execute
       begin
         actionlistid = {6B89E00F-52BC-4F9F-80F7-58CC235E4B20}
-        description = "Run Target [ Gather OPC DA/AE Server Bases .NET ]"
+        description = "Run Target [ Gather OPC DA/AE Server Solutions .NET ]"
         failifactionlistempty = false
         id = {44C2CAB4-C70C-4911-AEBC-A5A92BAAAA4F}
         resetdependencychain = false
@@ -98,7 +98,7 @@ begin
       action.target.execute
       begin
         actionlistid = {3AD146C8-CC6D-4684-913B-6152C1EDCD5B}
-        description = "Run Target [ Gather OPC DA/AE Server Base DLL ]"
+        description = "Run Target [ Gather OPC DA/AE Server Solution DLL ]"
         failifactionlistempty = false
         id = {B24638C3-DD1F-4353-AC20-72E575320A4A}
         resetdependencychain = false
@@ -106,7 +106,7 @@ begin
       action.target.execute
       begin
         actionlistid = {B556F63A-5FC2-41C7-AFE7-426616198FDE}
-        description = "Run Target [ Gather OPC DA/AE Server Base C\+\+ ]"
+        description = "Run Target [ Gather OPC DA/AE Server Solution C\+\+ ]"
         failifactionlistempty = false
         id = {7957EC80-6C2C-4454-9FF0-0111943C556D}
         resetdependencychain = false
@@ -216,7 +216,7 @@ begin
       action.process.execute
       begin
         captureoutput = true
-        description = "Git Clone Repository of OPC DA/AE Server Base"
+        description = "Git Clone Repository of OPC DA/AE Server Solution"
         enablelivecapture = true
         enablereturncodecheck = true
         enabletimeout = false
@@ -245,7 +245,6 @@ begin
         actiontypeid = {BDB55D94-7093-4EFE-A279-A8746A7E4A61}
         customactionname = "Git Checkout"
         description = "Git Checkout Tag"
-        enabled = false
         enabletimeout = false
         id = {6E3E879C-79DC-4301-BDC5-E53152FA9420}
         impersonateusenetcredonly = false
@@ -310,7 +309,7 @@ begin
             buildversion = 0
             codepage = 1252
             debugconstant = false
-            description = "Build VS.Net Solution [Building OPC DA/AE Server Base .NET Samples 32bit]"
+            description = "Build VS.Net Solution [Building OPC DA/AE Server Solution .NET Samples 32bit]"
             disablenodereuse = true
             disablepostbuildevent = false
             disableprebuildevent = false
@@ -492,7 +491,7 @@ begin
             buildversion = 0
             codepage = 1252
             debugconstant = false
-            description = "Build VS.Net Solution [Building OPC DA/AE Server Base .NET Samples 64bit]"
+            description = "Build VS.Net Solution [Building OPC DA/AE Server Solution .NET Samples 64bit]"
             disablenodereuse = true
             disablepostbuildevent = false
             disableprebuildevent = false
@@ -643,14 +642,14 @@ begin
             usemsbuild = true
             useregexonconfigname = true
             usewin32propertyset = false
-            versioninfokeys = "Comments\=OPC DA/AE Server Base .NET" +
+            versioninfokeys = "Comments\=OPC DA/AE Server Solution .NET" +
                               "CompanyName\=Technosoftware GmbH" +
-                              "FileDescription\=OPC DA/AE Server Base .NET 32bit" +
+                              "FileDescription\=OPC DA/AE Server Solution .NET 32bit" +
                               "FileVersion\=1.0.419.0" +
-                              "InternalName\=OPC DA/AE Server Base .NET 32bit" +
+                              "InternalName\=OPC DA/AE Server Solution .NET 32bit" +
                               "LegalCopyright\=Copyright © 2011-2019 Technosoftware GmbH" +
                               "OriginalFilename\=OpcNetDaAeServer.exe" +
-                              "ProductName\=OPC DA/AE Server Base .NET 32bit" +
+                              "ProductName\=OPC DA/AE Server Solution .NET 32bit" +
                               "ProductVersion\=1.0.419.0" +
                               ""
             vstudioversion = vs2019
@@ -812,14 +811,14 @@ begin
             usemsbuild = true
             useregexonconfigname = true
             usewin32propertyset = false
-            versioninfokeys = "Comments\=OPC DA/AE Server Base .NET" +
+            versioninfokeys = "Comments\=OPC DA/AE Server Solution .NET" +
                               "CompanyName\=Technosoftware GmbH" +
-                              "FileDescription\=OPC DA/AE Server Base .NET 32bit" +
+                              "FileDescription\=OPC DA/AE Server Solution .NET 32bit" +
                               "FileVersion\=1.0.419.0" +
-                              "InternalName\=OPC DA/AE Server Base .NET 32bit" +
+                              "InternalName\=OPC DA/AE Server Solution .NET 32bit" +
                               "LegalCopyright\=Copyright © 2011-2019 Technosoftware GmbH" +
                               "OriginalFilename\=OpcNetDaAeServer.exe" +
-                              "ProductName\=OPC DA/AE Server Base .NET 32bit" +
+                              "ProductName\=OPC DA/AE Server Solution .NET 32bit" +
                               "ProductVersion\=1.0.419.0" +
                               ""
             vstudioversion = vs2019
@@ -936,7 +935,7 @@ begin
             buildversion = 0
             codepage = 1252
             debugconstant = false
-            description = "Build VS.Net Solution [Building OPC DA/AE Server Base .NET Samples 64bit]"
+            description = "Build VS.Net Solution [Building OPC DA/AE Server Solution .NET Samples 64bit]"
             disablenodereuse = true
             disablepostbuildevent = false
             disableprebuildevent = false
@@ -1178,14 +1177,14 @@ begin
             usemsbuild = true
             useregexonconfigname = true
             usewin32propertyset = false
-            versioninfokeys = "Comments\=OPC DA/AE Server Base .NET" +
+            versioninfokeys = "Comments\=OPC DA/AE Server Solution .NET" +
                               "CompanyName\=Technosoftware GmbH" +
-                              "FileDescription\=OPC DA/AE Server Base .NET 32bit" +
+                              "FileDescription\=OPC DA/AE Server Solution .NET 32bit" +
                               "FileVersion\=1.0.419.0" +
-                              "InternalName\=OPC DA/AE Server Base .NET 32bit" +
+                              "InternalName\=OPC DA/AE Server Solution .NET 32bit" +
                               "LegalCopyright\=Copyright © 2011-2019 Technosoftware GmbH" +
                               "OriginalFilename\=OpcNetDaAeServer.exe" +
-                              "ProductName\=OPC DA/AE Server Base .NET 32bit" +
+                              "ProductName\=OPC DA/AE Server Solution .NET 32bit" +
                               "ProductVersion\=1.0.419.0" +
                               ""
             vstudioversion = vs2019
@@ -1347,14 +1346,14 @@ begin
             usemsbuild = true
             useregexonconfigname = true
             usewin32propertyset = false
-            versioninfokeys = "Comments\=OPC DA/AE Server Base .NET" +
+            versioninfokeys = "Comments\=OPC DA/AE Server Solution .NET" +
                               "CompanyName\=Technosoftware GmbH" +
-                              "FileDescription\=OPC DA/AE Server Base .NET 32bit" +
+                              "FileDescription\=OPC DA/AE Server Solution .NET 32bit" +
                               "FileVersion\=1.0.419.0" +
-                              "InternalName\=OPC DA/AE Server Base .NET 32bit" +
+                              "InternalName\=OPC DA/AE Server Solution .NET 32bit" +
                               "LegalCopyright\=Copyright © 2011-2019 Technosoftware GmbH" +
                               "OriginalFilename\=OpcNetDaAeServer.exe" +
-                              "ProductName\=OPC DA/AE Server Base .NET 32bit" +
+                              "ProductName\=OPC DA/AE Server Solution .NET 32bit" +
                               "ProductVersion\=1.0.419.0" +
                               ""
             vstudioversion = vs2019
@@ -1812,14 +1811,14 @@ begin
             usemsbuild = true
             useregexonconfigname = true
             usewin32propertyset = false
-            versioninfokeys = "Comments\=OPC DA/AE Server Base DLL" +
+            versioninfokeys = "Comments\=OPC DA/AE Server Solution DLL" +
                               "CompanyName\=Technosoftware GmbH" +
-                              "FileDescription\=OPC DA/AE Server Base DLL 32bit" +
+                              "FileDescription\=OPC DA/AE Server Solution DLL 32bit" +
                               "FileVersion\=1.0.419.0" +
-                              "InternalName\=OPC DA/AE Server Base DLL 32bit" +
+                              "InternalName\=OPC DA/AE Server Solution DLL 32bit" +
                               "LegalCopyright\=Copyright © 2011-2019 Technosoftware GmbH" +
                               "OriginalFilename\=OpcNetDaAeServer.exe" +
-                              "ProductName\=OPC DA/AE Server Base DLL 32bit" +
+                              "ProductName\=OPC DA/AE Server Solution DLL 32bit" +
                               "ProductVersion\=1.0.419.0" +
                               ""
             vstudioversion = vs2019
@@ -1946,14 +1945,14 @@ begin
             usemsbuild = true
             useregexonconfigname = true
             usewin32propertyset = false
-            versioninfokeys = "Comments\=OPC DA/AE Server Base DLL" +
+            versioninfokeys = "Comments\=OPC DA/AE Server Solution DLL" +
                               "CompanyName\=Technosoftware GmbH" +
-                              "FileDescription\=OPC DA/AE Server Base DLL 32bit" +
+                              "FileDescription\=OPC DA/AE Server Solution DLL 32bit" +
                               "FileVersion\=1.0.419.0" +
-                              "InternalName\=OPC DA/AE Server Base DLL 32bit" +
+                              "InternalName\=OPC DA/AE Server Solution DLL 32bit" +
                               "LegalCopyright\=Copyright © 2011-2019 Technosoftware GmbH" +
                               "OriginalFilename\=OpcNetDaAeServer.exe" +
-                              "ProductName\=OPC DA/AE Server Base DLL 32bit" +
+                              "ProductName\=OPC DA/AE Server Solution DLL 32bit" +
                               "ProductVersion\=1.0.419.0" +
                               ""
             vstudioversion = vs2019
@@ -2362,14 +2361,14 @@ begin
             usemsbuild = true
             useregexonconfigname = true
             usewin32propertyset = false
-            versioninfokeys = "Comments\=OPC DA/AE Server Base DLL" +
+            versioninfokeys = "Comments\=OPC DA/AE Server Solution DLL" +
                               "CompanyName\=Technosoftware GmbH" +
-                              "FileDescription\=OPC DA/AE Server Base DLL 32bit" +
+                              "FileDescription\=OPC DA/AE Server Solution DLL 32bit" +
                               "FileVersion\=1.0.419.0" +
-                              "InternalName\=OPC DA/AE Server Base DLL 32bit" +
+                              "InternalName\=OPC DA/AE Server Solution DLL 32bit" +
                               "LegalCopyright\=Copyright © 2011-2019 Technosoftware GmbH" +
                               "OriginalFilename\=OpcNetDaAeServer.exe" +
-                              "ProductName\=OPC DA/AE Server Base DLL 32bit" +
+                              "ProductName\=OPC DA/AE Server Solution DLL 32bit" +
                               "ProductVersion\=1.0.419.0" +
                               ""
             vstudioversion = vs2019
@@ -2496,14 +2495,14 @@ begin
             usemsbuild = true
             useregexonconfigname = true
             usewin32propertyset = false
-            versioninfokeys = "Comments\=OPC DA/AE Server Base DLL" +
+            versioninfokeys = "Comments\=OPC DA/AE Server Solution DLL" +
                               "CompanyName\=Technosoftware GmbH" +
-                              "FileDescription\=OPC DA/AE Server Base DLL 32bit" +
+                              "FileDescription\=OPC DA/AE Server Solution DLL 32bit" +
                               "FileVersion\=1.0.419.0" +
-                              "InternalName\=OPC DA/AE Server Base DLL 32bit" +
+                              "InternalName\=OPC DA/AE Server Solution DLL 32bit" +
                               "LegalCopyright\=Copyright © 2011-2019 Technosoftware GmbH" +
                               "OriginalFilename\=OpcNetDaAeServer.exe" +
-                              "ProductName\=OPC DA/AE Server Base DLL 32bit" +
+                              "ProductName\=OPC DA/AE Server Solution DLL 32bit" +
                               "ProductVersion\=1.0.419.0" +
                               ""
             vstudioversion = vs2019
@@ -2558,7 +2557,7 @@ begin
     begin
       action.group
       begin
-        description = "Build & Test OPC DA/AE Server Base C\+\+"
+        description = "Build & Test OPC DA/AE Server Solution C\+\+"
         id = {3548C053-C963-4EA6-AE2F-D6DB06E22EBD}
         action.group
         begin
@@ -2657,14 +2656,14 @@ begin
             usemsbuild = false
             useregexonconfigname = true
             usewin32propertyset = false
-            versioninfokeys = "Comments\=OPC DA/AE Server Base C\+\+" +
+            versioninfokeys = "Comments\=OPC DA/AE Server Solution C\+\+" +
                               "CompanyName\=Technosoftware GmbH" +
-                              "FileDescription\=OPC DA/AE Server Base C\+\+ 32bit" +
+                              "FileDescription\=OPC DA/AE Server Solution C\+\+ 32bit" +
                               "FileVersion\=1.0.419.0" +
-                              "InternalName\=OPC DA/AE Server Base C\+\+ 32bit" +
+                              "InternalName\=OPC DA/AE Server Solution C\+\+ 32bit" +
                               "LegalCopyright\=Copyright © 2011-2020 Technosoftware GmbH" +
                               "OriginalFilename\=OpcDaAeServer.exe" +
-                              "ProductName\=OPC DA/AE Server Base C\+\+ 32bit" +
+                              "ProductName\=OPC DA/AE Server Solution C\+\+ 32bit" +
                               "ProductVersion\=1.0.419.0" +
                               ""
             vstudioversion = vs2019
@@ -2805,14 +2804,14 @@ begin
             usemsbuild = false
             useregexonconfigname = true
             usewin32propertyset = false
-            versioninfokeys = "Comments\=OPC DA/AE Server Base C\+\+" +
+            versioninfokeys = "Comments\=OPC DA/AE Server Solution C\+\+" +
                               "CompanyName\=Technosoftware GmbH" +
-                              "FileDescription\=OPC DA/AE Server Base C\+\+ 32bit" +
+                              "FileDescription\=OPC DA/AE Server Solution C\+\+ 32bit" +
                               "FileVersion\=1.0.419.0" +
-                              "InternalName\=OPC DA/AE Server Base C\+\+ 32bit" +
+                              "InternalName\=OPC DA/AE Server Solution C\+\+ 32bit" +
                               "LegalCopyright\=Copyright © 2011-2020 Technosoftware GmbH" +
                               "OriginalFilename\=OpcDaAeServer.exe" +
-                              "ProductName\=OPC DA/AE Server Base C\+\+ 32bit" +
+                              "ProductName\=OPC DA/AE Server Solution C\+\+ 32bit" +
                               "ProductVersion\=1.0.419.0" +
                               ""
             vstudioversion = vs2019
@@ -3290,7 +3289,7 @@ begin
           action.process.execute
           begin
             captureoutput = true
-            description = "Execute Program [ doxygen for OPC DA/AE Server Base DLL ]"
+            description = "Execute Program [ doxygen for OPC DA/AE Server Solution DLL ]"
             enablelivecapture = true
             enablereturncodecheck = true
             enabletimeout = false
@@ -3392,7 +3391,7 @@ begin
           action.process.execute
           begin
             captureoutput = true
-            description = "Execute Program [ doxygen for OPC DA/AE Server Base C\+\+ ]"
+            description = "Execute Program [ doxygen for OPC DA/AE Server Solution C\+\+ ]"
             enablelivecapture = true
             enablereturncodecheck = true
             enabletimeout = false
@@ -3472,7 +3471,7 @@ begin
   end
   variable
   begin
-    defaultvalue = v1.0.0
+    defaultvalue = refactoring
     groupname = tags
     name = git_tag
     variablescope = vtProject

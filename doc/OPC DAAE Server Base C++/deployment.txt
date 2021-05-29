@@ -18,13 +18,13 @@
 <h2>Required Software Components</h2>
 <p>Please be sure that the required software components are installed. If they are not yet installed please install the software as follows:</p>
 <h3>OPC Core Components Redistributable</h3>
-<p>This setup application installs the OPC Core Components required by applications based on the OPC DA/AE Server Base C++. Please use on of the following setups:</p>
+<p>This setup application installs the OPC Core Components required by applications based on the OPC DA/AE Server Solution C++. Please use on of the following setups:</p>
 <ul>
   <li>\\x86\\redist\\OPCCoreComponentsRedistributable if you use a 32bit server on a 32bit operating system</li>
   <li>\\binaries\\redist\\OPCCoreComponentsRedistributable if you use a 32bit or 64bit server on 64bit operating systems</li>
 </ul>
-<h3>OPC DA/AE Server Base C++ Components</h3>
-<p>The OPC DA/AE Server Base C++ creates one server executable, e.g. OpcDaAeServer.exe. You can find this file in the project directory. It should be copied to your application directory.</p>
+<h3>OPC DA/AE Server Solution C++ Components</h3>
+<p>The OPC DA/AE Server Solution C++ creates one server executable, e.g. OpcDaAeServer.exe. You can find this file in the project directory. It should be copied to your application directory.</p>
 <p>After successfully deploying your application you should check the security permission settings. </p>
 <p>Most problems occur because of failures in these configuration settings. Some general hints are given in the Trouble Shooting Section.</p>
 <h2>Register/Unregister the OPC Server</h2>

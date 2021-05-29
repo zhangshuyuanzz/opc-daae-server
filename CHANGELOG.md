@@ -1,19 +1,19 @@
-This is the changelog file for the OPC DA/AE Server Base.
+This is the changelog file for the OPC DA/AE Server Solution.
 
-## OPC DA/AE Server Base - 2.0.0
+## OPC DA/AE Server Solution - 2.0.0
 - Refactored several parts of the server and removed a lot of warnings
 
-## OPC DA/AE Server Base - 1.0.902
+## OPC DA/AE Server Solution - 1.0.902
 
 ###	Enhancement
 - Included Source, changed license model
 
-## OPC DA/AE Server Base - 1.0.423
+## OPC DA/AE Server Solution - 1.0.423
 
 # Fixed Issues
 - GetActiveItems does not return the correct list if no active items (#1)
 
-## OPC DA/AE Server Base - 1.0.419
+## OPC DA/AE Server Solution - 1.0.419
 
 ###	Enhancement
 - DLL and .NET samples available now in the same package
