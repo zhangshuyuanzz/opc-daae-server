@@ -19,13 +19,13 @@
  */
 
 #pragma once
-#ifndef _LOGGER_H
-#define _LOGGER_H
+#ifndef LOGGER_H
+#define LOGGER_H
 
 #include <string>
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
+
+#include <cstdio>
+#include "string.h"
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -35,8 +35,6 @@
 #include <list>
 #include <queue>
 #include <deque>
-
-#include "crtdbg.h"
 
 /**
  * @typedef int LoggerId
@@ -65,7 +63,7 @@ const char*const LOGGER_MAIN_LOGGER_KEY = "Main";
 #define LOGGER_FORMAT_INPUT_ENABLE
 #endif
 
-#define  OPCWSTOAS( wstr )                {USES_CONVERSION; LPSTR OPCastr = W2A( wstr );
+#define  OPCWSTOAS( wstr ) {USES_CONVERSION; LPSTR OPCastr = W2A( wstr );
 
 typedef enum 
 {
@@ -567,7 +565,7 @@ class LoggerBinary
 public:
     LoggerBinary(const void * buf, int len)
     {
-        _buf = (const char *)buf;
+        _buf = static_cast<const char*>(buf);
         _len = len;
     }
     const char * _buf;
@@ -577,7 +575,7 @@ class LoggerStream
 {
 public:
     inline LoggerStream(char * buf, int len);
-    inline int getCurrentLen() { return (int)(_cur - _begin); }
+    inline int getCurrentLen() { return (int)(cur_ - begin_); }
 private:
     template<class T>
     inline LoggerStream & writeData(const char * ft, T t);
@@ -645,7 +643,7 @@ public:
         }
         if (!t.empty())
         {
-            _cur -= 2;
+            cur_ -= 2;
         }
         return *this << "]";
     }
@@ -666,7 +664,7 @@ public:
         }
         if (!t.empty())
         {
-            _cur -= 2;
+            cur_ -= 2;
         }
         return *this << "]";
     }
@@ -687,7 +685,7 @@ public:
         }
         if (!t.empty())
         {
-            _cur -= 2;
+            cur_ -= 2;
         }
         return *this << "]";
     }
@@ -708,7 +706,7 @@ public:
         }
         if (!t.empty())
         {
-            _cur -= 2;
+            cur_ -= 2;
         }
         return *this << "]";
     }
@@ -729,39 +727,39 @@ public:
         }
         if (!t.empty())
         {
-            _cur -= 2;
+            cur_ -= 2;
         }
         return *this << "]";
     }
 
 private:
-    LoggerStream() {}
+    LoggerStream() = default;
     LoggerStream(LoggerStream &) {}
-    char *  _begin;
-    char *  _end;
-    char *  _cur;
+    char* begin_ = nullptr;
+    char*  end_ = nullptr;
+    char*  cur_ = nullptr;
 };
 
 inline LoggerStream::LoggerStream(char * buf, int len)
 {
-    _begin = buf;
-    _end = buf + len;
-    _cur = _begin;
+    begin_ = buf;
+    end_ = buf + len;
+    cur_ = begin_;
 }
 
 template<class T>
 inline LoggerStream& LoggerStream::writeData(const char * ft, T t)
 {
-    if (_cur < _end)
+    if (cur_ < end_)
     {
         int len = 0;
-        int count = (int)(_end - _cur);
+        int count = (int)(end_ - cur_);
 #ifdef WIN32
-        len = _snprintf(_cur, count, ft, t);
+        len = _snprintf(cur_, count, ft, t);
         if (len == count || len < 0)
         {
             len = count;
-            *(_end - 1) = '\0';
+            *(end_ - 1) = '\0';
         }
 #else
         len = snprintf(_cur, count, ft, t);
@@ -776,7 +774,7 @@ inline LoggerStream& LoggerStream::writeData(const char * ft, T t)
             *(_end - 1) = '\0';
         }
 #endif
-        _cur += len;
+        cur_ += len;
     }
     return *this;
 }
@@ -844,22 +842,22 @@ inline LoggerStream & LoggerStream::writeBinary(const LoggerBinary & t)
 }
 inline LoggerStream & LoggerStream::writeString(const char * t, size_t len)
 {
-    if (_cur < _end)
+    if (cur_ < end_)
     {
-        size_t count = (size_t)(_end - _cur);
+        size_t count = (size_t)(end_ - cur_);
         if (len > count)
         {
             len = count;
         }
-        memcpy(_cur, t, len);
-        _cur += len;
-        if (_cur >= _end - 1)
+        memcpy(cur_, t, len);
+        cur_ += len;
+        if (cur_ >= end_ - 1)
         {
-            *(_end - 1) = '\0';
+            *(end_ - 1) = '\0';
         }
         else
         {
-            *(_cur + 1) = '\0';
+            *(cur_ + 1) = '\0';
         }
     }
     return *this;
