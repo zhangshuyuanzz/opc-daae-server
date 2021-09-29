@@ -195,7 +195,7 @@ HRESULT LoadAppDLL( LPCTSTR DLLName, BOOL & fErrMsgDisplayed )
 
 	// LoadLibrary call was successfully
 
-	pOnGetLogLevel = GetProcAddress(gDLLHandle, "OnGetLogLevel");
+	pOnGetLogLevel = (PFNONGETLOGLEVEL)GetProcAddress(gDLLHandle, "OnGetLogLevel");
 	if (pOnGetLogLevel == nullptr)
 	{
 		LOGFMTE("Function OnGetLogLevel not found().");
